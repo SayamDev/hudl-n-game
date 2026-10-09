@@ -1,0 +1,93 @@
+import type { GameDefinition } from "../lib/types";
+const sharedScreens = {
+  settings: () =>
+    import("../components/Setup").then((m) => ({ default: m.GameSettings })),
+  results: () => import("../components/Results"),
+};
+export const games: GameDefinition[] = [
+  {
+    ...sharedScreens,
+    id: "imposter",
+    name: "Imposter",
+    subtitle: "One word. One liar. Trust nobody.",
+    color: "purple",
+    emoji: "👀",
+    min: 3,
+    duration: "5-10 min",
+    rules: [
+      "Everyone holds to peek at a secret word. The imposter gets no word.",
+      "Take turns giving one-word clues. Keep it clever, not obvious.",
+      "Discuss, then vote. Ties trigger a new vote.",
+      "Catch the imposter, but watch out: one correct final guess steals the win.",
+    ],
+    load: () => import("./Imposter"),
+  },
+  {
+    ...sharedScreens,
+    id: "mafia",
+    name: "Mafia",
+    subtitle: "Goodnight, village. Good luck.",
+    color: "pink",
+    emoji: "🌙",
+    min: 5,
+    duration: "10-20 min",
+    rules: [
+      "Peek at your role, then close your eyes for night.",
+      "Only the called role opens their eyes and uses the phone. Pass discreetly.",
+      "Mafia agree on a victim. The Doctor saves and Detective investigates.",
+      "By day, discuss and vote someone out. Village wins when no Mafia remain; Mafia wins at parity.",
+    ],
+    load: () => import("./Mafia"),
+  },
+  {
+    ...sharedScreens,
+    id: "spy",
+    name: "Where Are We?",
+    subtitle: "Same place. One very lost spy.",
+    color: "mint",
+    emoji: "🛸",
+    min: 3,
+    duration: "5-8 min",
+    rules: [
+      "Everyone sees a location and role except the spy.",
+      "Ask each other questions about the location without naming it.",
+      "Vote on the spy. The spy gets a final location guess if caught.",
+    ],
+    load: () => import("./Spy"),
+  },
+  {
+    ...sharedScreens,
+    id: "charades",
+    name: "Heads Up!",
+    subtitle: "Big gestures. Absolutely no words.",
+    color: "yellow",
+    emoji: "🎭",
+    min: 3,
+    duration: "60 sec turns",
+    rules: [
+      "Split into two teams, alternating players in your crew list.",
+      "One player holds the phone facing their teammates.",
+      "Act or describe the word without saying it. Tap correct or skip.",
+      "Optional tilt: screen toward the floor for correct, toward the ceiling to skip. Two turns decide the winner.",
+    ],
+    load: () => import("./Charades"),
+  },
+  {
+    ...sharedScreens,
+    id: "party",
+    name: "Most Likely To",
+    subtitle: "You know exactly who it is.",
+    color: "blue",
+    emoji: "👉",
+    min: 3,
+    duration: "5 prompts",
+    rules: [
+      "Read the prompt aloud. Everyone points on three.",
+      "Tap the person with the most fingers pointing at them, or record a tie.",
+      "Hot Takes: pass the phone and privately set your agreement, then reveal the group split.",
+      "Five prompts make a round. Skip anything the group does not want to answer.",
+    ],
+    load: () => import("./Party"),
+  },
+];
+export const gameById = (id: string) => games.find((g) => g.id === id)!;

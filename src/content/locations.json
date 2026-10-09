@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Beach",
+    "roles": ["Lifeguard", "Surfer", "Ice-cream seller"]
+  },
+  {
+    "name": "Hospital",
+    "roles": ["Doctor", "Patient", "Receptionist"]
+  },
+  {
+    "name": "Space station",
+    "roles": ["Commander", "Engineer", "Astronaut"]
+  },
+  {
+    "name": "Restaurant",
+    "roles": ["Chef", "Waiter", "Food critic"]
+  },
+  {
+    "name": "School",
+    "roles": ["Teacher", "Student", "Caretaker"]
+  },
+  {
+    "name": "Airport",
+    "roles": ["Pilot", "Passenger", "Security officer"]
+  },
+  {
+    "name": "Zoo",
+    "roles": ["Keeper", "Visitor", "Vet"]
+  },
+  {
+    "name": "Cruise ship",
+    "roles": ["Captain", "Entertainer", "Passenger"]
+  },
+  {
+    "name": "Library",
+    "roles": ["Librarian", "Reader", "Student"]
+  },
+  {
+    "name": "Supermarket",
+    "roles": ["Cashier", "Shopper", "Manager"]
+  },
+  {
+    "name": "Cinema",
+    "roles": ["Projectionist", "Film fan", "Ticket seller"]
+  },
+  {
+    "name": "Hotel",
+    "roles": ["Receptionist", "Guest", "Cleaner"]
+  },
+  {
+    "name": "Museum",
+    "roles": ["Curator", "Visitor", "Security guard"]
+  },
+  {
+    "name": "Football stadium",
+    "roles": ["Referee", "Fan", "Player"]
+  },
+  {
+    "name": "Train",
+    "roles": ["Conductor", "Commuter", "Driver"]
+  },
+  {
+    "name": "Farm",
+    "roles": ["Farmer", "Fruit picker", "Vet"]
+  },
+  {
+    "name": "Bank",
+    "roles": ["Teller", "Customer", "Security guard"]
+  },
+  {
+    "name": "Ski resort",
+    "roles": ["Instructor", "Skier", "Lift operator"]
+  },
+  {
+    "name": "Theatre",
+    "roles": ["Actor", "Director", "Audience member"]
+  },
+  {
+    "name": "Wedding",
+    "roles": ["Photographer", "Guest", "Caterer"]
+  },
+  {
+    "name": "Swimming pool",
+    "roles": ["Lifeguard", "Swimmer", "Coach"]
+  },
+  {
+    "name": "Camping site",
+    "roles": ["Camper", "Ranger", "Hiker"]
+  },
+  {
+    "name": "TV studio",
+    "roles": ["Presenter", "Camera operator", "Contestant"]
+  },
+  {
+    "name": "Bakery",
+    "roles": ["Baker", "Customer", "Delivery driver"]
+  }
+]

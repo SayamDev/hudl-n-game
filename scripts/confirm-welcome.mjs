@@ -1,0 +1,5 @@
+import {chromium} from 'playwright';
+const b=await chromium.launch({channel:'chrome',headless:true});const p=await b.newPage({viewport:{width:390,height:844}});
+await p.goto('http://localhost:4173');
+for(const name of ['welcome-390','practice-390','ready-390']) {await p.waitForTimeout(450);await p.screenshot({path:`.impeccable/review/welcome/${name}.png`,fullPage:true,animations:'disabled'});if(name!=='ready-390')await p.getByRole('button',{name:'Next',exact:true}).click();}
+await p.goto('http://127.0.0.1:4176/cv/');await p.getByRole('heading',{name:/^Hudl N Game/}).scrollIntoViewIfNeeded();await p.screenshot({path:'.impeccable/review/welcome/cv-390.png',animations:'disabled'});console.log('CV phone overflow',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));await p.setViewportSize({width:1440,height:1000});await p.getByRole('heading',{name:/^Hudl N Game/}).scrollIntoViewIfNeeded();await p.screenshot({path:'.impeccable/review/welcome/cv-1440.png',animations:'disabled'});console.log('CV desktop project',await p.getByRole('heading',{name:/^Hudl N Game/}).textContent());await b.close();

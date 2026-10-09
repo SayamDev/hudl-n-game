@@ -1,0 +1,950 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T16:18:37.363627+00:00",
+  "title": "Design System: Hudl N Game \u2014 Social Club",
+  "extensions": {
+    "colorMeta": {
+      "lime": {
+        "role": "primary",
+        "displayName": "Lime",
+        "tonalRamp": [
+          "oklch(15% 0.1633 123.01)",
+          "oklch(27% 0.1633 123.01)",
+          "oklch(38% 0.1633 123.01)",
+          "oklch(50% 0.1633 123.01)",
+          "oklch(61% 0.1633 123.01)",
+          "oklch(73% 0.1633 123.01)",
+          "oklch(84% 0.1633 123.01)",
+          "oklch(95% 0.1633 123.01)"
+        ]
+      },
+      "charcoal": {
+        "role": "primary",
+        "displayName": "Charcoal",
+        "tonalRamp": [
+          "oklch(15% 0.0150 157.63)",
+          "oklch(27% 0.0150 157.63)",
+          "oklch(38% 0.0150 157.63)",
+          "oklch(50% 0.0150 157.63)",
+          "oklch(61% 0.0150 157.63)",
+          "oklch(73% 0.0150 157.63)",
+          "oklch(84% 0.0150 157.63)",
+          "oklch(95% 0.0150 157.63)"
+        ]
+      },
+      "mafia-lilac": {
+        "role": "secondary",
+        "displayName": "Mafia Lilac",
+        "tonalRamp": [
+          "oklch(15% 0.0432 305.08)",
+          "oklch(27% 0.0432 305.08)",
+          "oklch(38% 0.0432 305.08)",
+          "oklch(50% 0.0432 305.08)",
+          "oklch(61% 0.0432 305.08)",
+          "oklch(73% 0.0432 305.08)",
+          "oklch(84% 0.0432 305.08)",
+          "oklch(95% 0.0432 305.08)"
+        ]
+      },
+      "spy-mint": {
+        "role": "secondary",
+        "displayName": "Spy Mint",
+        "tonalRamp": [
+          "oklch(15% 0.0336 165.07)",
+          "oklch(27% 0.0336 165.07)",
+          "oklch(38% 0.0336 165.07)",
+          "oklch(50% 0.0336 165.07)",
+          "oklch(61% 0.0336 165.07)",
+          "oklch(73% 0.0336 165.07)",
+          "oklch(84% 0.0336 165.07)",
+          "oklch(95% 0.0336 165.07)"
+        ]
+      },
+      "charades-peach": {
+        "role": "secondary",
+        "displayName": "Charades Peach",
+        "tonalRamp": [
+          "oklch(15% 0.0529 64.25)",
+          "oklch(27% 0.0529 64.25)",
+          "oklch(38% 0.0529 64.25)",
+          "oklch(50% 0.0529 64.25)",
+          "oklch(61% 0.0529 64.25)",
+          "oklch(73% 0.0529 64.25)",
+          "oklch(84% 0.0529 64.25)",
+          "oklch(95% 0.0529 64.25)"
+        ]
+      },
+      "party-blue": {
+        "role": "secondary",
+        "displayName": "Party Blue",
+        "tonalRamp": [
+          "oklch(15% 0.0331 252.48)",
+          "oklch(27% 0.0331 252.48)",
+          "oklch(38% 0.0331 252.48)",
+          "oklch(50% 0.0331 252.48)",
+          "oklch(61% 0.0331 252.48)",
+          "oklch(73% 0.0331 252.48)",
+          "oklch(84% 0.0331 252.48)",
+          "oklch(95% 0.0331 252.48)"
+        ]
+      },
+      "imposter-coral": {
+        "role": "secondary",
+        "displayName": "Imposter Coral",
+        "tonalRamp": [
+          "oklch(15% 0.1971 29.73)",
+          "oklch(27% 0.1971 29.73)",
+          "oklch(38% 0.1971 29.73)",
+          "oklch(50% 0.1971 29.73)",
+          "oklch(61% 0.1971 29.73)",
+          "oklch(73% 0.1971 29.73)",
+          "oklch(84% 0.1971 29.73)",
+          "oklch(95% 0.1971 29.73)"
+        ]
+      },
+      "imposter-ink": {
+        "role": "neutral",
+        "displayName": "Imposter Ink"
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Background",
+        "tonalRamp": [
+          "oklch(15% 0.0093 113.16)",
+          "oklch(27% 0.0093 113.16)",
+          "oklch(38% 0.0093 113.16)",
+          "oklch(50% 0.0093 113.16)",
+          "oklch(61% 0.0093 113.16)",
+          "oklch(73% 0.0093 113.16)",
+          "oklch(84% 0.0093 113.16)",
+          "oklch(95% 0.0093 113.16)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(27% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(50% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(73% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0200 145.26)",
+          "oklch(27% 0.0200 145.26)",
+          "oklch(38% 0.0200 145.26)",
+          "oklch(50% 0.0200 145.26)",
+          "oklch(61% 0.0200 145.26)",
+          "oklch(73% 0.0200 145.26)",
+          "oklch(84% 0.0200 145.26)",
+          "oklch(95% 0.0200 145.26)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border",
+        "tonalRamp": [
+          "oklch(15% 0.0139 134.91)",
+          "oklch(27% 0.0139 134.91)",
+          "oklch(38% 0.0139 134.91)",
+          "oklch(50% 0.0139 134.91)",
+          "oklch(61% 0.0139 134.91)",
+          "oklch(73% 0.0139 134.91)",
+          "oklch(84% 0.0139 134.91)",
+          "oklch(95% 0.0139 134.91)"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus",
+        "tonalRamp": [
+          "oklch(15% 0.1003 137.76)",
+          "oklch(27% 0.1003 137.76)",
+          "oklch(38% 0.1003 137.76)",
+          "oklch(50% 0.1003 137.76)",
+          "oklch(61% 0.1003 137.76)",
+          "oklch(73% 0.1003 137.76)",
+          "oklch(84% 0.1003 137.76)",
+          "oklch(95% 0.1003 137.76)"
+        ]
+      },
+      "control-accent": {
+        "role": "neutral",
+        "displayName": "Control Accent",
+        "tonalRamp": [
+          "oklch(15% 0.1018 132.88)",
+          "oklch(27% 0.1018 132.88)",
+          "oklch(38% 0.1018 132.88)",
+          "oklch(50% 0.1018 132.88)",
+          "oklch(61% 0.1018 132.88)",
+          "oklch(73% 0.1018 132.88)",
+          "oklch(84% 0.1018 132.88)",
+          "oklch(95% 0.1018 132.88)"
+        ]
+      },
+      "switch-off": {
+        "role": "neutral",
+        "displayName": "Switch Off",
+        "tonalRamp": [
+          "oklch(15% 0.0161 136.10)",
+          "oklch(27% 0.0161 136.10)",
+          "oklch(38% 0.0161 136.10)",
+          "oklch(50% 0.0161 136.10)",
+          "oklch(61% 0.0161 136.10)",
+          "oklch(73% 0.0161 136.10)",
+          "oklch(84% 0.0161 136.10)",
+          "oklch(95% 0.0161 136.10)"
+        ]
+      },
+      "card-back": {
+        "role": "neutral",
+        "displayName": "Card Back",
+        "tonalRamp": [
+          "oklch(15% 0.1433 119.02)",
+          "oklch(27% 0.1433 119.02)",
+          "oklch(38% 0.1433 119.02)",
+          "oklch(50% 0.1433 119.02)",
+          "oklch(61% 0.1433 119.02)",
+          "oklch(73% 0.1433 119.02)",
+          "oklch(84% 0.1433 119.02)",
+          "oklch(95% 0.1433 119.02)"
+        ]
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Dark Background",
+        "tonalRamp": [
+          "oklch(15% 0.0061 156.65)",
+          "oklch(27% 0.0061 156.65)",
+          "oklch(38% 0.0061 156.65)",
+          "oklch(50% 0.0061 156.65)",
+          "oklch(61% 0.0061 156.65)",
+          "oklch(73% 0.0061 156.65)",
+          "oklch(84% 0.0061 156.65)",
+          "oklch(95% 0.0061 156.65)"
+        ]
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Dark Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0125 150.17)",
+          "oklch(27% 0.0125 150.17)",
+          "oklch(38% 0.0125 150.17)",
+          "oklch(50% 0.0125 150.17)",
+          "oklch(61% 0.0125 150.17)",
+          "oklch(73% 0.0125 150.17)",
+          "oklch(84% 0.0125 150.17)",
+          "oklch(95% 0.0125 150.17)"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0093 113.16)",
+          "oklch(27% 0.0093 113.16)",
+          "oklch(38% 0.0093 113.16)",
+          "oklch(50% 0.0093 113.16)",
+          "oklch(61% 0.0093 113.16)",
+          "oklch(73% 0.0093 113.16)",
+          "oklch(84% 0.0093 113.16)",
+          "oklch(95% 0.0093 113.16)"
+        ]
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Dark Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0193 137.80)",
+          "oklch(27% 0.0193 137.80)",
+          "oklch(38% 0.0193 137.80)",
+          "oklch(50% 0.0193 137.80)",
+          "oklch(61% 0.0193 137.80)",
+          "oklch(73% 0.0193 137.80)",
+          "oklch(84% 0.0193 137.80)",
+          "oklch(95% 0.0193 137.80)"
+        ]
+      },
+      "dark-border": {
+        "role": "neutral",
+        "displayName": "Dark Border",
+        "tonalRamp": [
+          "oklch(15% 0.0234 140.45)",
+          "oklch(27% 0.0234 140.45)",
+          "oklch(38% 0.0234 140.45)",
+          "oklch(50% 0.0234 140.45)",
+          "oklch(61% 0.0234 140.45)",
+          "oklch(73% 0.0234 140.45)",
+          "oklch(84% 0.0234 140.45)",
+          "oklch(95% 0.0234 140.45)"
+        ]
+      },
+      "avatar-salmon": {
+        "role": "secondary",
+        "displayName": "Avatar Salmon"
+      },
+      "pack-selected": {
+        "role": "secondary",
+        "displayName": "Pack Selected"
+      },
+      "pack-border": {
+        "role": "secondary",
+        "displayName": "Pack Border"
+      },
+      "heads-up-edge": {
+        "role": "secondary",
+        "displayName": "Heads Up Peach Edge"
+      },
+      "imposter-background": {
+        "role": "neutral",
+        "displayName": "Imposter Background"
+      },
+      "imposter-surface": {
+        "role": "neutral",
+        "displayName": "Imposter Surface"
+      },
+      "imposter-muted": {
+        "role": "neutral",
+        "displayName": "Imposter Muted"
+      },
+      "imposter-border": {
+        "role": "neutral",
+        "displayName": "Imposter Border"
+      },
+      "imposter-focus": {
+        "role": "neutral",
+        "displayName": "Imposter Focus"
+      },
+      "mafia-background": {
+        "role": "neutral",
+        "displayName": "Mafia Background"
+      },
+      "mafia-surface": {
+        "role": "neutral",
+        "displayName": "Mafia Surface"
+      },
+      "mafia-ink": {
+        "role": "neutral",
+        "displayName": "Mafia Ink"
+      },
+      "mafia-muted": {
+        "role": "neutral",
+        "displayName": "Mafia Muted"
+      },
+      "mafia-border": {
+        "role": "neutral",
+        "displayName": "Mafia Border"
+      },
+      "mafia-focus": {
+        "role": "neutral",
+        "displayName": "Mafia Focus"
+      },
+      "spy-background": {
+        "role": "neutral",
+        "displayName": "Spy Background"
+      },
+      "spy-surface": {
+        "role": "neutral",
+        "displayName": "Spy Surface"
+      },
+      "spy-ink": {
+        "role": "neutral",
+        "displayName": "Spy Ink"
+      },
+      "spy-muted": {
+        "role": "neutral",
+        "displayName": "Spy Muted"
+      },
+      "spy-border": {
+        "role": "neutral",
+        "displayName": "Spy Border"
+      },
+      "spy-focus": {
+        "role": "neutral",
+        "displayName": "Spy Focus"
+      },
+      "charades-background": {
+        "role": "neutral",
+        "displayName": "Charades Background"
+      },
+      "charades-surface": {
+        "role": "neutral",
+        "displayName": "Charades Surface"
+      },
+      "charades-ink": {
+        "role": "neutral",
+        "displayName": "Charades Ink"
+      },
+      "charades-muted": {
+        "role": "neutral",
+        "displayName": "Charades Muted"
+      },
+      "charades-border": {
+        "role": "neutral",
+        "displayName": "Charades Border"
+      },
+      "charades-focus": {
+        "role": "neutral",
+        "displayName": "Charades Focus"
+      },
+      "party-background": {
+        "role": "neutral",
+        "displayName": "Party Background"
+      },
+      "party-surface": {
+        "role": "neutral",
+        "displayName": "Party Surface"
+      },
+      "party-ink": {
+        "role": "neutral",
+        "displayName": "Party Ink"
+      },
+      "party-muted": {
+        "role": "neutral",
+        "displayName": "Party Muted"
+      },
+      "party-border": {
+        "role": "neutral",
+        "displayName": "Party Border"
+      },
+      "party-focus": {
+        "role": "neutral",
+        "displayName": "Party Focus"
+      },
+      "charades-dark-background": {
+        "role": "neutral",
+        "displayName": "Charades Dark Background"
+      },
+      "charades-dark-surface": {
+        "role": "neutral",
+        "displayName": "Charades Dark Surface"
+      },
+      "charades-dark-ink": {
+        "role": "neutral",
+        "displayName": "Charades Dark Ink"
+      },
+      "charades-dark-muted": {
+        "role": "neutral",
+        "displayName": "Charades Dark Muted"
+      },
+      "charades-dark-border": {
+        "role": "neutral",
+        "displayName": "Charades Dark Border"
+      },
+      "charades-dark-focus": {
+        "role": "neutral",
+        "displayName": "Charades Dark Focus"
+      },
+      "party-dark-background": {
+        "role": "neutral",
+        "displayName": "Party Dark Background"
+      },
+      "party-dark-surface": {
+        "role": "neutral",
+        "displayName": "Party Dark Surface"
+      },
+      "party-dark-ink": {
+        "role": "neutral",
+        "displayName": "Party Dark Ink"
+      },
+      "party-dark-muted": {
+        "role": "neutral",
+        "displayName": "Party Dark Muted"
+      },
+      "party-dark-border": {
+        "role": "neutral",
+        "displayName": "Party Dark Border"
+      },
+      "party-dark-focus": {
+        "role": "neutral",
+        "displayName": "Party Dark Focus"
+      },
+      "mafia-gold": {
+        "role": "neutral",
+        "displayName": "Mafia Gold"
+      },
+      "mafia-card": {
+        "role": "neutral",
+        "displayName": "Mafia Card"
+      },
+      "spy-card": {
+        "role": "neutral",
+        "displayName": "Spy Card"
+      },
+      "spy-card-ink": {
+        "role": "neutral",
+        "displayName": "Spy Card Ink"
+      },
+      "spy-accent": {
+        "role": "secondary",
+        "displayName": "Spy Accent"
+      },
+      "spy-secret": {
+        "role": "neutral",
+        "displayName": "Spy Secret"
+      },
+      "spy-secret-ink": {
+        "role": "neutral",
+        "displayName": "Spy Secret Ink"
+      },
+      "spy-secret-border": {
+        "role": "neutral",
+        "displayName": "Spy Secret Border"
+      },
+      "charades-coral": {
+        "role": "neutral",
+        "displayName": "Charades Coral"
+      },
+      "party-yellow": {
+        "role": "neutral",
+        "displayName": "Party Yellow"
+      },
+      "party-purple": {
+        "role": "neutral",
+        "displayName": "Party Purple"
+      },
+      "party-accent": {
+        "role": "secondary",
+        "displayName": "Party Accent"
+      },
+      "party-prompt-ink": {
+        "role": "neutral",
+        "displayName": "Party Prompt Ink"
+      },
+      "identity-lavender": {
+        "role": "secondary",
+        "displayName": "Identity Lavender"
+      },
+      "identity-mint": {
+        "role": "secondary",
+        "displayName": "Identity Mint"
+      },
+      "identity-peach": {
+        "role": "secondary",
+        "displayName": "Identity Peach"
+      },
+      "identity-yellow": {
+        "role": "secondary",
+        "displayName": "Identity Yellow"
+      },
+      "identity-blue": {
+        "role": "secondary",
+        "displayName": "Identity Blue"
+      },
+      "cast-lime": {
+        "role": "secondary",
+        "displayName": "Cast Lime"
+      },
+      "cast-lavender": {
+        "role": "secondary",
+        "displayName": "Cast Lavender"
+      },
+      "cast-mint": {
+        "role": "secondary",
+        "displayName": "Cast Mint"
+      },
+      "cast-peach": {
+        "role": "secondary",
+        "displayName": "Cast Peach"
+      },
+      "cast-yellow": {
+        "role": "secondary",
+        "displayName": "Cast Yellow"
+      },
+      "welcome-background": {
+        "role": "neutral",
+        "displayName": "Welcome Background"
+      },
+      "welcome-ink": {
+        "role": "neutral",
+        "displayName": "Welcome Ink"
+      },
+      "welcome-muted": {
+        "role": "neutral",
+        "displayName": "Welcome Muted"
+      },
+      "welcome-secret-border": {
+        "role": "neutral",
+        "displayName": "Welcome Secret Border"
+      },
+      "welcome-progress": {
+        "role": "neutral",
+        "displayName": "Welcome Progress"
+      },
+      "pack-navigation": {
+        "role": "secondary",
+        "displayName": "Pack Navigation"
+      },
+      "pack-navigation-ink": {
+        "role": "secondary",
+        "displayName": "Pack Navigation Ink"
+      }
+    },
+    "shadows": [
+      {
+        "name": "notice",
+        "value": "0 8px 24px #19211c12",
+        "purpose": "Theme update notice."
+      },
+      {
+        "name": "decorative-card",
+        "value": "0 12px 24px #19211c22",
+        "purpose": "Tilted featured card illustration."
+      },
+      {
+        "name": "modal",
+        "value": "0 24px 90px #0005",
+        "purpose": "Modal foreground."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-press",
+        "value": "0.12s",
+        "purpose": "Inherited transform transition; active scale .98."
+      },
+      {
+        "name": "lobby-play",
+        "value": "0.15s",
+        "purpose": "Active scale .97."
+      },
+      {
+        "name": "stage-entry",
+        "value": "spring(stiffness: 360, damping: 30)",
+        "purpose": "12px entry offset omitted for reduced motion."
+      },
+      {
+        "name": "identity-blink",
+        "value": "0.45s ease-out",
+        "purpose": "Single masked-eye blink on hover under no-preference motion."
+      },
+      {
+        "name": "brand-deal",
+        "value": "100 frames at 60fps",
+        "purpose": "Results-only finite autoplay, no loop or replay control; Identity fallback and static reduced-motion presentation."
+      },
+      {
+        "name": "alibi-arrive",
+        "value": "0.55s cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Home cast entry under no-preference motion; three actual Identity components."
+      },
+      {
+        "name": "welcome-deal",
+        "value": "650ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "One-time cast reveal via clip-path, only with prefers-reduced-motion: no-preference."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone-max",
+        "value": "767px"
+      },
+      {
+        "name": "desktop-min",
+        "value": "768px"
+      },
+      {
+        "name": "narrow-phone-max",
+        "value": "350px"
+      },
+      {
+        "name": "short-landscape",
+        "value": "(orientation: landscape) and (max-height: 550px)"
+      },
+      {
+        "name": "studio-phone-max",
+        "value": "450px"
+      }
+    ],
+    "focus": {
+      "value": "3px solid var(--focus)",
+      "offset": "5px"
+    },
+    "variants": {
+      "default": "club",
+      "classic": {
+        "selector": "data-design=\"classic\"",
+        "entry": "Settings > Design > Classic",
+        "specification": "docs/design-archive/classic/DESIGN.md",
+        "fonts": [
+          "Fredoka Variable",
+          "Nunito Variable"
+        ],
+        "preservation": "Original home, logo and base styling remain; explicit Imposter role treatment is shared."
+      },
+      "club-original": {
+        "selector": "data-design=\"club\" data-edition=\"original\"",
+        "entry": "Settings > Design > Social Club original",
+        "preservation": "Previous Social Club home and logo; prior avatar presentation and setup."
+      },
+      "defaultEdition": "remix"
+    },
+    "review": {
+      "disposition": "ship",
+      "scope": "Five game worlds and expanded identity cast",
+      "findings": "No material findings from independent finish reviewer.",
+      "evidence": [
+        "docs/verification/worlds-review.md",
+        ".impeccable/review/worlds/"
+      ],
+      "validation": [
+        "Production build and 21 unit tests passed.",
+        "All 18 browser tests passed; four scoped browser checks passed after final CSS correction.",
+        "Five first-active-screen axe scans returned zero violations."
+      ],
+      "limitations": [
+        "Scoped automated checks and screenshot/source review, not a complete accessibility audit or physical-device validation."
+      ]
+    },
+    "previewNotes": "Tonal ramps are synthesized display aids, not implemented tokens. Snippets are self-contained visual/native-state examples, not game logic. Primitive tokens belong to DESIGN.md; original variants remain documented. Full Lottie motion lives in projects/hudl/scene-2/lottie.json.",
+    "playerIdentity": {
+      "count": 20,
+      "mapping": "Existing avatar index; deterministic hash fallback. Body and face = hash % 10; alternate = floor(hash / 10) % 2; palette = hash % 6.",
+      "silhouettes": 10,
+      "faces": [
+        "angular shades",
+        "headphones and round eyes",
+        "cross-and-line visor",
+        "hat and square glasses",
+        "cyclops",
+        "angular tall eyes",
+        "round goggles",
+        "square and wink",
+        "diagonal brows",
+        "striped visor"
+      ],
+      "accessories": [
+        "base treatment",
+        "alternate cheek circle and cross; cyclops gaze changes"
+      ],
+      "sizes": {
+        "crewDesktop": "70px",
+        "crewPhone": "64px",
+        "handoff": "104px",
+        "handoffShortLandscape": "68px"
+      }
+    },
+    "gameSurfaces": {
+      "scope": "Default remix edition: .app-shell:has(main[data-game]) overrides background, surface, ink, muted, border and focus for setup and play.",
+      "imposter": "Acid green and charcoal; private Imposter remains coral.",
+      "mafia": "Midnight/gold, moon silhouette, gold narration with asymmetric corners.",
+      "spy": "Dossier green, globe/orbit/map pin, pale secret card with dashed outline.",
+      "charades": "Coral/cream acting hand and ACT IT OUT spotlight stage, charcoal team strip, no lower prompt border. Explicit warm dark variant.",
+      "party": "Yellow/purple speech forms and purple primary actions. Explicit purple dark variant."
+    },
+    "previousReview": {
+      "disposition": "review-unavailable",
+      "reviewer": null,
+      "scope": "Player-first refinement; evidence under .impeccable/review/alibis/.",
+      "limitations": [
+        "Current finish reviewer unavailable because of usage limits.",
+        "Previous identity_finish_reviewer ship decision applies only to the earlier remix revision.",
+        "Implementing agent reports production build, 13 unit tests and 14 browser scenarios passing; final landscape adjustment followed by successful rebuild, two scoped Heads Up/landscape tests and explicit viewport assertions. Authoritative final landscape: .impeccable/review/alibis-confirm/landscape-viewport.png; earlier landscape capture has resize tearing.",
+        "Updated scene-2 Skottie captures at frames 0, 50 and 99 are available. No external image comp or approval; physical-device checks remain separate."
+      ]
+    },
+    "packStudio": {
+      "source": "src/components/PackStudio.tsx and final pack-studio section of src/remix.css",
+      "defaultMethod": "offline",
+      "wordCounts": [
+        12,
+        24,
+        36
+      ],
+      "defaultCount": 24,
+      "targetMinimum": "48px for method and theme choices",
+      "provenance": [
+        "Curated offline mix",
+        "AI draft \u00b7 Review before playing"
+      ],
+      "flow": "Draft preview \u2192 manual editor \u2192 explicit save",
+      "states": [
+        "Curated offline ready",
+        "AI ready with theme and provider disclosure",
+        "Offline or AI unconfigured",
+        "Generating with cancel action",
+        "Provider or quota error",
+        "Generation stopped",
+        "Draft preview with focus on heading"
+      ],
+      "privacy": "Only an explicit generation action sends the theme and count to Groq; availability checks are separate."
+    },
+    "studioReview": {
+      "disposition": "ship",
+      "scope": "Pack studio extension only",
+      "findings": "No material findings reported by the studio finish reviewer.",
+      "evidence": ".impeccable/review/studio/",
+      "validation": [
+        "21 unit tests, 6 server tests and 4 affected browser tests reported passing.",
+        "Two live Groq generations succeeded, including browser editing and saving.",
+        "Viewport captures and 320px, 390px and 1440px dark checks; full-page fixed-navigation capture artifact resolved using viewport captures and a runtime skip-link check."
+      ],
+      "limitations": [
+        "Scoped studio review only; no deployment or full accessibility audit claimed.",
+        "Earlier review limitations remain attached to the prior refinement; this review does not approve unrelated changes."
+      ]
+    },
+    "typographyMeta": {
+      "welcome-heading": {
+        "displayName": "Welcome Heading",
+        "purpose": "Single heading per welcome step."
+      },
+      "welcome-practice": {
+        "displayName": "Welcome Practice",
+        "purpose": "Illustrative hold-to-reveal word, not a live secret."
+      },
+      "score-rank": {
+        "displayName": "Score Rank",
+        "purpose": "Competition ranking with equal scores sharing a rank; tabular numerals."
+      }
+    },
+    "welcomeAndCast": {
+      "source": "src/components/Welcome.tsx, Packs.tsx, Setup.tsx, App.tsx and final src/remix.css refinements",
+      "welcome": "Optional three-step cast, practice hold and party ticket introduction. Skip, close or Escape persists local dismissal; footer How it works reopens it. Add my crew selects Imposter and opens Crew. No redundant kicker labels.",
+      "practice": "Illustrative PINEAPPLE word only; hold/release with pointer or Space/Enter; immediate concealment on cancellation, lost capture, blur, visibility or step changes.",
+      "castTickets": "Five alternating fills; charcoal text and bold contrasting reorder/sign-out controls. Scores use shared competition ranks for ties.",
+      "packDestinations": [
+        "Mix a pack",
+        "Write your own",
+        "Saved (count)"
+      ],
+      "radiusUsage": "Existing card 16px for welcome/panels; phone-card 14px for practice, score rows and pack navigation; play 10px for pack/action buttons; stepper 8px for points; progress 2px for step bars.",
+      "welcomeLayout": "480px maximum width; calc(100dvh - 32px) maximum height; scrollable; 24px padding, 18px below 370px."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "description": "Lime lobby action; active games inherit their home accent, with wrapping labels and visible focus.",
+      "html": "<button class=\"ds-control\">Start game</button>",
+      "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-control{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border:1px solid var(--border,#cbd1c8);border-radius:12px;background:var(--surface,#fff);color:var(--ink,#19211c);padding:12px 20px;font-size:1.08rem;font-weight:700;letter-spacing:-.035em;white-space:normal;box-shadow:none;transition:transform .12s,box-shadow .12s}.ds-control:hover:not(:disabled){filter:brightness(.97)}.ds-control:active:not(:disabled){transform:scale(.98)}@media(max-width:767px){.ds-control{font-size:1rem;padding:12px 14px}}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}.ds-control{background:var(--game-accent,#d4fa77);color:#19211c;border-color:transparent}",
+      "refersTo": "button-primary"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "description": "Theme-aware secondary action.",
+      "html": "<button class=\"ds-control\">Hide &amp; pass</button>",
+      "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-control{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border:1px solid var(--border,#cbd1c8);border-radius:12px;background:var(--surface,#fff);color:var(--ink,#19211c);padding:12px 20px;font-size:1.08rem;font-weight:700;letter-spacing:-.035em;white-space:normal;box-shadow:none;transition:transform .12s,box-shadow .12s}.ds-control:hover:not(:disabled){filter:brightness(.97)}.ds-control:active:not(:disabled){transform:scale(.98)}@media(max-width:767px){.ds-control{font-size:1rem;padding:12px 14px}}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}",
+      "refersTo": "button-secondary"
+    },
+    {
+      "name": "Lobby Play",
+      "kind": "button",
+      "description": "Charcoal action within a coloured game card.",
+      "html": "<button class=\"ds-control\">Let\u2019s play <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 18 18 6M6 6h12v12\"/></svg></button>",
+      "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-control{display:flex;justify-content:space-between;align-items:center;gap:22px;min-height:52px;border:0;border-radius:10px;background:#19211c;color:#fff;padding:12px 18px;font-size:.95rem;font-weight:600;transition:transform .15s}.ds-control:active{transform:scale(.97)}@media(max-width:767px){.ds-control{min-height:48px;padding:10px 12px;font-size:.8rem;gap:8px}}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}",
+      "refersTo": "button-play"
+    },
+    {
+      "name": "Player Name Field",
+      "kind": "input",
+      "description": "Native field with inherited purple caret and theme-aware surface.",
+      "html": "<label class=\"ds-label\">Player name<input class=\"ds-control\" placeholder=\"Enter a name\" /></label>",
+      "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-label{display:flex;flex-direction:column;gap:8px;font-family:\"Space Grotesk\",sans-serif;color:var(--ink,#19211c);font-weight:800}.ds-control{min-width:0;min-height:56px;border:1px solid var(--border,#cbd1c8);border-radius:12px;background:var(--surface,#fff);color:var(--ink,#19211c);padding:14px 15px;font-size:1rem;font-weight:500;caret-color:#7c3aed}.ds-control::placeholder{color:var(--muted,#586258);opacity:1}",
+      "refersTo": "input"
+    },
+    {
+      "name": "Pack Selection",
+      "kind": "chip",
+      "description": "Original Social Club pack chip; default Imposter setup uses Round Pack Tile.",
+      "html": "<label class=\"ds-chip\"><input class=\"ds-control\" type=\"checkbox\" checked />Food</label>",
+      "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-chip{display:inline-flex;align-items:center;gap:7px;min-height:48px;padding:7px 11px;border:1px solid var(--border,#cbd1c8);border-radius:99px;color:var(--ink,#19211c);font:800 .83rem \"Space Grotesk\",sans-serif;cursor:pointer}.ds-chip:has(input:checked){background:#d4fa77;color:#19211c;border-color:#315b20}.ds-control{accent-color:#436625}",
+      "refersTo": "chip-selected"
+    },
+    {
+      "name": "Game Card",
+      "kind": "card",
+      "description": "Current Mafia world card, with midnight, gold and asymmetric corners; other games have individual palettes and emblems.",
+      "html": "<article class=\"ds-card\"><h2>Mafia</h2><p>Keep your friends close.</p></article>",
+      "css": ".ds-card{display:flex;flex-direction:column;min-width:0;overflow:hidden;padding:24px;border-radius:16px 16px 42px 16px;color:#fff0d0;background:#22233e;font-family:\"Space Grotesk\",sans-serif}.ds-card h2{margin:0;font-size:1.65rem;line-height:1.15;font-weight:700;letter-spacing:-.035em}.ds-card p{font-size:.91rem;line-height:1.55;margin:8px 0 0;max-width:38ch}@media(max-width:767px){.ds-card{padding:16px 13px;border-radius:16px 16px 42px 16px}.ds-card h2{font-size:1.15rem;letter-spacing:-.03em}.ds-card p{font-size:.77rem;line-height:1.4}}",
+      "refersTo": "game-card"
+    },
+    {
+      "name": "Lobby Navigation",
+      "kind": "nav",
+      "description": "Static visual preview of the labelled lobby navigation; real routing is in App.tsx.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><button class=\"ds-control\" aria-current=\"page\"><svg width=\"23\" height=\"23\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"m3 10 9-7 9 7v11H3ZM9 21v-8h6v8\"/></svg><span>Games</span></button><button class=\"ds-control\"><svg width=\"23\" height=\"23\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"7\" r=\"4\"/><path d=\"M4 22v-3a8 8 0 0 1 16 0v3\"/></svg><span>Crew</span></button><button class=\"ds-control\"><svg width=\"23\" height=\"23\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M12 3v18M3 12h18\"/></svg><span>Packs</span></button><button class=\"ds-control\"><svg width=\"23\" height=\"23\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 3h12v5a6 6 0 0 1-12 0ZM12 14v7M7 21h10M6 5H2v3q0 5 6 5M18 5h4v3q0 5-6 5\"/></svg><span>Scores</span></button></nav>",
+      "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-nav{display:flex;gap:8px;width:min(100%,540px);padding:8px 12px;background:var(--bg,#f3f4ed);border-top:1px solid var(--border,#cbd1c8)}.ds-control{flex:1;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:12px;background:transparent;color:var(--muted,#586258);font-size:.72rem;font-weight:600}.ds-control[aria-current=\"page\"]{background:var(--surface,#fff);color:var(--ink,#19211c)}"
+    },
+    {
+      "name": "Masked Identity",
+      "kind": "custom",
+      "description": "First of twenty stable identities: ten silhouettes and face systems, six colours and an alternate cheek/accessory treatment.",
+      "html": "<svg class=\"ds-identity\" viewBox=\"0 0 80 80\" role=\"img\" aria-label=\"Player identity\"><path d=\"M16 17 27 7 39 17 53 5 65 17 73 32V67L61 76H17L7 65V31Z\" fill=\"#d4fa77\"/><path d=\"m14 32 24 5-4 16H19Zm28 5 24-5-5 21H46Z\" fill=\"#19211c\"/><path d=\"M24 41h6m20 0h6\" stroke=\"#d4fa77\" stroke-width=\"4\"/><path d=\"M26 61h28l-8 9H33Z\" fill=\"#19211c\"/></svg>",
+      "css": ".ds-identity{display:block;width:80px;height:80px}"
+    },
+    {
+      "name": "Round Pack Tile",
+      "kind": "chip",
+      "refersTo": "pack-tile-selected",
+      "description": "Default Imposter setup pack with native selection, word count and a visible check.",
+      "html": "<label class=\"ds-pack\"><input type=\"checkbox\" checked/><span class=\"ds-mono\">F</span><span class=\"ds-copy\"><strong>Food</strong><small>Word pack</small></span><span class=\"ds-check\" aria-hidden=\"true\">\u2713</span></label>",
+      "css": ".ds-pack{position:relative;display:flex;align-items:center;gap:10px;min-height:78px;padding:10px;border:1px solid var(--border,#cbd1c8);border-radius:10px;background:var(--surface,#fff);color:var(--ink,#19211c);font-family:\"Space Grotesk\",sans-serif;cursor:pointer;transition:transform .16s}.ds-pack:has(input:checked){background:#e5f8bc;color:#19211c;border-color:#54772a}.ds-pack input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}.ds-pack:has(input:focus-visible){outline:3px solid var(--focus,#315b20);outline-offset:3px}.ds-mono{display:grid;place-items:center;width:34px;height:42px;background:#d4fa77;border-radius:5px;font-size:1.4rem;font-weight:700}.ds-copy{flex:1}.ds-copy strong{display:block;font-size:.82rem}.ds-copy small{display:block;margin-top:5px;font-size:.7rem}.ds-check{display:grid;place-items:center;width:20px;height:20px;border:1px solid currentColor;border-radius:5px}.ds-pack:has(input:checked) .ds-check{background:#19211c;color:#d4fa77}.ds-pack:not(:has(input:checked)) .ds-check{font-size:0}@media(prefers-reduced-motion:no-preference){.ds-pack:active{transform:scale(.97)}}"
+    },
+    {
+      "name": "Discussion Time Segment",
+      "kind": "button",
+      "refersTo": "time-segment-selected",
+      "description": "Selected time segment; real pressed state and spring selection are controlled by React.",
+      "html": "<button class=\"ds-time\" aria-pressed=\"true\">2<small>min</small></button>",
+      "css": ".ds-time{min-height:68px;min-width:90px;border:1px solid #54772a;border-radius:10px;background:#d4fa77;color:#19211c;font:700 1.45rem \"Space Grotesk\",sans-serif;cursor:pointer}.ds-time small{margin-left:4px;font-size:.75rem;font-weight:500}.ds-time:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}"
+    },
+    {
+      "name": "Studio Method Selection",
+      "kind": "button",
+      "description": "Shared 48px labelled pressed-state controls. This static preview shows the default curated Offline mix; React manages method switching.",
+      "html": "<div class=\"ds-studio-modes\" role=\"group\" aria-label=\"Pack creation method\"><button aria-pressed=\"true\">Offline mix</button><button aria-pressed=\"false\">AI theme</button></div>",
+      "css": ".ds-studio-modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:\"Space Grotesk\",sans-serif}.ds-studio-modes button{min-height:48px;border:1px solid var(--border,#cbd1c8);border-radius:10px;background:var(--bg,#f3f4ed);color:var(--ink,#19211c);padding:10px;font:inherit;font-weight:700;cursor:pointer}.ds-studio-modes button[aria-pressed=\"true\"]{background:#d4fa77;color:#19211c;border-color:#668b25}.ds-studio-modes button:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-studio-modes button:disabled{opacity:.48;cursor:not-allowed}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Social Club game deck",
+    "overview": "A mature, playful party identity built from lime and charcoal, five distinct game worlds, compact typography and confident controls. The inline hudl n game wordmark uses a tilted lime lowercase n card; a three-character cast drawn from the actual Identity component connects the default home and player roster, while individual game emblems distinguish the five choices. Cards feel like a deck shared around a table; private role information has immediate, unmistakable hierarchy.\n\nSocial Club is the default masked identity edition. Settings > Design > Social Club original restores the previous Social Club home and logo; Classic restores the original home, logo, Fredoka/Nunito typography and sticker-book styling. The original specification is preserved in [the Classic design archive](docs/design-archive/classic/DESIGN.md). The user-authorized replacement is recorded in [the surface brief](docs/surface.md) and current PRODUCT.md brand commitments; the underlying five-game product, player names and twenty stored avatar identifiers remain. The default edition renders those identifiers as deterministic masked SVG identities; the original editions retain their prior presentation.",
+    "keyCharacteristics": [
+      "Lime lobby actions, charcoal typography and five game-specific palettes and surface forms.",
+      "Self-hosted Space Grotesk throughout the default design.",
+      "Compact phone layouts, generous touch controls and a persistent lobby navigation.",
+      "Flat controls with limited depth on decorative cards and dialogs.",
+      "Twenty stable identities mapped to ten silhouettes and faces, with alternate cheek/accessory treatments and six colours; finite entry motion without replay controls.",
+      "Reversible Social Club original and Classic variants, plus immediate hold-to-reveal privacy."
+    ],
+    "rules": [
+      {
+        "name": "The Paired Identity Rule",
+        "body": "Keep player names and game names alongside colours and icons; colour alone must not communicate identity.",
+        "section": "colors"
+      },
+      {
+        "name": "The Immediate Privacy Rule",
+        "body": "Reveal the role or word only while held after the three-second handoff guard. Hide on release, cancellation, lost pointer capture, blur, visibility change or handoff. Never delay concealment for motion or automatically narrate a secret. Space and Enter provide hold/release access; private content uses `aria-live=\"off\"`.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** use the Social Club tokens for new default screens and preserve both original design choices.",
+      "**Do** retain readable labels, native checked states and visible keyboard focus.",
+      "**Do** show draft provenance and keep review, manual editing and saving distinct.",
+      "**Do** let phone play fill the viewport while allowing content to scroll.",
+      "**Do** keep secret visibility transient and concealment immediate.",
+      "**Do** retain player names and stable avatar identifiers; use the masked identity artwork in the default edition."
+    ],
+    "donts": [
+      "**Don't** bring the Classic mascot or sticker-book shadows back into the Social Club home.",
+      "**Don't** overwrite the archived Classic design or remove its self-hosted fonts.",
+      "**Don't** put the lobby navigation over an active game.",
+      "**Don't** claim complete functional or accessibility validation from a scoped visual review.",
+      "**Don't** make AI generation automatic or required for pack creation."
+    ]
+  }
+}

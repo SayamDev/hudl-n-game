@@ -1,0 +1,16 @@
+node_modules
+dist
+*.local
+.impeccable/review
+playwright-report
+test-results
+.lottie-player
+
+*.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+
+.scratch/
+.DS_Store

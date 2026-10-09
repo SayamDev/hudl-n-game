@@ -1,0 +1,9 @@
+import {chromium} from 'playwright';
+const b=await chromium.launch({channel:'chrome',headless:true});const p=await b.newPage({viewport:{width:390,height:844}});
+await p.goto('http://localhost:4173');await p.getByRole('button',{name:'Packs',exact:true}).click();await p.getByRole('button',{name:'Mix my pack'}).scrollIntoViewIfNeeded();await p.waitForTimeout(700);await p.screenshot({path:'.impeccable/review/studio/mobile-action-viewport.png'});
+await p.getByRole('button',{name:'Mix my pack'}).click();await p.waitForTimeout(500);await p.screenshot({path:'.impeccable/review/studio/draft-viewport.png'});
+console.log(await p.locator('.skip-link').evaluate(el=>({focused:el===document.activeElement,rect:el.getBoundingClientRect().toJSON(),top:getComputedStyle(el).top})));
+await p.getByRole('button',{name:'Edit & save this draft'}).scrollIntoViewIfNeeded();await p.screenshot({path:'.impeccable/review/studio/edit-action-viewport.png'});
+await p.route('**/api/pack-studio',route=>route.fulfill({json:{draft:{name:'Space Party Pack',words:['Rocket','Moon','Stars','Galaxy','Alien','Comet','Astronaut','Space Station','Nebula','Black Hole','Meteor Shower','Solar Eclipse'],adult:false},source:'ai'}}));
+await p.getByRole('button',{name:'AI theme',exact:true}).click();await p.getByLabel('Your theme').fill('Space party');await p.getByRole('button',{name:'Generate AI draft'}).click();await p.getByRole('heading',{name:'Meet “Space Party Pack”'}).waitFor();await p.waitForTimeout(500);await p.getByRole('button',{name:'Edit & save this draft'}).scrollIntoViewIfNeeded();await p.screenshot({path:'.impeccable/review/studio/ai-review-viewport.png'});
+await p.keyboard.press('Control+Home');await p.locator('.skip-link').focus();console.log('keyboard skip visible',await p.locator('.skip-link').evaluate(el=>el.getBoundingClientRect().top>=0));await b.close();

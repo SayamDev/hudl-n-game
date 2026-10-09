@@ -1,0 +1,434 @@
+import ClubSetup from "./ClubSetup";
+import { useState } from "react";
+import type { ReactNode } from "react";
+import { Reorder, useDragControls } from "motion/react";
+import {
+  ArrowRight,
+  Plus,
+  Shuffle,
+  SignOut,
+  ArrowFatUp,
+  ArrowFatDown,
+  DotsSixVertical,
+} from "@phosphor-icons/react";
+import { useGame, avatars, colors } from "../store/useGame";
+import { shuffle } from "../lib/logic";
+import { Avatar, Button, Screen, Toggle } from "./ui";
+import { gameById } from "../games/registry";
+import builtInPacks from "../content/packs.json";
+import type { GameId, Player } from "../lib/types";
+function CrewItem({
+  player,
+  children,
+}: {
+  player: Player;
+  children: ReactNode;
+}) {
+  const controls = useDragControls();
+  return (
+    <Reorder.Item value={player} dragListener={false} dragControls={controls}>
+      <button
+        className="drag-handle"
+        aria-label={`Drag to reorder ${player.name}. Use the adjacent arrow buttons with a keyboard.`}
+        onPointerDown={(e) => controls.start(e)}
+      >
+        <DotsSixVertical size={20} />
+      </button>
+      {children}
+    </Reorder.Item>
+  );
+}
+export function Players({
+  game,
+  onNext,
+}: {
+  game: GameId;
+  onNext: () => void;
+}) {
+  const { players, setPlayers } = useGame();
+  const [name, setName] = useState(""),
+    [error, setError] = useState("");
+  const metadata = gameById(game);
+  const add = () => {
+    const n = name.trim();
+    if (!n) {
+      setError("Add a name first.");
+      return;
+    }
+    if (players.some((p) => p.name.toLowerCase() === n.toLowerCase())) {
+      setError("That name is taken. Add an initial or nickname.");
+      return;
+    }
+    if (players.length >= 20) {
+      setError("This crew is full: 20 players maximum.");
+      return;
+    }
+    setPlayers([
+      ...players,
+      {
+        id: crypto.randomUUID(),
+        name: n,
+        avatar:
+          avatars.find((avatar) => !players.some((p) => p.avatar === avatar)) ||
+          avatars[players.length],
+        color: colors[players.length % colors.length],
+        score: 0,
+      },
+    ]);
+    setName("");
+    setError("");
+  };
+  const move = (i: number, delta: number) => {
+    const next = [...players];
+    [next[i], next[i + delta]] = [next[i + delta], next[i]];
+    setPlayers(next);
+  };
+  return (
+    <Screen
+      title="Who’s in the huddle?"
+      subtitle={`${metadata.name} needs ${metadata.min}-20 players. Nicknames encouraged.`}
+    >
+      <form
+        className="add-player"
+        onSubmit={(e) => {
+          e.preventDefault();
+          add();
+        }}
+      >
+        <label htmlFor="player-name" className="sr-only">
+          Player name
+        </label>
+        <input
+          id="player-name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Add a name…"
+          maxLength={24}
+          autoComplete="off"
+          enterKeyHint="done"
+          aria-describedby={error ? "name-error" : undefined}
+        />
+        <Button type="submit" className="primary" aria-label="Add player">
+          <Plus size={25} />
+        </Button>
+      </form>
+      {error && (
+        <p className="error" id="name-error" role="alert">
+          {error}
+        </p>
+      )}
+      {players.length === 0 ? (
+        <div className="empty">
+          <span>🪩</span>
+          <h2>Every party starts with someone.</h2>
+          <p>Add your crew above. We’ll remember them for next time.</p>
+        </div>
+      ) : (
+        <>
+          <Reorder.Group
+            axis="y"
+            values={players}
+            onReorder={setPlayers}
+            className="crew-list"
+          >
+            {players.map((p, i) => (
+              <CrewItem key={p.id} player={p}>
+                <Avatar player={p} />
+                <strong>{p.name}</strong>
+                <div className="crew-actions">
+                  <button
+                    className="icon-button"
+                    disabled={i === 0}
+                    aria-label={`Move ${p.name} up`}
+                    onClick={() => move(i, -1)}
+                  >
+                    <ArrowFatUp size={23} weight="fill" />
+                  </button>
+                  <button
+                    className="icon-button"
+                    disabled={i === players.length - 1}
+                    aria-label={`Move ${p.name} down`}
+                    onClick={() => move(i, 1)}
+                  >
+                    <ArrowFatDown size={23} weight="fill" />
+                  </button>
+                  <button
+                    className="icon-button"
+                    aria-label={`Remove ${p.name}`}
+                    onClick={() =>
+                      setPlayers(players.filter((a) => a.id !== p.id))
+                    }
+                  >
+                    <SignOut size={24} weight="bold" />
+                  </button>
+                </div>
+              </CrewItem>
+            ))}
+          </Reorder.Group>
+          <Button
+            className="text-button"
+            onClick={() => {
+              const mixed = shuffle(avatars);
+              setPlayers(
+                players.map((p, i) => ({
+                  ...p,
+                  avatar: mixed[i],
+                  color: colors[i % colors.length],
+                })),
+              );
+            }}
+          >
+            <Shuffle size={20} />
+            Shuffle avatars
+          </Button>
+        </>
+      )}
+      <Button
+        className="primary"
+        disabled={players.length < metadata.min}
+        onClick={onNext}
+      >
+        {players.length < metadata.min
+          ? `Add ${metadata.min - players.length} more to play`
+          : `Let’s play, all ${players.length} of us`}
+        <ArrowRight size={22} />
+      </Button>
+    </Screen>
+  );
+}
+export function GameSettings({
+  game,
+  onStart,
+}: {
+  game: GameId;
+  onStart: () => void;
+}) {
+  const {
+    players,
+    options: o,
+    setOptions,
+    preferences,
+    customPacks,
+  } = useGame();
+  if (
+    game === "imposter" &&
+    preferences.design !== "classic" &&
+    preferences.design !== "club-original"
+  )
+    return <ClubSetup onStart={onStart} />;
+  const meta = gameById(game);
+  const packs = [...builtInPacks, ...customPacks].filter(
+    (p) => !p.adult || (!preferences.family && preferences.adult),
+  );
+  return (
+    <Screen
+      title={`Let’s play ${meta.name}.`}
+      subtitle="Good defaults. Your kind of chaos."
+    >
+      <Button className="primary" onClick={onStart}>
+        Quick start
+        <ArrowRight size={22} />
+      </Button>
+      <details className="settings-details" open>
+        <summary>Make it your game</summary>
+        {game === "imposter" && (
+          <>
+            <label>
+              Number of imposters
+              <select
+                value={Math.min(
+                  o.imposters,
+                  Math.floor((players.length - 1) / 2),
+                )}
+                onChange={(e) =>
+                  setOptions({ imposters: Number(e.target.value) })
+                }
+              >
+                {Array.from(
+                  { length: Math.floor((players.length - 1) / 2) },
+                  (_, i) => (
+                    <option key={i} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ),
+                )}
+              </select>
+            </label>
+            <Toggle
+              label="Surprise number of imposters"
+              checked={o.randomImposters}
+              onChange={(randomImposters) => setOptions({ randomImposters })}
+            />
+            <Toggle
+              label="Give imposters a category hint"
+              checked={o.hint}
+              onChange={(hint) => setOptions({ hint })}
+            />
+            <Toggle
+              label="Chaos mode"
+              description="Imposters know their role and get a decoy word."
+              checked={o.chaos}
+              onChange={(chaos) => setOptions({ chaos })}
+            />
+          </>
+        )}
+        {["imposter", "charades"].includes(game) && (
+          <fieldset>
+            <legend>Word packs</legend>
+            <div className="pack-chips">
+              {packs.map((p) => (
+                <label
+                  key={p.id}
+                  className={o.packIds.includes(p.id) ? "checked" : ""}
+                >
+                  <input
+                    type="checkbox"
+                    checked={o.packIds.includes(p.id)}
+                    onChange={() =>
+                      setOptions({
+                        packIds: o.packIds.includes(p.id)
+                          ? o.packIds.filter((id) => id !== p.id)
+                          : [...o.packIds, p.id],
+                      })
+                    }
+                  />
+                  {p.name}
+                </label>
+              ))}
+            </div>
+            <small>No packs selected? We’ll use all family packs.</small>
+          </fieldset>
+        )}
+        {["imposter", "spy", "mafia"].includes(game) && (
+          <>
+            <label>
+              Discussion time
+              <select
+                value={o.seconds}
+                onChange={(e) =>
+                  setOptions({ seconds: Number(e.target.value) })
+                }
+              >
+                <option value={60}>1 minute</option>
+                <option value={120}>2 minutes</option>
+                <option value={180}>3 minutes</option>
+                <option value={300}>5 minutes</option>
+              </select>
+            </label>
+            <label>
+              Voting style
+              <select
+                value={o.voteMode}
+                onChange={(e) =>
+                  setOptions({ voteMode: e.target.value as "secret" | "point" })
+                }
+              >
+                <option value="secret">Secret pass-and-vote</option>
+                <option value="point">Point on three</option>
+              </select>
+            </label>
+          </>
+        )}
+        {game === "mafia" && (
+          <>
+            <p>
+              Suggested: {Math.max(1, Math.floor(players.length / 4))} Mafia.
+              Special roles fill the remaining seats while keeping at least one
+              Villager.
+            </p>
+            {(
+              [
+                "doctor",
+                "detective",
+                "jester",
+                "bodyguard",
+                "vigilante",
+                "showRoles",
+                "manual",
+              ] as const
+            ).map((key) => (
+              <Toggle
+                key={key}
+                label={
+                  {
+                    doctor: "Doctor",
+                    detective: "Detective",
+                    jester: "Jester: wins if voted out",
+                    bodyguard: "Bodyguard: protects at their own risk",
+                    vigilante: "Vigilante: one shot per game",
+                    showRoles: "Reveal eliminated roles",
+                    manual: "Manual narrator mode",
+                  }[key]
+                }
+                checked={o[key]}
+                onChange={(v) => setOptions({ [key]: v })}
+              />
+            ))}
+          </>
+        )}
+        {game === "charades" && (
+          <Toggle
+            label="Offer tilt controls"
+            description="Permission is requested when you start. Tap controls always stay available."
+            checked={o.tilt}
+            onChange={(tilt) => setOptions({ tilt })}
+          />
+        )}{" "}
+        {game === "party" && (
+          <>
+            <label>
+              Play style
+              <select
+                value={o.partyMode}
+                onChange={(e) =>
+                  setOptions({
+                    partyMode: e.target.value as "likely" | "takes",
+                  })
+                }
+              >
+                <option value="likely">Most Likely To</option>
+                <option value="takes">Hot Takes</option>
+              </select>
+            </label>
+            <label>
+              Intensity
+              <select
+                value={preferences.family ? "Family" : o.intensity}
+                onChange={(e) =>
+                  setOptions({
+                    intensity: e.target.value as "Family" | "Friends" | "Spicy",
+                  })
+                }
+              >
+                <option>Family</option>
+                {!preferences.family && <option>Friends</option>}
+                {!preferences.family && preferences.adult && (
+                  <option>Spicy</option>
+                )}
+              </select>
+            </label>
+          </>
+        )}
+        <label>
+          Winner points per game
+          <select
+            value={o.points}
+            onChange={(e) => setOptions({ points: Number(e.target.value) })}
+          >
+            {[1, 2, 3, 5].map((n) => (
+              <option key={n}>{n}</option>
+            ))}
+          </select>
+        </label>
+      </details>
+      <details>
+        <summary>How to play</summary>
+        <ol>
+          {meta.rules.map((r) => (
+            <li key={r}>{r}</li>
+          ))}
+        </ol>
+      </details>
+    </Screen>
+  );
+}
