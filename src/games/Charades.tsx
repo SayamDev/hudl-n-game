@@ -2,22 +2,39 @@ import { useEffect, useRef, useState } from "react";
 import { useGame } from "../store/useGame";
 import { feedback } from "../lib/feedback";
 import { Avatar, Button, Screen, Timer } from "../components/ui";
-import { Check, ArrowBendUpRight } from "@phosphor-icons/react";
+import {
+  Check,
+  ArrowBendUpRight,
+  DeviceMobile,
+  ArrowDown,
+  ArrowUp,
+} from "@phosphor-icons/react";
+import { createTiltGesture, tiltPose } from "../lib/tilt";
+import type { TiltPose } from "../lib/tilt";
 import type { GameProps } from "../lib/types";
 export default function Charades({ session: s }: GameProps) {
   const { players, patch, finish } = useGame();
-  const [tilt, setTilt] = useState(false),
-    [message, setMessage] = useState("");
-  const armed = useRef(true);
+  const [tilt, setTilt] = useState(false);
+  const [sensor, setSensor] = useState<
+    "off" | "requesting" | "listening" | "connected" | "unavailable"
+  >("off");
+  const [pose, setPose] = useState<TiltPose | null>(null);
+  const [message, setMessage] = useState("");
+  const [practice, setPractice] = useState("");
+  const gesture = useRef(createTiltGesture());
+  const latest = useRef(s);
+  latest.current = s;
   const mark = (correct: boolean) => {
     const current = useGame.getState().session;
     if (
       !current ||
+      current.game !== "charades" ||
       current.phase !== "acting" ||
       current.paused ||
       current.timerRemaining <= 0
     )
       return;
+    gesture.current.reset();
     feedback(correct ? "success" : "tap");
     patch({
       cardIndex: current.cardIndex + 1,
@@ -26,19 +43,87 @@ export default function Charades({ session: s }: GameProps) {
     });
   };
   useEffect(() => {
-    if (!tilt || s.phase !== "acting") return;
+    gesture.current.reset();
+    setPractice("");
+  }, [s.phase, s.paused]);
+  useEffect(() => {
+    if (!tilt) return;
+    let received = false;
+    const timeout = setTimeout(() => {
+      if (!received) {
+        setTilt(false);
+        setSensor("unavailable");
+        setMessage(
+          "No motion data received. Check your browser’s motion permission, or use buttons or the keyboard.",
+        );
+      }
+    }, 5000);
+    const reset = () => {
+      gesture.current.reset();
+      setPose(null);
+    };
     const handler = (e: DeviceOrientationEvent) => {
-      if (e.beta === null) return;
-      const beta = e.beta;
-      if (beta > 55 && beta < 125) armed.current = true;
-      else if (armed.current && (beta < 30 || beta > 150)) {
-        armed.current = false;
-        mark(beta > 150);
+      const current = latest.current;
+      const next = tiltPose(e.beta, e.gamma);
+      if (next === null) return;
+      received = true;
+      clearTimeout(timeout);
+      setSensor("connected");
+      if (
+        document.hidden ||
+        !document.hasFocus() ||
+        current.paused ||
+        !["ready", "acting"].includes(current.phase)
+      ) {
+        reset();
+        return;
+      }
+      setPose(next);
+      const action = gesture.current.sample(next, performance.now());
+      if (!action) return;
+      if (current.phase === "acting") mark(action === "correct");
+      else {
+        setPractice(
+          action === "correct"
+            ? "Correct gesture recognised!"
+            : "Skip gesture recognised!",
+        );
+        feedback();
       }
     };
     window.addEventListener("deviceorientation", handler);
-    return () => window.removeEventListener("deviceorientation", handler);
-  }, [tilt, s.phase]);
+    window.addEventListener("blur", reset);
+    document.addEventListener("visibilitychange", reset);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("deviceorientation", handler);
+      window.removeEventListener("blur", reset);
+      document.removeEventListener("visibilitychange", reset);
+    };
+  }, [tilt]);
+  useEffect(() => {
+    if (s.phase !== "acting" || s.paused) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (
+        e.repeat ||
+        e.ctrlKey ||
+        e.altKey ||
+        e.metaKey ||
+        e.isComposing ||
+        document.querySelector('[aria-modal="true"]')
+      )
+        return;
+      const el = e.target as HTMLElement;
+      if (el.closest('input, textarea, select, [contenteditable="true"]'))
+        return;
+      if (["ArrowRight", "ArrowLeft"].includes(e.key)) {
+        e.preventDefault();
+        mark(e.key === "ArrowRight");
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [s.phase, s.paused]);
   const end = () => {
     const current = useGame.getState().session!;
     const scores: [number, number] = [...current.teamScores];
@@ -46,7 +131,18 @@ export default function Charades({ session: s }: GameProps) {
     patch({ teamScores: scores, phase: "turn-result", timerRunning: false });
   };
   const enable = async () => {
+    setSensor("requesting");
+    setMessage("");
+    setPractice("");
+    gesture.current.reset();
     try {
+      if (
+        !window.isSecureContext ||
+        typeof DeviceOrientationEvent === "undefined"
+      )
+        throw Error(
+          "Motion controls aren’t available in this browser. Use buttons or the keyboard.",
+        );
       const ctor = DeviceOrientationEvent as unknown as {
         requestPermission?: () => Promise<string>;
       };
@@ -54,51 +150,120 @@ export default function Charades({ session: s }: GameProps) {
         ctor.requestPermission &&
         (await ctor.requestPermission()) !== "granted"
       )
-        throw Error();
+        throw Error(
+          "Motion permission wasn’t allowed. You can try again or play with buttons or the keyboard.",
+        );
+      setSensor("listening");
       setTilt(true);
+    } catch (error) {
+      setTilt(false);
+      setSensor("unavailable");
       setMessage(
-        "Tilt enabled. Hold upright to reset between gestures. Tap controls always work.",
-      );
-    } catch {
-      setMessage(
-        "Tilt is unavailable here. Use the large Correct and Skip buttons.",
+        error instanceof Error
+          ? error.message
+          : "Tilt is unavailable. Buttons and keyboard controls still work.",
       );
     }
   };
+  const motionStatus =
+    sensor === "listening"
+      ? "Waiting for the phone’s motion sensor…"
+      : practice ||
+        (pose === "upright"
+          ? "Upright. Now tilt to practise, then return upright."
+          : "Hold the screen upright to get ready.");
   if (s.phase === "ready")
     return (
       <Screen
         title={`Team ${s.team + 1}, you’re up!`}
         subtitle="One teammate holds the phone facing the others. No saying the word."
       >
-        <div className="team-list">
-          {players
-            .filter((_, i) => i % 2 === s.team)
-            .map((p) => (
-              <span key={p.id}>
-                <Avatar player={p} /> {p.name}
-              </span>
-            ))}
+        <div className="charades-ready-grid">
+          <section className="ready-cast" aria-label="This turn’s team">
+            <h2>Your team. Your moment.</h2>
+            <div className="team-list">
+              {players
+                .filter((_, i) => i % 2 === s.team)
+                .map((p) => (
+                  <span key={p.id}>
+                    <Avatar player={p} /> <strong>{p.name}</strong>
+                  </span>
+                ))}
+            </div>
+            <p>
+              <strong>60 seconds.</strong> Each correct answer earns one team
+              point.
+            </p>
+          </section>
+          <section className="ready-controls" aria-label="Ways to play">
+            <h2>Tap, tilt or use your keys.</h2>
+            <div className="gesture-guide">
+              <div>
+                <ArrowDown size={24} weight="bold" />
+                <span>
+                  <strong>Screen to the floor</strong>Correct answer
+                </span>
+              </div>
+              <div>
+                <ArrowUp size={24} weight="bold" />
+                <span>
+                  <strong>Screen to the ceiling</strong>Skip this word
+                </span>
+              </div>
+            </div>
+            <p>
+              Return upright between tilts. Try it here before the clock starts
+              — practice adds no points.
+            </p>
+            <Button
+              className="tilt-enable"
+              disabled={sensor === "requesting"}
+              onClick={() => {
+                if (tilt) {
+                  setTilt(false);
+                  setSensor("off");
+                  setMessage("");
+                } else void enable();
+              }}
+            >
+              <DeviceMobile size={22} />
+              {tilt
+                ? "Turn off tilt"
+                : sensor === "requesting"
+                  ? "Requesting permission…"
+                  : "Enable tilt controls"}
+            </Button>
+            {(tilt || message) && (
+              <p className="tilt-status" role="status">
+                {tilt ? motionStatus : message}
+              </p>
+            )}
+            <p className="keyboard-guide">
+              Keyboard: <kbd>→</kbd> correct · <kbd>←</kbd> skip ·{" "}
+              <kbd>Esc</kbd> pause. Tab between other controls; Enter or Space
+              selects.
+            </p>
+          </section>
         </div>
-        <p>60 seconds. Each correct answer earns one team point.</p>
-        {s.options.tilt && (
-          <Button onClick={enable}>Enable tilt controls</Button>
-        )}
-        {message && <p role="status">{message}</p>}
-        <Button
-          className="primary"
-          onClick={() =>
-            patch({
-              phase: "acting",
-              timerRemaining: 60,
-              timerRunning: true,
-              correct: 0,
-              skipped: 0,
-            })
-          }
-        >
-          Start the clock
-        </Button>
+        <div className="ready-launch">
+          <span>Ready? Show the screen to your team.</span>
+          <Button
+            className="primary"
+            onClick={() => {
+              gesture.current.reset();
+              setPractice("");
+              patch({
+                phase: "acting",
+                timerRemaining: 60,
+                timerRunning: true,
+                correct: 0,
+                skipped: 0,
+              });
+            }}
+          >
+            Start the clock
+          </Button>
+        </div>
       </Screen>
     );
   if (s.phase === "acting")
@@ -112,17 +277,31 @@ export default function Charades({ session: s }: GameProps) {
           {s.deck[s.cardIndex % s.deck.length]}
         </div>
         <div className="split">
-          <Button className="mint" onClick={() => mark(true)}>
+          <Button
+            className="mint"
+            aria-keyshortcuts="ArrowRight"
+            onClick={() => mark(true)}
+          >
             <Check size={26} weight="bold" />
             Correct
           </Button>
-          <Button onClick={() => mark(false)}>
+          <Button aria-keyshortcuts="ArrowLeft" onClick={() => mark(false)}>
             <ArrowBendUpRight size={26} />
             Skip
           </Button>
         </div>
         <p className="helper">
           {s.correct} correct · {s.skipped} skipped
+        </p>
+        {tilt && (
+          <p className="tilt-live" role="status">
+            {pose === "upright"
+              ? "Tilt ready · floor = correct · ceiling = skip"
+              : "Return upright before your next tilt"}
+          </p>
+        )}
+        <p className="keyboard-guide acting-keys">
+          <kbd>→</kbd> correct · <kbd>←</kbd> skip · <kbd>Esc</kbd> pause
         </p>
         <Button className="text-button" onClick={end}>
           Finish turn early

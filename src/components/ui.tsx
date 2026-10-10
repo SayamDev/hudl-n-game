@@ -231,9 +231,9 @@ export function Peek({
       <div className="peek-face">
         <Avatar player={player} big />
         <div
-          className={`secret-card ${holding ? "revealed" : ""} ${holding && isImposter ? "imposter-reveal" : ""}`}
+          className={`secret-card stable-secret ${holding ? "revealed" : ""} ${holding && isImposter ? "imposter-reveal" : ""}`}
         >
-          <div aria-live="off">
+          <div className="secret-content" aria-live="off">
             {holding ? (
               <>
                 {isImposter ? (
@@ -257,23 +257,38 @@ export function Peek({
                           ? "YOUR LOCATION"
                           : "YOUR SECRET"}
                     </span>
-                    <h2>{secret}</h2>
+                    <h2
+                      className={`secret-word ${secret.length > 16 ? "secret-word-long" : ""}`}
+                    >
+                      {secret}
+                    </h2>
                   </>
                 )}
-                <p>
-                  {session.game === "spy" && role !== "Spy"
-                    ? `You are the ${role.toLowerCase()}.`
-                    : session.game === "imposter" &&
-                        role === "Imposter" &&
-                        !session.options.chaos &&
-                        session.options.hint
-                      ? `Hint: ${session.category}`
-                      : session.game === "mafia" && role === "Mafia"
-                        ? `Your team: ${players
-                            .filter((p) => session.roles[p.id] === "Mafia")
-                            .map((p) => p.name)
-                            .join(", ")}`
-                        : "Keep it to yourself."}
+                <p
+                  className={
+                    isImposter && !session.options.chaos && session.options.hint
+                      ? "imposter-hint"
+                      : "secret-detail"
+                  }
+                >
+                  {session.game === "spy" && role !== "Spy" ? (
+                    `You are the ${role.toLowerCase()}.`
+                  ) : session.game === "imposter" &&
+                    role === "Imposter" &&
+                    !session.options.chaos &&
+                    session.options.hint ? (
+                    <>
+                      <span>Hint: </span>
+                      <strong>{session.category}</strong>
+                    </>
+                  ) : session.game === "mafia" && role === "Mafia" ? (
+                    `Your team: ${players
+                      .filter((p) => session.roles[p.id] === "Mafia")
+                      .map((p) => p.name)
+                      .join(", ")}`
+                  ) : (
+                    "Keep it to yourself."
+                  )}
                 </p>
               </>
             ) : (

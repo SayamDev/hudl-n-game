@@ -366,14 +366,6 @@ export function GameSettings({
             ))}
           </>
         )}
-        {game === "charades" && (
-          <Toggle
-            label="Offer tilt controls"
-            description="Permission is requested when you start. Tap controls always stay available."
-            checked={o.tilt}
-            onChange={(tilt) => setOptions({ tilt })}
-          />
-        )}{" "}
         {game === "party" && (
           <>
             <label>

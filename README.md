@@ -43,6 +43,17 @@ Add your crew, choose a game and pass the phone. A short interactive welcome let
 - **Browser comfort:** large touch controls, keyboard paths, reduced motion, light/dark modes, optional sound and installable PWA support. Once cached, the core games work offline.
 - **Choose your look:** the earlier designs remain available in Settings.
 
+## Play with touch, tilt or keyboard
+
+In **Heads Up!**, choose **Enable tilt controls** before starting and allow motion access if your browser asks. Practise on the ready screen: hold upright, tip the screen toward the floor for Correct, or toward the ceiling to Skip. Return upright between gestures. Practice does not add points; touch controls remain available if sensors are unsupported or permission is denied.
+
+- **Tab / Shift+Tab:** move between controls; **Enter / Space:** activate a button.
+- **Hold Space or Enter on Hold to peek:** reveal your secret; release to hide it immediately.
+- **→ / ← in Heads Up!:** Correct / Skip.
+- **Esc:** pause a game; dismiss the pause dialog to resume.
+
+Motion support depends on the device and browser. Sensor behaviour is covered by simulated browser events; physical iOS/Android verification is still needed. [Control design and API references](docs/adr/0004-phone-tilt.md).
+
 ## Make it yours
 
 Use Node.js 22.12 or newer.

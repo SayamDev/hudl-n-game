@@ -1851,3 +1851,287 @@
     }
   }
 }
+
+/* A stable reveal window: changing its contents never moves the hold control. */
+.secret-card.stable-secret,
+[data-design="club"][data-edition] .peek-face .secret-card.stable-secret {
+  position: relative;
+  height: clamp(260px, 32dvh, 320px);
+  min-height: 260px;
+  padding: 0;
+  overflow: hidden;
+  flex: none;
+  width: 100%;
+  overflow-anchor: none;
+}
+.stable-secret .secret-content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: safe center;
+  justify-items: center;
+  gap: 10px;
+  padding: 28px 18px 20px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.stable-secret .secret-content > * {
+  margin: 0;
+}
+.stable-secret .secret-caption {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+.secret-card.stable-secret h2.secret-word,
+[data-design="club"] .secret-card.stable-secret h2.secret-word {
+  font-size: clamp(2.6rem, 7vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  max-width: 100%;
+  text-wrap: balance;
+}
+.secret-card.stable-secret h2.secret-word-long,
+[data-design="club"] .secret-card.stable-secret h2.secret-word-long {
+  font-size: 2rem;
+}
+.secret-card.stable-secret .imposter-hint {
+  display: grid;
+  gap: 5px;
+  width: min(100%, 360px);
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #201712;
+  color: #fff2d5;
+}
+.imposter-hint span {
+  font-size: 0.8rem;
+}
+.imposter-hint strong {
+  font-size: 1.7rem;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.stable-secret .secret-detail {
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+.stable-secret .role-instruction {
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+.hold-button:active {
+  transform: none !important;
+}
+
+/* Heads Up ready: the cast and controls fill one useful, reachable stage. */
+[data-design="club"][data-edition="remix"]
+  main[data-game="charades"][data-phase="ready"]
+  .stage {
+  max-width: 980px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 18px auto 0;
+}
+.charades-ready-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.ready-cast {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: #ff896a;
+  color: #251c18;
+  border-radius: 16px;
+}
+.ready-cast h2,
+.ready-controls h2 {
+  font-size: 1.5rem;
+  margin: 0 0 18px;
+}
+.ready-cast .team-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 0 20px;
+}
+.ready-cast .team-list > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.ready-cast .team-list .avatar {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+}
+.ready-cast .team-list strong {
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+.ready-cast > p {
+  margin: auto 0 0;
+  line-height: 1.5;
+}
+.ready-cast > p > strong {
+  display: block;
+  font-size: 2.8rem;
+  letter-spacing: -0.03em;
+}
+.ready-controls {
+  padding: 24px 0;
+}
+.gesture-guide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.gesture-guide > div {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.gesture-guide svg {
+  flex: 0 0 24px;
+  color: var(--game-accent, #ff896a);
+}
+.gesture-guide strong {
+  display: block;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.gesture-guide span {
+  font-size: 0.95rem;
+}
+.ready-controls > p {
+  font-size: 0.95rem;
+  margin: 12px 0;
+  line-height: 1.45;
+}
+.ready-controls .tilt-enable {
+  width: 100%;
+  min-height: 56px;
+}
+.tilt-status {
+  padding: 12px;
+  background: #fff0d0;
+  color: #30211c;
+  border-radius: 10px;
+}
+.keyboard-guide {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.keyboard-guide kbd {
+  font: inherit;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ready-launch {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: sticky;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  padding: 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  z-index: 2;
+}
+.ready-launch > span {
+  flex: 1;
+  font-size: 1rem;
+}
+.ready-launch > .button {
+  flex: 1;
+  min-height: 64px;
+}
+.acting-keys,
+.tilt-live {
+  grid-column: 1 / -1;
+  font-size: 0.85rem;
+  text-align: center;
+}
+.tilt-live {
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .charades-ready-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .ready-cast {
+    padding: 18px;
+  }
+  .ready-cast h2 {
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+  }
+  .ready-cast .team-list {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ready-cast .team-list .avatar {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+  .ready-cast > p > strong {
+    display: inline;
+    font-size: 1rem;
+    letter-spacing: 0;
+  }
+  .ready-controls {
+    padding: 12px 0 0;
+  }
+  .ready-controls h2 {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+  .ready-launch {
+    padding: 10px;
+    gap: 10px;
+  }
+  .ready-launch > span {
+    font-size: 0.85rem;
+  }
+  .ready-launch > .button {
+    flex: 0 0 55%;
+    min-height: 60px;
+    padding: 12px;
+  }
+}
+@media (orientation: landscape) and (max-height: 550px) {
+  .acting-keys,
+  .tilt-live {
+    grid-column: 2;
+    margin: 0;
+  }
+  .secret-card.stable-secret,
+  [data-design="club"][data-edition] .peek-face .secret-card.stable-secret {
+    height: 260px;
+  }
+}
+.ready-cast .team-list .avatar { padding: 0; border: 0; }
+.ready-cast .team-list .identity { width: 100%; height: 100%; }
+@media (min-width: 701px) and (min-height: 600px) {
+  [data-design="club"][data-edition="remix"] main[data-game="charades"][data-phase="ready"] .stage {
+    min-height: calc(100dvh - 132px - env(safe-area-inset-top));
+    margin-bottom: 12px;
+  }
+  .charades-ready-grid { align-items: start; }
+  .ready-launch { margin-top: auto; }
+  .ready-cast .team-list { margin: 24px 0; gap: 24px 16px; }
+  .ready-cast .team-list .avatar { width: 80px; height: 80px; flex-basis: 80px; }
+  .ready-controls { align-self: start; }
+}

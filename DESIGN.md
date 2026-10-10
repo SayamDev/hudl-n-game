@@ -99,6 +99,12 @@ colors:
   welcome-progress: "#635778"
   pack-navigation: "#302644"
   pack-navigation-ink: "#f7f0ff"
+  hint-background: "#201712"
+  hint-ink: "#fff2d5"
+  ready-coral: "#ff896a"
+  ready-ink: "#251c18"
+  tilt-status-background: "#fff0d0"
+  tilt-status-ink: "#30211c"
 typography:
   display:
     fontFamily: '"Space Grotesk", sans-serif'
@@ -143,6 +149,13 @@ typography:
     fontWeight: 700
     lineHeight: 1.05
     letterSpacing: "-0.04em"
+  secret-word:
+    fontSize: "clamp(2.6rem, 7vw, 4rem)"
+    lineHeight: 1.02
+    letterSpacing: "-0.03em"
+  hint-category:
+    fontSize: "1.7rem"
+    lineHeight: 1.1
   welcome-heading:
     fontFamily: '"Space Grotesk", sans-serif'
     fontSize: "clamp(1.7rem, 5vw, 2.2rem)"
@@ -214,6 +227,16 @@ components:
     backgroundColor: "{colors.lime}"
     textColor: "{colors.charcoal}"
     rounded: "{rounded.play}"
+  secret-hint:
+    backgroundColor: "{colors.hint-background}"
+    textColor: "{colors.hint-ink}"
+    rounded: "{rounded.play}"
+    padding: "12px 16px"
+  ready-cast:
+    backgroundColor: "{colors.ready-coral}"
+    textColor: "{colors.ready-ink}"
+    rounded: "{rounded.card}"
+    padding: "24px"
   secret-imposter:
     backgroundColor: "{colors.imposter-coral}"
     textColor: "{colors.imposter-ink}"
@@ -276,7 +299,7 @@ Metadata and secondary descriptions use smaller supporting type; keep the main a
 
 The app shell fills at least 100dvh and caps width at 1120px with centred margins. Desktop side padding is 32px; phones use at least 16px plus safe-area protection. The header is 90px desktop and 76px phone. The game deck is two columns, with the featured game spanning both; gaps are 12px desktop and 10px phone.
 
-Setup and play stages cap width at 620px. Their desktop margin is 32px with 20px gaps; phone margins are 20px above and 24px below with 18px gaps. Active phone play expands the stage to the dynamic viewport while retaining document scrolling. Original-edition secret cards retain a 260px desktop minimum and 220px phone minimum. Default handoff stages start at the top with 16px gaps, no forced minimum height and no flex-grown empty space. Their avatar is 104px and the secret card has a 190px minimum with 36px 20px 24px padding. Short landscape at heights up to 550px removes the active stage minimum, reduces secret-card height and makes navigation sticky.
+Setup and play stages cap width at 620px. Their desktop margin is 32px with 20px gaps; phone margins are 20px above and 24px below with 18px gaps. Active phone play expands the stage to the dynamic viewport while retaining document scrolling. Default handoff stages start at the top with 16px gaps, no forced minimum height and no flex-grown empty space; their avatar is 104px. The live reveal window now has a stable `clamp(260px, 32dvh, 320px)` height and 260px minimum across variants, overriding the earlier compact-card measurements. Its absolutely positioned inner content scrolls within `28px 18px 20px` padding; the outer card has no padding, does not flex-shrink and disables scroll anchoring. Short landscape at heights up to 550px removes the active stage minimum, fixes this window at 260px and makes navigation sticky.
 
 The lobby navigation is fixed across the phone bottom with safe-area padding and reserved content space, then sticky and capped at 540px on wider screens. It appears only with no session; active games and session results do not display it. Desktop rules start at 768px, the main phone rules end at 767px, and the narrow-phone adjustment ends at 350px.
 
@@ -290,7 +313,7 @@ Pack studio uses the shared surface and card radius with a 16px grid gap and 24p
 
 Primary controls, deck cards, secret cards and routine rows are flat. Thin borders and contrasting fills provide separation. Soft depth is limited: the decorative tilted card has `0 12px 24px #19211c22`, the modal has `0 24px 90px #0005`, and the theme's update-notice shadow is `0 8px 24px #19211c12`. Classic keeps hard offset shadows.
 
-Standard buttons inherit a 0.12s transform/shadow transition and shrink to 0.98 on press; lobby play actions shrink to 0.97 over 0.15s. Standard button hover uses a slight brightness reduction. Screen entry retains the spring with stiffness 360 and damping 30; reduced motion omits the entry offset, and the base reduced-motion media query disables CSS transitions and animations.
+Standard buttons inherit a 0.12s transform/shadow transition and shrink to 0.98 on press; hold-to-reveal controls explicitly suppress active transforms so the finger target stays still; lobby play actions shrink to 0.97 over 0.15s. Standard button hover uses a slight brightness reduction. Screen entry retains the spring with stiffness 360 and damping 30; reduced motion omits the entry offset, and the base reduced-motion media query disables CSS transitions and animations.
 
 The home cast enters once over 0.55s using `cubic-bezier(0.16, 1, 0.3, 1)` when reduced motion is not requested. Home uses three real Identity components and no Lottie player or replay control. BrandMotion remains on results: its finite scene autoplays once without looping, retains an Identity fallback and skips loading motion when reduced motion is requested. Decorative replay controls are removed. The time-selection spring uses stiffness 420 and damping 34 under the app motion preference. None of these effects may delay private concealment.
 
@@ -340,6 +363,26 @@ Home cards retain distinct names, explanatory copy, player counts and duration. 
 
 The coral IMPOSTER surface and explicit role copy apply to all three variants. Chaos mode retains its decoy word while making the role clear. This shared privacy/clarity treatment is the deliberate exception to the otherwise preserved Classic visual world.
 
+### Stable private reveal
+
+**The Stable Hold Rule.** Keep the private window and hold control in the same position when hidden content is replaced by a role, word or hint. The hold button has no active transform. Longer content scrolls inside the fixed window rather than pushing the control away.
+
+Ordinary secret words use the secret-word typography role with balanced wrapping; strings longer than 16 characters use 2rem. The Imposter retains its explicit large role and explanatory sentence. When hints are enabled outside chaos mode, the labelled category sits in a dark inset panel with warm cream text, a 360px maximum width, 10px corners, and 12px 16px padding; its category is 1.7rem, distinct from the 0.8rem label. Secondary secret details use 0.95rem with a 1.3 line height. Chaos mode keeps a separately labelled decoy.
+
+Private content is conditionally mounted only during the hold and unmounted immediately on concealment; opacity or an offscreen position does not stand in for hiding it. The coral Imposter state also disappears with the hold. Keep the existing three-second guard, release/cancellation/focus-loss handling and Space/Enter support.
+
+### Heads Up ready and controls
+
+The default ready stage expands to 980px and pairs the team cast with instructions in two equal columns separated by 24px. At 700px and below it stacks with a 12px gap. Above 700px with at least 600px height, it fills `calc(100dvh - 132px - env(safe-area-inset-top))`; the two columns align at the top, the cast keeps its natural content height with a two-column identity list, and identities grow to 80px. The launch strip uses `margin-top: auto` to reach the stage bottom independently of the compact cast and controls. Other layouts use 60px identities, reduced to 48px on phones. The cast uses its fixed coral/ink palette and 16px corners; phone padding reduces from 24px to 18px.
+
+The Start the clock strip stays sticky at `calc(12px + env(safe-area-inset-bottom))`, with theme background, a one-pixel border, 14px corners and z-index 2. Its action is at least 64px tall; phones use 60px and give the action 55% of the row. The controls and team remain in document flow so shorter screens can scroll to all instructions.
+
+Touch buttons and keyboard shortcuts remain available whether tilt is enabled or not. During the acting phase, Right Arrow marks Correct and Left Arrow skips; Escape pauses through the shared app controls. The explicit Correct and Skip buttons expose their arrow shortcuts, while visible instructions explain Tab, Enter and Space. Repeated, modified or composing key events and events from text-entry fields or an open modal do not score.
+
+Tilt is an optional, explicit opt-in with permission/requesting, waiting, connected and unavailable status text. Screen-to-floor means Correct; screen-to-ceiling means Skip; return upright between gestures. The ready screen offers practice before starting the clock, with recognized-gesture feedback that adds no points. Missing sensor data after five seconds explains the fallback. Tilt input resets on pause, phase changes, blur and visibility changes, and cannot score outside an active, unpaused, timed turn. Keep the written guidance and touch/keyboard routes alongside the sensor option.
+
+The implementing agent reports all 24 unit tests and 23 browser tests passing for the controls/reveal refinements before the final compact ready-layout adjustment; the final compact layout subsequently received a scoped visual-review disposition of **ship**. This documentation pass inspected source only; physical-phone sensor behavior remains unverified.
+
 ### Cast tickets and scores
 
 Default Crew and Scores rows cycle through lime, lavender, mint, peach and yellow ticket fills with charcoal text. Names accompany masked identities. Crew reorder controls use bold arrows on charcoal squares; the bold sign-out/remove icon uses a contrasting outlined treatment. Scores keep rank, identity, name and points together; equal scores share a competition rank (1, 1, 3). The purple/gold score banner introduces this shared spotlight. Score tickets and avatar frames use 14px corners, action buttons 10px and point badges 8px; rank numerals are tabular.
@@ -362,6 +405,8 @@ The practice word is illustrative, not a live secret: pointer or Space/Enter hol
 - **Do** show draft provenance and keep review, manual editing and saving distinct.
 - **Do** let phone play fill the viewport while allowing content to scroll.
 - **Do** keep secret visibility transient and concealment immediate.
+- **Do** keep the reveal window and held target stable while content changes.
+- **Do** offer touch and keyboard play alongside optional tilt and score-free practice.
 - **Do** retain player names and stable avatar identifiers; use the masked identity artwork in the default edition.
 
 ### Don't:

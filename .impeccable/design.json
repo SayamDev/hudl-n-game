@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-09T16:18:37.363627+00:00",
-  "title": "Design System: Hudl N Game \u2014 Social Club",
+  "generatedAt": "2026-10-10T06:17:40.569965+00:00",
+  "title": "Design System: Hudl N Game — Social Club",
   "extensions": {
     "colorMeta": {
       "lime": {
@@ -587,6 +587,30 @@
       "pack-navigation-ink": {
         "role": "secondary",
         "displayName": "Pack Navigation Ink"
+      },
+      "hint-background": {
+        "role": "secondary",
+        "displayName": "Hint Background"
+      },
+      "hint-ink": {
+        "role": "secondary",
+        "displayName": "Hint Ink"
+      },
+      "ready-coral": {
+        "role": "secondary",
+        "displayName": "Ready Coral"
+      },
+      "ready-ink": {
+        "role": "secondary",
+        "displayName": "Ready Ink"
+      },
+      "tilt-status-background": {
+        "role": "secondary",
+        "displayName": "Tilt Status Background"
+      },
+      "tilt-status-ink": {
+        "role": "secondary",
+        "displayName": "Tilt Status Ink"
       }
     },
     "shadows": [
@@ -641,6 +665,11 @@
         "name": "welcome-deal",
         "value": "650ms cubic-bezier(0.16, 1, 0.3, 1)",
         "purpose": "One-time cast reveal via clip-path, only with prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "stable-hold",
+        "value": "transform: none !important",
+        "purpose": "Hold target does not move during active press; private content unmounts without a concealment animation."
       }
     ],
     "breakpoints": [
@@ -663,6 +692,14 @@
       {
         "name": "studio-phone-max",
         "value": "450px"
+      },
+      {
+        "name": "ready-stack-max",
+        "value": "700px"
+      },
+      {
+        "name": "ready-fill",
+        "value": "(min-width: 701px) and (min-height: 600px)"
       }
     ],
     "focus": {
@@ -764,9 +801,9 @@
       "targetMinimum": "48px for method and theme choices",
       "provenance": [
         "Curated offline mix",
-        "AI draft \u00b7 Review before playing"
+        "AI draft · Review before playing"
       ],
-      "flow": "Draft preview \u2192 manual editor \u2192 explicit save",
+      "flow": "Draft preview → manual editor → explicit save",
       "states": [
         "Curated offline ready",
         "AI ready with theme and provider disclosure",
@@ -805,6 +842,14 @@
       "score-rank": {
         "displayName": "Score Rank",
         "purpose": "Competition ranking with equal scores sharing a rank; tabular numerals."
+      },
+      "secret-word": {
+        "displayName": "Secret Word",
+        "purpose": "Balanced reveal word; strings over 16 characters reduce to 2rem."
+      },
+      "hint-category": {
+        "displayName": "Hint Category",
+        "purpose": "Emphasized category inside the dark hint panel."
       }
     },
     "welcomeAndCast": {
@@ -819,6 +864,49 @@
       ],
       "radiusUsage": "Existing card 16px for welcome/panels; phone-card 14px for practice, score rows and pack navigation; play 10px for pack/action buttons; stepper 8px for points; progress 2px for step bars.",
       "welcomeLayout": "480px maximum width; calc(100dvh - 32px) maximum height; scrollable; 24px padding, 18px below 370px."
+    },
+    "controlsAndReveal": {
+      "sources": [
+        "src/remix.css",
+        "src/components/ui.tsx",
+        "src/games/Charades.tsx"
+      ],
+      "secretGeometry": {
+        "height": "clamp(260px, 32dvh, 320px)",
+        "minHeight": "260px",
+        "shortLandscapeHeight": "260px",
+        "contentPadding": "28px 18px 20px",
+        "overflow": "Scrollable absolute inset content; fixed outer window with overflow-anchor: none."
+      },
+      "privacy": "Private role, word, hint and decoy are conditionally mounted only while held; concealment unmounts them immediately. Active hold transforms are disabled. Existing three-second guard and pointer/keyboard/focus-loss protections remain.",
+      "readyLayout": {
+        "maxWidth": "980px",
+        "columns": "1fr 1fr",
+        "gap": "24px",
+        "phoneColumns": "1fr at max-width 700px",
+        "phoneGap": "12px",
+        "tallStage": "calc(100dvh - 132px - env(safe-area-inset-top))",
+        "stickyStart": "calc(12px + env(safe-area-inset-bottom))",
+        "layer": 2,
+        "startMinHeight": "64px / 60px phone",
+        "tallAlignment": "Top-aligned columns with natural cast height; launch margin-top: auto anchors it independently at stage bottom."
+      },
+      "controls": {
+        "touch": "Visible Correct and Skip buttons.",
+        "keyboard": "ArrowRight correct, ArrowLeft skip, Escape pause; repeat/modifier/composition, text-field and modal events cannot score.",
+        "tilt": "Explicit opt-in; floor correct, ceiling skip, upright between gestures; score-free ready practice. Missing data after five seconds provides fallback text.",
+        "states": [
+          "off",
+          "requesting",
+          "listening",
+          "connected",
+          "unavailable"
+        ]
+      },
+      "validation": {
+        "reported": "All 24 unit tests and 23 browser tests passed before the final compact ready-layout adjustment. The final compact layout subsequently received a scoped visual-review disposition of ship.",
+        "limits": "Source-only documentation pass; physical-phone sensor behavior remains unverified."
+      }
     }
   },
   "components": [
@@ -842,7 +930,7 @@
       "name": "Lobby Play",
       "kind": "button",
       "description": "Charcoal action within a coloured game card.",
-      "html": "<button class=\"ds-control\">Let\u2019s play <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 18 18 6M6 6h12v12\"/></svg></button>",
+      "html": "<button class=\"ds-control\">Let’s play <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 18 18 6M6 6h12v12\"/></svg></button>",
       "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-control{display:flex;justify-content:space-between;align-items:center;gap:22px;min-height:52px;border:0;border-radius:10px;background:#19211c;color:#fff;padding:12px 18px;font-size:.95rem;font-weight:600;transition:transform .15s}.ds-control:active{transform:scale(.97)}@media(max-width:767px){.ds-control{min-height:48px;padding:10px 12px;font-size:.8rem;gap:8px}}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}",
       "refersTo": "button-play"
     },
@@ -889,7 +977,7 @@
       "kind": "chip",
       "refersTo": "pack-tile-selected",
       "description": "Default Imposter setup pack with native selection, word count and a visible check.",
-      "html": "<label class=\"ds-pack\"><input type=\"checkbox\" checked/><span class=\"ds-mono\">F</span><span class=\"ds-copy\"><strong>Food</strong><small>Word pack</small></span><span class=\"ds-check\" aria-hidden=\"true\">\u2713</span></label>",
+      "html": "<label class=\"ds-pack\"><input type=\"checkbox\" checked/><span class=\"ds-mono\">F</span><span class=\"ds-copy\"><strong>Food</strong><small>Word pack</small></span><span class=\"ds-check\" aria-hidden=\"true\">✓</span></label>",
       "css": ".ds-pack{position:relative;display:flex;align-items:center;gap:10px;min-height:78px;padding:10px;border:1px solid var(--border,#cbd1c8);border-radius:10px;background:var(--surface,#fff);color:var(--ink,#19211c);font-family:\"Space Grotesk\",sans-serif;cursor:pointer;transition:transform .16s}.ds-pack:has(input:checked){background:#e5f8bc;color:#19211c;border-color:#54772a}.ds-pack input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}.ds-pack:has(input:focus-visible){outline:3px solid var(--focus,#315b20);outline-offset:3px}.ds-mono{display:grid;place-items:center;width:34px;height:42px;background:#d4fa77;border-radius:5px;font-size:1.4rem;font-weight:700}.ds-copy{flex:1}.ds-copy strong{display:block;font-size:.82rem}.ds-copy small{display:block;margin-top:5px;font-size:.7rem}.ds-check{display:grid;place-items:center;width:20px;height:20px;border:1px solid currentColor;border-radius:5px}.ds-pack:has(input:checked) .ds-check{background:#19211c;color:#d4fa77}.ds-pack:not(:has(input:checked)) .ds-check{font-size:0}@media(prefers-reduced-motion:no-preference){.ds-pack:active{transform:scale(.97)}}"
     },
     {
@@ -906,6 +994,14 @@
       "description": "Shared 48px labelled pressed-state controls. This static preview shows the default curated Offline mix; React manages method switching.",
       "html": "<div class=\"ds-studio-modes\" role=\"group\" aria-label=\"Pack creation method\"><button aria-pressed=\"true\">Offline mix</button><button aria-pressed=\"false\">AI theme</button></div>",
       "css": ".ds-studio-modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:\"Space Grotesk\",sans-serif}.ds-studio-modes button{min-height:48px;border:1px solid var(--border,#cbd1c8);border-radius:10px;background:var(--bg,#f3f4ed);color:var(--ink,#19211c);padding:10px;font:inherit;font-weight:700;cursor:pointer}.ds-studio-modes button[aria-pressed=\"true\"]{background:#d4fa77;color:#19211c;border-color:#668b25}.ds-studio-modes button:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-studio-modes button:disabled{opacity:.48;cursor:not-allowed}"
+    },
+    {
+      "name": "Private Hint Panel",
+      "kind": "custom",
+      "refersTo": "secret-hint",
+      "description": "Illustrative category treatment only; production mounts actual private content only while held.",
+      "html": "<div class=\"ds-hint\"><span>Hint:</span><strong>Food</strong></div>",
+      "css": ".ds-hint{display:grid;gap:5px;width:min(100%,360px);border-radius:10px;padding:12px 16px;background:#201712;color:#fff2d5;font-family:\"Space Grotesk\",sans-serif}.ds-hint span{font-size:.8rem}.ds-hint strong{font-size:1.7rem;line-height:1.1;text-wrap:balance}"
     }
   ],
   "narrative": {
@@ -929,6 +1025,11 @@
         "name": "The Immediate Privacy Rule",
         "body": "Reveal the role or word only while held after the three-second handoff guard. Hide on release, cancellation, lost pointer capture, blur, visibility change or handoff. Never delay concealment for motion or automatically narrate a secret. Space and Enter provide hold/release access; private content uses `aria-live=\"off\"`.",
         "section": "components"
+      },
+      {
+        "name": "The Stable Hold Rule",
+        "body": "Keep the private window and hold control in the same position when hidden content is replaced by a role, word or hint. The hold button has no active transform. Longer content scrolls inside the fixed window rather than pushing the control away.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -937,7 +1038,9 @@
       "**Do** show draft provenance and keep review, manual editing and saving distinct.",
       "**Do** let phone play fill the viewport while allowing content to scroll.",
       "**Do** keep secret visibility transient and concealment immediate.",
-      "**Do** retain player names and stable avatar identifiers; use the masked identity artwork in the default edition."
+      "**Do** retain player names and stable avatar identifiers; use the masked identity artwork in the default edition.",
+      "**Do** keep the reveal window and held target stable while content changes.",
+      "**Do** offer touch and keyboard play alongside optional tilt and score-free practice."
     ],
     "donts": [
       "**Don't** bring the Classic mascot or sticker-book shadows back into the Social Club home.",

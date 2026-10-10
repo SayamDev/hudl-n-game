@@ -68,7 +68,7 @@ export const games: GameDefinition[] = [
       "Split into two teams, alternating players in your crew list.",
       "One player holds the phone facing their teammates.",
       "Act or describe the word without saying it. Tap correct or skip.",
-      "Optional tilt: screen toward the floor for correct, toward the ceiling to skip. Two turns decide the winner.",
+      "Enable and practise tilt before starting: screen toward the floor for correct, toward the ceiling to skip. Return upright between gestures. Or use buttons / the right and left arrow keys. Two turns decide the winner.",
     ],
     load: () => import("./Charades"),
   },

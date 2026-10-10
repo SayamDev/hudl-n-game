@@ -108,6 +108,26 @@ export default function App() {
     addEventListener("hudl-storage-error", failed);
     return () => removeEventListener("hudl-storage-error", failed);
   }, []);
+  useEffect(() => {
+    const pauseWithKeyboard = (e: KeyboardEvent) => {
+      const current = useGame.getState().session;
+      if (
+        e.key !== "Escape" ||
+        e.repeat ||
+        e.defaultPrevented ||
+        !current ||
+        current.paused ||
+        current.phase === "results" ||
+        document.querySelector('[aria-modal="true"]')
+      )
+        return;
+      e.preventDefault();
+      useGame.getState().patch({ paused: true });
+      silence();
+    };
+    window.addEventListener("keydown", pauseWithKeyboard);
+    return () => window.removeEventListener("keydown", pauseWithKeyboard);
+  }, []);
   const [page, setPage] = useState<Page>(
     location.hash.startsWith("#pack=") ? "packs" : "home",
   );
