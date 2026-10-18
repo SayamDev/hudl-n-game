@@ -6,7 +6,7 @@ import {
   PencilSimple,
 } from "@phosphor-icons/react";
 import { Button } from "./ui";
-import { makeOfflineMix, mixThemes } from "../lib/packStudio";
+import { makeOfflineMix, mixThemes, extendWords } from "../lib/packStudio";
 import { validatePack } from "../lib/logic";
 import type { Pack } from "../lib/types";
 type Draft = Pick<Pack, "name" | "words" | "adult">;
@@ -15,6 +15,7 @@ export default function PackStudio({
 }: {
   onUseDraft: (draft: Draft) => void;
 }) {
+  const [notice, setNotice] = useState("");
   const [mode, setMode] = useState<"offline" | "ai">("offline");
   const [theme, setTheme] = useState("snacks"),
     [idea, setIdea] = useState(""),
@@ -49,12 +50,40 @@ export default function PackStudio({
   useEffect(() => {
     if (draft) review.current?.focus();
   }, [draft]);
-  const makeDraft = async () => {
+  const makeDraft = async (extend = false) => {
     setError("");
+    setNotice("");
+    const previous = extend && draft ? draft.pack.words : [];
+    const accept = (pack: Draft, source: "offline" | "ai") => {
+      const words = extendWords(previous, pack.words);
+      if (words.length === previous.length) {
+        setNotice(
+          "No new words in that batch. Try another theme or save this draft and make a new pack.",
+        );
+        return;
+      }
+      if (words.length > 200) {
+        setNotice(
+          "Save this pack, then start another. Your collection can keep growing across packs.",
+        );
+        return;
+      }
+      recent.current = extendWords(recent.current, pack.words).slice(-2000);
+      setDraft({
+        pack: {
+          ...pack,
+          name: extend && draft ? draft.pack.name : pack.name,
+          words,
+        },
+        source: extend && draft?.source === "ai" ? "ai" : source,
+      });
+      setNotice(
+        `${words.length - previous.length} words added. Review them before saving.`,
+      );
+    };
     if (mode === "offline") {
       const pack = makeOfflineMix(theme, count, recent.current);
-      recent.current = [...recent.current, ...pack.words].slice(-1000);
-      setDraft({ pack, source: "offline" });
+      accept(pack, "offline");
       return;
     }
     setBusy(true);
@@ -65,7 +94,11 @@ export default function PackStudio({
       const response = await fetch("/api/pack-studio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ theme: idea.trim(), count }),
+        body: JSON.stringify({
+          theme: idea.trim(),
+          count,
+          exclude: [...recent.current, ...previous].slice(-48),
+        }),
         signal: abort.signal,
       });
       const data = await response.json();
@@ -73,10 +106,7 @@ export default function PackStudio({
         throw Error(
           data.error || "The AI draft is unavailable. Try an offline mix.",
         );
-      setDraft({
-        pack: validatePack({ ...data.draft, adult: false }),
-        source: "ai",
-      });
+      accept(validatePack({ ...data.draft, adult: false }), "ai");
     } catch (e) {
       if (!abort.signal.aborted)
         setError(
@@ -166,14 +196,15 @@ export default function PackStudio({
             />
           </label>
           <p className="helper" id="ai-disclosure">
-            Only your theme and pack size go to Groq. Leave out private details.
-            Every draft is made for a family audience; review it for your group.
+            Your theme, batch size and up to 48 recent draft words go to Groq to
+            avoid repeats. Leave out private details. Every draft is made for a
+            family audience; review it for your group.
           </p>
           {(!available || !online) && (
             <p className="studio-unavailable" role="status">
               {!online
                 ? "You’re offline. Saved packs and offline mixes are ready."
-                : "AI mixing isn’t connected yet. Try an offline mix while it’s being set up."}
+                : "AI mixing isn’t connected on this site. The local studio can generate drafts; save or share them here. Offline mixes work now."}
             </p>
           )}
         </>
@@ -197,7 +228,7 @@ export default function PackStudio({
           busy ||
           (mode === "ai" && (!available || !online || idea.trim().length < 3))
         }
-        onClick={makeDraft}
+        onClick={() => void makeDraft()}
       >
         {busy
           ? "Making your draft…"
@@ -215,6 +246,7 @@ export default function PackStudio({
           </Button>
         </>
       )}
+      {notice && <p role="status">{notice}</p>}
       {error && (
         <p className="error" role="alert">
           {error}
@@ -236,6 +268,21 @@ export default function PackStudio({
               <li key={w}>{w}</li>
             ))}
           </ul>
+          <Button
+            disabled={
+              busy ||
+              (mode === "ai" &&
+                (!available || !online || idea.trim().length < 3))
+            }
+            onClick={() => void makeDraft(true)}
+          >
+            Add another batch
+          </Button>
+          <p className="helper">
+            New batches merge without duplicate words. Save more packs to grow
+            your collection. AI availability depends on the connected service’s
+            free limits.
+          </p>
           <Button onClick={() => onUseDraft(draft.pack)}>
             <PencilSimple size={20} />
             Edit & save this draft

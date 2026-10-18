@@ -152,3 +152,13 @@ test("provider limit and malformed output fail clearly, with no paid retry", asy
     validateDraft({ name: "Duplicates", words: Array(8).fill("Moon") }),
   );
 });
+
+test('bounded prior words guide fresh batches and malformed exclusions are rejected', async () => {
+  let payload;
+  const handler = createPackStudio({env, fetcher: async (url, options) => { payload = JSON.parse(options.body); return success(); }});
+  const result = await call(handler, {body: {theme:'Space party', count:12, exclude:['Moon','Comet']}});
+  assert.equal(result.code, 200);
+  assert.deepEqual(JSON.parse(payload.messages[1].content).avoidWords, ['Moon','Comet']);
+  assert.equal((await call(handler, {body:{theme:'Space party', count:12, exclude:['x'.repeat(61)]}})).code,400);
+  assert.equal((await call(handler, {body:{theme:'Space party', count:12, exclude:Array(49).fill('Moon')}})).code,400);
+});

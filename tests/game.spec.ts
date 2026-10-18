@@ -379,7 +379,7 @@ test("design can be reverted and the explicit Imposter role stays private", asyn
   ).toBeVisible();
   await expect(page.getByText("Your decoy word: Moonlight")).toBeVisible();
   const box = await page
-    .getByRole("button", { name: "Release to hide" })
+    .getByRole("button", { name: "Hold to peek" })
     .boundingBox();
   expect(box!.y + box!.height).toBeLessThanOrEqual(844);
   await page.keyboard.up("Space");

@@ -14,3 +14,20 @@ it("remixing uses unseen eligible words first", () => {
   const next = makeOfflineMix("snacks", 12, first.words);
   expect(next.words.some((w) => first.words.includes(w))).toBe(false);
 });
+
+import { extendWords } from "./packStudio";
+import packs from "../content/packs.json";
+it("extends a collection without case or whitespace duplicates", () => {
+  expect(
+    extendWords(["Moon", "Rocket"], [" moon ", "Comet", "comet", "Star"]),
+  ).toEqual(["Moon", "Rocket", "Comet", "Star"]);
+});
+it("celebrity pack is family-eligible, substantial and unique", () => {
+  const pack = packs.find((p) => p.id === "celebrities")!;
+  expect(pack.adult).toBe(false);
+  expect(pack.words.length).toBeGreaterThan(100);
+  expect(new Set(pack.words.map((w) => w.toLowerCase())).size).toBe(
+    pack.words.length,
+  );
+  expect(packs.flatMap((p) => p.words).length).toBeGreaterThan(1200);
+});

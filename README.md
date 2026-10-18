@@ -54,6 +54,14 @@ In **Heads Up!**, choose **Enable tilt controls** before starting and allow moti
 
 Motion support depends on the device and browser. Sensor behaviour is covered by simulated browser events; physical iOS/Android verification is still needed. [Control design and API references](docs/adr/0004-phone-tilt.md).
 
+## Voices, tension and fresh words
+
+**Settings → Voice studio** previews two fictional British-English hosts generated locally through VoiceStudio and its Qwen voice-design engine. Public Mafia instructions use bundled recordings, cached for offline play; no runtime AI subscription or model download is needed. Private roles and secret words are never spoken. The exact night report stays on screen.
+
+The optional countdown soundtrack builds from gentle pulses to a faster final ten seconds, changing at one minute and thirty seconds. Pause or leave the game to stop it; **Sound effects**, **Volume** and **Countdown soundtrack** control it.
+
+There are 1,289 family-friendly entries across 15 starter categories, including 150 celebrity names, plus a separately gated adult pack. There is no round quota. Unseen words come first, then older words recycle. **Packs → Add another batch** grows a draft without duplicate words; save more packs to expand your collection. Offline content is finite and free AI services have limits—the app does not promise infinitely many unique words.
+
 ## Make it yours
 
 Use Node.js 22.12 or newer.
@@ -98,6 +106,6 @@ Browser tests use installed Google Chrome and start/reuse a preview at port 4173
 
 ## Privacy and credits
 
-No accounts, analytics or tracking cookies are built into the app. Browser storage holds the party data; clearing it removes the saved crew, packs and scores. Optional AI sends only the theme and word count to the configured provider. Shared links carry the custom pack in the URL fragment.
+No accounts, analytics or tracking cookies are built into the app. Browser storage holds the party data; clearing it removes the saved crew, packs and scores. Optional AI sends the theme, batch size and up to 48 recent studio words to the configured provider to discourage repeats. Player identities, roles and active secrets are not sent. Shared links carry the custom pack in the URL fragment.
 
 Created by **[Sayam](https://github.com/SayamDev)**. Source code is [MIT licensed](LICENSE); fonts and icon assets retain their own licences. © 2026 Sayam.

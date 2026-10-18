@@ -2122,16 +2122,139 @@
     height: 260px;
   }
 }
-.ready-cast .team-list .avatar { padding: 0; border: 0; }
-.ready-cast .team-list .identity { width: 100%; height: 100%; }
+.ready-cast .team-list .avatar {
+  padding: 0;
+  border: 0;
+}
+.ready-cast .team-list .identity {
+  width: 100%;
+  height: 100%;
+}
 @media (min-width: 701px) and (min-height: 600px) {
-  [data-design="club"][data-edition="remix"] main[data-game="charades"][data-phase="ready"] .stage {
+  [data-design="club"][data-edition="remix"]
+    main[data-game="charades"][data-phase="ready"]
+    .stage {
     min-height: calc(100dvh - 132px - env(safe-area-inset-top));
     margin-bottom: 12px;
   }
-  .charades-ready-grid { align-items: start; }
-  .ready-launch { margin-top: auto; }
-  .ready-cast .team-list { margin: 24px 0; gap: 24px 16px; }
-  .ready-cast .team-list .avatar { width: 80px; height: 80px; flex-basis: 80px; }
-  .ready-controls { align-self: start; }
+  .charades-ready-grid {
+    align-items: start;
+  }
+  .ready-launch {
+    margin-top: auto;
+  }
+  .ready-cast .team-list {
+    margin: 24px 0;
+    gap: 24px 16px;
+  }
+  .ready-cast .team-list .avatar {
+    width: 80px;
+    height: 80px;
+    flex-basis: 80px;
+  }
+  .ready-controls {
+    align-self: start;
+  }
+}
+
+/* Keep the instruction above the fingertip, and the target still under it. */
+.peek-controls {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+.peek-controls > .button {
+  width: 100%;
+  min-height: 56px;
+}
+.peek-cue {
+  margin: 0;
+  min-height: 2.8em;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.peek-controls > .helper {
+  margin: 0;
+  font-size: 0.8rem;
+  text-align: center;
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  [data-design="club"][data-edition="remix"] main[data-phase="peek"] .stage {
+    min-height: calc(100dvh - 110px - env(safe-area-inset-top));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  [data-design="club"][data-edition="remix"]
+    main[data-phase="peek"]
+    .stage
+    > h1 {
+    margin: 0;
+  }
+  [data-design="club"][data-edition="remix"] .handoff-label {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  [data-design="club"][data-edition="remix"] .handoff-name {
+    font-size: 2.4rem;
+  }
+  [data-design="club"][data-edition="remix"] main[data-phase="peek"] .lede {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  [data-design="club"][data-edition="remix"] .peek-face .avatar {
+    width: 68px;
+    height: 68px;
+    flex-basis: 68px;
+  }
+  .peek-controls {
+    margin-top: auto;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .peek-controls > .helper {
+    display: none;
+  }
+  [data-design="club"][data-edition="remix"]
+    main[data-game="charades"][data-phase="ready"]
+    .stage {
+    min-height: calc(100dvh - 110px - env(safe-area-inset-top));
+  }
+  .ready-launch {
+    margin-top: auto;
+  }
+  [data-design="club"][data-edition="remix"]
+    main[data-game="charades"][data-phase="acting"]
+    .stage {
+    min-height: calc(100dvh - 110px - env(safe-area-inset-top));
+  }
+  [data-design="club"][data-edition="remix"]
+    main[data-game="charades"][data-phase="acting"]
+    .split {
+    margin-top: auto;
+  }
+  [data-design="club"][data-edition="remix"]
+    main[data-phase="discuss"]
+    .stage
+    > .primary:last-child {
+    margin-top: auto;
+    min-height: 60px;
+  }
+}
+.voice-studio {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.voice-studio h2,
+.voice-studio p {
+  margin: 0;
+}
+.voice-studio .split .button {
+  min-height: 56px;
 }

@@ -142,7 +142,7 @@ test("reveal remains stationary, words and hints are strong, secrets disappear o
     const scroll = await page.evaluate(() => scrollY);
     await page.keyboard.down("Space");
     const after = await page
-      .getByRole("button", { name: "Release to hide" })
+      .getByRole("button", { name: "Hold to peek" })
       .boundingBox();
     expect(Math.abs(before!.y - after!.y)).toBeLessThan(1);
     expect(await page.evaluate(() => scrollY)).toBe(scroll);

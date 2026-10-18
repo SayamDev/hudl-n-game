@@ -83,7 +83,13 @@ export function createPackStudio({
         typeof request.theme !== "string" ||
         request.theme.trim().length < 3 ||
         request.theme.length > 120 ||
-        ![12, 24, 36].includes(request.count)
+        ![12, 24, 36].includes(request.count) ||
+        (request.exclude !== undefined &&
+          (!Array.isArray(request.exclude) ||
+            request.exclude.length > 48 ||
+            request.exclude.some(
+              (w) => typeof w !== "string" || w.length > 60 || /[\r\n]/.test(w),
+            )))
       )
         throw Error();
     } catch {
@@ -150,6 +156,9 @@ export function createPackStudio({
                 content: JSON.stringify({
                   theme: request.theme.trim(),
                   wordCount: request.count,
+                  ...(request.exclude?.length
+                    ? { avoidWords: request.exclude }
+                    : {}),
                 }),
               },
             ],

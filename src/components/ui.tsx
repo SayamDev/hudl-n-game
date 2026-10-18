@@ -11,7 +11,13 @@ import {
   SpeakerHigh,
 } from "@phosphor-icons/react";
 import { useGame } from "../store/useGame";
-import { feedback, speak } from "../lib/feedback";
+import {
+  feedback,
+  speak,
+  countdownSound,
+  stopCountdown,
+  silence,
+} from "../lib/feedback";
 import type { Player, Session } from "../lib/types";
 export function Button({
   children,
@@ -303,53 +309,66 @@ export function Peek({
           </div>
         </div>
       </div>
-      <button
-        className="button primary hold-button"
-        disabled={guard > 0}
-        onPointerDown={(e) => {
-          e.preventDefault();
-          e.currentTarget.setPointerCapture(e.pointerId);
-          reveal();
-        }}
-        onPointerUp={hide}
-        onPointerCancel={hide}
-        onLostPointerCapture={hide}
-        onContextMenu={(e) => e.preventDefault()}
-        onKeyDown={(e) => {
-          if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+      <div className="peek-controls">
+        <p className="peek-cue" aria-live="off">
+          {holding
+            ? "Lift your finger to hide your secret"
+            : seen
+              ? "Secret hidden. Ready to pass."
+              : "Hold below. Lift your finger to hide."}
+        </p>
+        <button
+          aria-label="Hold to peek"
+          aria-describedby="peek-help"
+          className="button primary hold-button"
+          disabled={guard > 0}
+          onPointerDown={(e) => {
             e.preventDefault();
+            e.currentTarget.setPointerCapture(e.pointerId);
             reveal();
-          }
-        }}
-        onKeyUp={(e) => {
-          if (e.key === " " || e.key === "Enter") {
-            e.preventDefault();
+          }}
+          onPointerUp={hide}
+          onPointerCancel={hide}
+          onLostPointerCapture={hide}
+          onContextMenu={(e) => e.preventDefault()}
+          onKeyDown={(e) => {
+            if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+              e.preventDefault();
+              reveal();
+            }
+          }}
+          onKeyUp={(e) => {
+            if (e.key === " " || e.key === "Enter") {
+              e.preventDefault();
+              hide();
+            }
+          }}
+          onBlur={hide}
+        >
+          <HandPalm size={25} weight="bold" />
+          Hold to peek
+        </button>
+        <Button
+          disabled={!seen || holding}
+          onClick={() => {
             hide();
-          }
-        }}
-        onBlur={hide}
-      >
-        <HandPalm size={25} weight="bold" />
-        {holding ? "Release to hide" : "Hold to peek"}
-      </button>
-      <Button
-        disabled={!seen || holding}
-        onClick={() => {
-          hide();
-          if (session.peekIndex === players.length - 1) onDone();
-          else {
-            setGuard(3);
-            setSeen(false);
-            patch({ peekIndex: session.peekIndex + 1 });
-          }
-        }}
-      >
-        {session.peekIndex === players.length - 1
-          ? "Everyone’s ready"
-          : "Hide & pass"}
-        <ArrowRight size={20} />
-      </Button>
-      <p className="helper">Keyboard: hold Space or Enter. Release to hide.</p>
+            if (session.peekIndex === players.length - 1) onDone();
+            else {
+              setGuard(3);
+              setSeen(false);
+              patch({ peekIndex: session.peekIndex + 1 });
+            }
+          }}
+        >
+          {session.peekIndex === players.length - 1
+            ? "Everyone’s ready"
+            : "Hide & pass"}
+          <ArrowRight size={20} />
+        </Button>
+        <p className="helper" id="peek-help">
+          Hold Space or Enter on the button. Release to hide.
+        </p>
+      </div>
     </Screen>
   );
 }
@@ -361,6 +380,26 @@ export function Timer({
   onEnd?: () => void;
 }) {
   const patch = useGame((s) => s.patch);
+  const preferences = useGame((s) => s.preferences);
+  useEffect(() => {
+    if (session.timerRunning && !session.paused && session.timerRemaining > 0)
+      countdownSound(session.timerRemaining);
+    const stop = () => stopCountdown();
+    window.addEventListener("blur", stop);
+    document.addEventListener("visibilitychange", stop);
+    return () => {
+      stopCountdown();
+      window.removeEventListener("blur", stop);
+      document.removeEventListener("visibilitychange", stop);
+    };
+  }, [
+    session.timerRemaining,
+    session.timerRunning,
+    session.paused,
+    preferences.sound,
+    preferences.volume,
+    preferences.countdown,
+  ]);
   const callback = useRef(onEnd);
   callback.current = onEnd;
   useEffect(() => {
@@ -375,9 +414,9 @@ export function Timer({
       last += elapsed * 1000;
       const remaining = Math.max(0, state.timerRemaining - elapsed);
       patch({ timerRemaining: remaining, timerRunning: remaining > 0 });
-      if (remaining <= 10 && remaining > 0) feedback("tick");
+
       if (remaining === 0) {
-        feedback("wrong");
+        feedback("success");
         callback.current?.();
       }
     }, 200);
@@ -414,7 +453,7 @@ export function Narration({
   useEffect(() => {
     if (!manual) speak(text);
     return () => {
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      silence();
     };
   }, [text, manual]);
   return (

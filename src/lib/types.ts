@@ -19,6 +19,7 @@ export type Preferences = {
   family: boolean;
   adult: boolean;
   sound: boolean;
+  countdown?: boolean;
   volume: number;
   haptics: boolean;
   narrator: boolean;

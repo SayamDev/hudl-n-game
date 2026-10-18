@@ -2,6 +2,12 @@ import packs from "../content/packs.json";
 import { freshOrder } from "./variety";
 export const mixThemes = [
   {
+    id: "famous",
+    name: "Famous faces",
+    description: "Musicians, screen stars and sporting legends.",
+    packs: ["celebrities"],
+  },
+  {
     id: "snacks",
     name: "Snack attack",
     description: "Food worth fighting over.",
@@ -48,4 +54,19 @@ export function makeOfflineMix(
     words: freshOrder(pool, previous).slice(0, count),
     adult: false,
   };
+}
+
+export function extendWords(current: string[], incoming: string[]) {
+  const seen = new Set(current.map((word) => word.trim().toLowerCase()));
+  return [
+    ...current,
+    ...incoming
+      .filter((word) => {
+        const key = word.trim().toLowerCase();
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .map((word) => word.trim()),
+  ];
 }

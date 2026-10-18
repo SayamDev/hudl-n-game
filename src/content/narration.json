@@ -1,0 +1,10 @@
+{
+  "preview": "Huddle up. Everyone, close your eyes. The village is going to sleep.",
+  "night": "Everyone, close your eyes. Keep the phone in the middle. Only the role called may look at the screen.",
+  "mafia": "Mafia, open your eyes. Take the phone and choose your action. Everyone else, keep your eyes closed.",
+  "doctor": "Doctor, open your eyes. Take the phone and choose your action. Everyone else, keep your eyes closed.",
+  "detective": "Detective, open your eyes. Take the phone and choose your action. Everyone else, keep your eyes closed.",
+  "bodyguard": "Bodyguard, open your eyes. Take the phone and choose your action. Everyone else, keep your eyes closed.",
+  "vigilante": "Vigilante, open your eyes. Take the phone and choose your action. Everyone else, keep your eyes closed.",
+  "dawn": "Good morning, village. Open your eyes. Check the night report, then begin your discussion."
+}

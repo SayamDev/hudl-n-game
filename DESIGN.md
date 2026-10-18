@@ -397,6 +397,12 @@ A three-step introduction uses the existing masked cast, a practice hold-to-reve
 
 The practice word is illustrative, not a live secret: pointer or Space/Enter holds show PINEAPPLE, and release, cancellation, lost capture, blur, visibility change or step changes hide it. Live games retain the separate Immediate Privacy Rule below. The modal traps focus through the shared Dialog and locks background scrolling. Its fixed purple/cream palette uses a 480px maximum width, 16px corners and 24px padding (18px below 370px); a scrollable maximum height keeps controls reachable. The practice card has 14px corners and a dashed border, changing to lime/charcoal while held. The cast deals in once over 650ms only when reduced motion is not requested.
 
+### Thumb reach and sound previews
+
+Live peek controls form a lower action group on portrait phones. A stable two-line-height instruction sits above the held target, outside the fingertip area. The button remains labelled Hold to peek throughout; lift guidance changes above it without moving the target. The name, identity and secret stay prominent; short viewports scroll naturally. Heads Up ready/acting actions and the discussion vote action use the lower available area independently of their content.
+
+Settings offers Voice studio with explicit voice and scene selectors, preview and stop controls, and accurate disclosure that recordings are generated. The numeric timer remains authoritative; optional sound builds at 60, 30 and 10 seconds without adding flashing visuals.
+
 ## Do's and Don'ts
 
 ### Do:

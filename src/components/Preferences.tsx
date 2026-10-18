@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react";
 import { useGame } from "../store/useGame";
 import { Button, Screen, Toggle } from "./ui";
-import { speak } from "../lib/feedback";
+import narration from "../content/narration.json";
+import { speak, silence } from "../lib/feedback";
 export default function Preferences() {
   const { preferences: p, setPreferences, resetScores } = useGame();
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [scene, setScene] = useState<"preview" | "night" | "dawn">("night");
+  useEffect(() => {
+    const stop = () => silence();
+    window.addEventListener("blur", stop);
+    document.addEventListener("visibilitychange", stop);
+    return () => {
+      silence();
+      window.removeEventListener("blur", stop);
+      document.removeEventListener("visibilitychange", stop);
+    };
+  }, []);
   const [reset, setReset] = useState(false);
   useEffect(() => {
     if (!("speechSynthesis" in window)) return;
@@ -80,6 +92,12 @@ export default function Preferences() {
         checked={p.sound}
         onChange={(sound) => setPreferences({ sound })}
       />
+      <Toggle
+        label="Countdown soundtrack"
+        description="Gentle pulses build at 1 minute, 30 seconds and the final 10. Follows Sound effects and Volume."
+        checked={p.countdown !== false}
+        onChange={(countdown) => setPreferences({ countdown })}
+      />
       <label>
         Volume: {Math.round(p.volume * 100)}%
         <input
@@ -100,46 +118,72 @@ export default function Preferences() {
       <Toggle
         label="Spoken Mafia narrator"
         checked={p.narrator}
-        onChange={(narrator) => setPreferences({ narrator })}
+        onChange={(narrator) => {
+          silence();
+          setPreferences({ narrator });
+        }}
       />
-      <label>
-        Narrator voice
-        <select
-          value={p.voice}
-          onChange={(e) => setPreferences({ voice: e.target.value })}
-        >
-          <option value="">Device default</option>
-          {voices.map((v) => (
-            <option key={v.voiceURI} value={v.voiceURI}>
-              {v.name} ({v.lang})
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        Narrator speed: {p.rate.toFixed(1)}×
-        <input
-          type="range"
-          min=".6"
-          max="1.4"
-          step=".1"
-          value={p.rate}
-          onChange={(e) => setPreferences({ rate: Number(e.target.value) })}
-        />
-      </label>
-      <Button
-        onClick={() =>
-          speak(
-            "Huddle up. Everyone, close your eyes. The village is going to sleep.",
-          )
-        }
-      >
-        Test narrator
-      </Button>
-      <p className="helper">
-        Voices depend on your browser. Some need internet; the script is always
-        shown.
-      </p>
+      <section className="voice-studio" aria-labelledby="voice-studio-title">
+        <h2 id="voice-studio-title">Voice studio</h2>
+        <p>
+          A storyteller for the village. Preview a scene, then choose your host.
+        </p>
+        <label>
+          Narrator voice
+          <select
+            value={p.voice}
+            onChange={(e) => {
+              silence();
+              setPreferences({ voice: e.target.value });
+            }}
+          >
+            <option value="">Village storyteller · British English</option>
+            <option value="studio:host">Warm host · British English</option>
+            {voices.map((v) => (
+              <option key={v.voiceURI} value={v.voiceURI}>
+                {v.name} ({v.lang})
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Narrator speed: {p.rate.toFixed(1)}×
+          <input
+            type="range"
+            min=".6"
+            max="1.4"
+            step=".1"
+            value={p.rate}
+            onChange={(e) => setPreferences({ rate: Number(e.target.value) })}
+          />
+        </label>
+        <label>
+          Preview scene
+          <select
+            value={scene}
+            onChange={(e) => {
+              silence();
+              setScene(e.target.value as typeof scene);
+            }}
+          >
+            <option value="night">Night falls</option>
+            <option value="dawn">Morning reveal</option>
+            <option value="preview">Welcome to the village</option>
+          </select>
+        </label>
+        <div className="split">
+          <Button onClick={() => speak(narration[scene], true)}>
+            Test narrator
+          </Button>
+          <Button onClick={silence}>Stop preview</Button>
+        </div>
+        <p className="helper">
+          AI-generated VoiceStudio recordings for public Mafia instructions.
+          Cached for offline play; no voice model download during a game.
+          Private roles and secret words are never read aloud. Device voices are
+          alternatives and may need internet.
+        </p>
+      </section>
       <Toggle
         label="Larger text"
         checked={p.largeText}

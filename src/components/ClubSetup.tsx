@@ -106,7 +106,8 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
           <span>{selected.length || "All"} packs</span>
         </div>
         <p className="section-description">
-          Mix a few topics for the next secret word.
+          Mix topics and keep playing. Unseen words come first; older words
+          return after the pool is used. Grow your collection in Packs.
         </p>
         <fieldset className="pack-deck">
           <legend className="sr-only">Word packs</legend>
@@ -136,7 +137,7 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
                 </span>
                 <span className="pack-tile-copy">
                   <strong>{pack.name}</strong>
-                  <small>{pack.words.length} words</small>
+                  <small>{pack.adult ? "18+" : "Play & replay"}</small>
                 </span>
                 <span className="pack-check" aria-hidden="true">
                   {checked && <Check size={16} weight="bold" />}

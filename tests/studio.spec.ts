@@ -74,7 +74,7 @@ test("studio renders at phone and desktop sizes, and explains unavailable AI", a
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "AI theme", exact: true }).click();
   await expect(
-    page.getByText("AI mixing isn’t connected yet.", { exact: false }),
+    page.getByText("AI mixing isn’t connected on this site.", { exact: false }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Generate AI draft" }),
@@ -99,6 +99,7 @@ test("AI studio previews mocked output, handles limits and allows cancellation",
     expect(route.request().postDataJSON()).toEqual({
       theme: "Space party",
       count: 24,
+      exclude: fail ? ["Moon", "Rocket", "Comet", "Star", "Orbit", "Planet"] : [],
     });
     await route.fulfill(
       fail

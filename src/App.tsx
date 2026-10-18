@@ -172,10 +172,12 @@ export default function App() {
       }
     };
     document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("blur", silence);
     return () => {
       removeEventListener("online", update);
       removeEventListener("offline", update);
       document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("blur", silence);
     };
   }, []);
   useEffect(() => {

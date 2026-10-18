@@ -1,3 +1,4 @@
+import narration from "../content/narration.json";
 import { useState } from "react";
 import { useGame } from "../store/useGame";
 import { mafiaWinner, resolveNight } from "../lib/logic";
@@ -179,13 +180,11 @@ export default function Mafia({ session: s }: GameProps) {
   if (s.phase === "dawn")
     return (
       <Screen title="Good morning…">
-        <Narration
-          manual={s.options.manual}
-          text={
-            s.history.filter((h) => h.startsWith("Night")).at(-1) ||
-            "The village wakes."
-          }
-        />
+        <Narration manual={s.options.manual} text={narration.dawn} />
+        <p className="night-report">
+          {s.history.filter((h) => h.startsWith("Night")).at(-1) ||
+            "The village wakes."}
+        </p>
         {s.options.showRoles &&
           s.history.filter((h) => h.startsWith("Night")).at(-1) && (
             <p>

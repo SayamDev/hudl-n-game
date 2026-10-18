@@ -907,6 +907,14 @@
         "reported": "All 24 unit tests and 23 browser tests passed before the final compact ready-layout adjustment. The final compact layout subsequently received a scoped visual-review disposition of ship.",
         "limits": "Source-only documentation pass; physical-phone sensor behavior remains unverified."
       }
+    },
+    "partyAudioAndReach": {
+      "updated": "2026-10-17",
+      "revealCue": "Stable instruction above the held button, outside fingertip area; button label stays Hold to peek.",
+      "mobile": "Lower action grouping for portrait reveal, Heads Up and discussion; natural scrolling on short viewports.",
+      "narration": "Fixed public scripts exported from VoiceStudio Qwen3 VoiceDesign. Preview/stop controls; immediate cancellation; no private roles or words spoken.",
+      "countdown": "Optional sound follows master volume/sound and changes at 60, 30 and 10 seconds. Numeric timer remains authoritative.",
+      "vocabulary": "Expanded finite offline library with Celebrities; unseen first then recycled. Append unique batches and save more packs; no unlimited free AI claim."
     }
   },
   "components": [
