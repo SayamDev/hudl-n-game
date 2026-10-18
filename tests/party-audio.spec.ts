@@ -120,6 +120,40 @@ test("natural voice assets play, stop, switch and decode with speech energy", as
     .getByRole("heading", { name: "Voice studio" })
     .scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${shots}/voice-studio.png`, fullPage: true });
+  await expect(
+    page
+      .getByRole("combobox", { name: "Narrator voice", exact: true })
+      .locator("option"),
+  ).toHaveCount(2);
+  await expect(
+    page.getByRole("slider", { name: /Narrator speed/ }),
+  ).toHaveCount(0);
+  const saved = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem("hudl-game-v1")!),
+  );
+  saved.state.preferences.voice = "legacy-robotic-device-voice";
+  saved.state.preferences.rate = 1.4;
+  await page.addInitScript(
+    (data) => localStorage.setItem("hudl-game-v1", JSON.stringify(data)),
+    saved,
+  );
+  await page.reload();
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await expect(
+    page.getByRole("combobox", { name: "Narrator voice", exact: true }),
+  ).toHaveValue("");
+  await page.getByRole("button", { name: "Test narrator" }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(() => (window as any).lastNarration?.currentTime || 0),
+    )
+    .toBeGreaterThan(0.1);
+  expect(
+    await page.evaluate(() => (window as any).lastNarration.src),
+  ).toContain("storyteller-night.mp3");
+  expect(
+    await page.evaluate(() => (window as any).lastNarration.playbackRate),
+  ).toBe(1);
 });
 test("offline batches grow without duplicates and celebrity mix is available", async ({
   page,

@@ -2,7 +2,7 @@
 
 17 October 2026.
 
-Narration uses exported recordings of fixed public Mafia instructions. VoiceStudio's local MLX Qwen3 VoiceDesign engine creates fictional host voices; the client never loads a speech model or sends player data to a service. Only exact script matches use recordings; device speech remains a fallback. Cancellation invalidates delayed playback/fallback, and pause, blur, screen exit and backgrounding stop audio. Dawn uses a public fixed introduction with the exact night report rendered separately. Private roles and secrets are not narrated.
+Narration uses exported recordings of fixed public Mafia instructions. VoiceStudio's local MLX Qwen3 VoiceDesign engine creates fictional host voices; the client never loads a speech model or sends player data to a service. Only exact script matches use recordings. The two bundled hosts are the only narrator choices; legacy device selections use the storyteller. Clips play at their original speed. Browser TTS fallback was removed to prevent robotic voices. Cancellation stops playback, and pause, blur, screen exit and backgrounding stop audio. Dawn uses a public fixed introduction with the exact night report rendered separately. Private roles and secrets are not narrated.
 
 Countdown cues use short Web Audio sine envelopes: a quiet note every eight seconds above a minute; every four seconds at a minute; paired notes every two seconds at thirty seconds; three rising notes each second in the final ten. They share the master sound/volume controls and have their own opt-out. Pause, hidden pages, blur and unmount cancel scheduled notes. Audio unlock follows an explicit user interaction. The numeric timer remains authoritative.
 

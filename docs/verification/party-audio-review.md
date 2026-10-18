@@ -16,3 +16,8 @@ All 27 browser scenarios passed across the full run and targeted reruns. Two exi
 Final screenshots at 320px, 390px, 820px and 1440px show the ready layout and reachable launch control. Five ready/acting surfaces had no horizontal overflow and no automated axe violations. All 16 MP3 files decoded with nonzero speech energy; a recording fetch succeeded with the browser offline after service-worker control was established by reload. The first capture caught lazy loading and was replaced after the ready control became visible.
 
 Physical phones and subjective voice quality remain user checks; browser simulation does not establish every hardware/audio condition.
+
+
+## Narrator curation — 18 October 2026
+
+Removed device narrator choices, browser TTS fallback and narration speed manipulation. The two curated VoiceStudio hosts retain original recording pace. Legacy saved device choices resolve to storyteller. Production build and focused playback test pass: exactly two options, both recordings play/stop, legacy voice and extreme speed settings use storyteller at playback rate 1. Source scan confirms no browser speech-generation calls remain.

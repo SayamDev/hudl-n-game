@@ -401,7 +401,7 @@ The practice word is illustrative, not a live secret: pointer or Space/Enter hol
 
 Live peek controls form a lower action group on portrait phones. A stable two-line-height instruction sits above the held target, outside the fingertip area. The button remains labelled Hold to peek throughout; lift guidance changes above it without moving the target. The name, identity and secret stay prominent; short viewports scroll naturally. Heads Up ready/acting actions and the discussion vote action use the lower available area independently of their content.
 
-Settings offers Voice studio with explicit voice and scene selectors, preview and stop controls, and accurate disclosure that recordings are generated. The numeric timer remains authoritative; optional sound builds at 60, 30 and 10 seconds without adding flashing visuals.
+Settings offers Voice studio with two curated VoiceStudio hosts and scene selectors, preview and stop controls, and accurate disclosure that recordings are generated. The numeric timer remains authoritative; optional sound builds at 60, 30 and 10 seconds without adding flashing visuals.
 
 ## Do's and Don'ts
 

@@ -912,7 +912,7 @@
       "updated": "2026-10-17",
       "revealCue": "Stable instruction above the held button, outside fingertip area; button label stays Hold to peek.",
       "mobile": "Lower action grouping for portrait reveal, Heads Up and discussion; natural scrolling on short viewports.",
-      "narration": "Fixed public scripts exported from VoiceStudio Qwen3 VoiceDesign. Preview/stop controls; immediate cancellation; no private roles or words spoken.",
+      "narration": "Only the two bundled VoiceStudio hosts are selectable. Original clip speed preserves phrasing; legacy device selections use storyteller. No browser TTS fallback. Preview/stop controls and immediate cancellation; no private roles or words spoken.",
       "countdown": "Optional sound follows master volume/sound and changes at 60, 30 and 10 seconds. Numeric timer remains authoritative.",
       "vocabulary": "Expanded finite offline library with Celebrities; unseen first then recycled. Append unique batches and save more packs; no unlimited free AI claim."
     }

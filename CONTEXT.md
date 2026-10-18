@@ -13,3 +13,5 @@ Round variety is stored locally in `variety` alongside the session. Eligible uns
 The optional pack studio sends a submitted theme, batch size and up to 48 recent studio draft words through the same-origin `/api/pack-studio` endpoint to Groq. Server-only credentials live in ignored `.env.local`. Vite mounts the adapter for local development/preview; deployment needs equivalent same-origin server routing. Offline curated mixes and the manual editor require no AI. Live connector verified on 2026-10-09. See `docs/pack-studio-setup.md` for free-account constraints and process-local quota limits.
 
 Public Mafia scripts use exported VoiceStudio/Qwen recordings. No private role or secret is narrated. Playback cancellation, timer audio stop conditions and word-library limits are documented in docs/adr/0005-party-audio.md.
+
+Narrator selection is limited to the two bundled VoiceStudio hosts. Legacy device-voice selections resolve to the storyteller. No browser TTS fallback is used; original clip speed preserves phrasing.

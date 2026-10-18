@@ -5,7 +5,6 @@ import narration from "../content/narration.json";
 import { speak, silence } from "../lib/feedback";
 export default function Preferences() {
   const { preferences: p, setPreferences, resetScores } = useGame();
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [scene, setScene] = useState<"preview" | "night" | "dawn">("night");
   useEffect(() => {
     const stop = () => silence();
@@ -18,13 +17,6 @@ export default function Preferences() {
     };
   }, []);
   const [reset, setReset] = useState(false);
-  useEffect(() => {
-    if (!("speechSynthesis" in window)) return;
-    const load = () => setVoices(speechSynthesis.getVoices());
-    load();
-    speechSynthesis.addEventListener("voiceschanged", load);
-    return () => speechSynthesis.removeEventListener("voiceschanged", load);
-  }, []);
   return (
     <Screen
       title="Your party, your rules."
@@ -131,7 +123,7 @@ export default function Preferences() {
         <label>
           Narrator voice
           <select
-            value={p.voice}
+            value={p.voice === "studio:host" ? "studio:host" : ""}
             onChange={(e) => {
               silence();
               setPreferences({ voice: e.target.value });
@@ -139,23 +131,7 @@ export default function Preferences() {
           >
             <option value="">Village storyteller · British English</option>
             <option value="studio:host">Warm host · British English</option>
-            {voices.map((v) => (
-              <option key={v.voiceURI} value={v.voiceURI}>
-                {v.name} ({v.lang})
-              </option>
-            ))}
           </select>
-        </label>
-        <label>
-          Narrator speed: {p.rate.toFixed(1)}×
-          <input
-            type="range"
-            min=".6"
-            max="1.4"
-            step=".1"
-            value={p.rate}
-            onChange={(e) => setPreferences({ rate: Number(e.target.value) })}
-          />
         </label>
         <label>
           Preview scene
@@ -180,8 +156,8 @@ export default function Preferences() {
         <p className="helper">
           AI-generated VoiceStudio recordings for public Mafia instructions.
           Cached for offline play; no voice model download during a game.
-          Private roles and secret words are never read aloud. Device voices are
-          alternatives and may need internet.
+          Private roles and secret words are never read aloud. Each host keeps
+          their original conversational pace. The script is always shown.
         </p>
       </section>
       <Toggle

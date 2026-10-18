@@ -39,47 +39,26 @@ export function feedback(kind: "tap" | "success" | "wrong" | "tick" = "tap") {
   }
 }
 let narrationAudio: HTMLAudioElement | undefined;
-let speechToken = 0;
 export function speak(text: string, preview = false) {
   const p = useGame.getState().preferences;
   if (!p.narrator && !preview) return;
   silence();
-  const token = speechToken;
-  let fallbackUsed = false;
-  const fallback = () => {
-    if (
-      fallbackUsed ||
-      token !== speechToken ||
-      !("speechSynthesis" in window) ||
-      document.hidden
-    )
-      return;
-    fallbackUsed = true;
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = p.rate;
-    u.volume = p.volume;
-    u.lang = "en-GB";
-    u.voice =
-      window.speechSynthesis.getVoices().find((v) => v.voiceURI === p.voice) ||
-      null;
-    window.speechSynthesis.speak(u);
-  };
   const id = Object.entries(narration).find(
     ([, script]) => script === text,
   )?.[0];
-  if (id && (!p.voice || p.voice.startsWith("studio:"))) {
+  if (id) {
     const voice = p.voice === "studio:host" ? "host" : "storyteller";
     narrationAudio = new Audio(
       `${import.meta.env.BASE_URL}audio/narrator/${voice}-${id}.mp3`,
     );
     narrationAudio.volume = p.volume;
-    narrationAudio.playbackRate = p.rate / 0.9;
-    narrationAudio.onerror = fallback;
-    void narrationAudio.play().catch(fallback);
-  } else fallback();
+    narrationAudio.playbackRate = 1;
+    void narrationAudio.play().catch(() => {
+      /* The visible script remains available. */
+    });
+  }
 }
 export function silence() {
-  speechToken++;
   stopCountdown();
   if (narrationAudio) {
     narrationAudio.pause();
