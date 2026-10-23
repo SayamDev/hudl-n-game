@@ -17,3 +17,5 @@ Public Mafia scripts use exported VoiceStudio/Qwen recordings. No private role o
 Narrator selection is limited to the two bundled VoiceStudio hosts. Legacy device-voice selections resolve to the storyteller. No browser TTS fallback is used; original clip speed preserves phrasing.
 
 Future-round vote defaults upgrade once via voteFlowVersion=2; active ballots remain unchanged. Related hint words are in src/content/hints.json; unknown custom words fall back to category. seconds=0 is untimed. Classic Charades is a charadesMode on the existing game id: actor-peek privacy handoff, >=4 players, prompt absent while acting, clock paused between actors. See docs/adr/0006-faster-party.md.
+
+Refined deck visuals are enabled unless preferences.deckStyle is false. This affects default Social Club handoffs/results only. Scoreboard is shared by Results and the lobby scores page, with four explicit columns in every design; this prevents the former results/avatar overlap. SecretSleeve receives only ready/seen flags and never role/word data. Its visual transition must not delay private text removal.

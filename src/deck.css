@@ -1,0 +1,611 @@
+/* Shared score structure: results and leaderboard always have the same four cells. */
+.score-list > .score-entry {
+  display: grid;
+  grid-template-columns: 28px 56px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+.score-entry > .score-rank {
+  grid-column: 1;
+}
+.score-entry > .avatar {
+  grid-column: 2;
+  width: 56px;
+  height: 56px;
+  flex: none;
+}
+.score-entry > .score-player {
+  grid-column: 3;
+  min-width: 0;
+  line-height: 1.2;
+}
+.score-entry > .score-points {
+  grid-column: 4;
+  justify-self: end;
+}
+.score-entry small {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+.peek-identity {
+  display: none;
+}
+
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"] {
+  --deck-ease: cubic-bezier(0.23, 1, 0.32, 1);
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-list
+  > .score-entry {
+  grid-template-columns: 30px 60px minmax(0, 1fr) auto;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  min-height: 92px;
+  position: relative;
+  overflow: hidden;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-entry
+  .score-rank {
+  color: #46513d;
+  font-size: 1.1rem;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-entry
+  .avatar {
+  width: 60px;
+  height: 60px;
+  margin: 0;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-entry
+  .score-player {
+  font-size: 1.2rem;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-entry
+  .score-player
+  small {
+  color: #38442e;
+  font-weight: 600;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-entry
+  .score-points {
+  display: grid;
+  place-items: center;
+  min-width: 60px;
+  padding: 9px 12px;
+  font-size: 1.6rem;
+  line-height: 1;
+  border-radius: 9px;
+  font-variant-numeric: tabular-nums;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-points
+  small {
+  color: #e6edbd;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-top: 3px;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .score-list {
+  gap: 8px;
+}
+
+/* Private handoff: name + identity + sealed deck, never a moving control. */
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .is-playing
+  .peek-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  grid-template-areas: "name identity" "intro intro" "secret secret" "controls controls";
+  grid-template-rows: auto auto 320px auto;
+  align-content: start;
+  align-items: start;
+  gap: 12px;
+  width: min(100%, 620px);
+  min-height: 0;
+  margin: 8px auto 16px;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  > h1 {
+  grid-area: name;
+  margin: 0;
+  align-self: center;
+  min-width: 0;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .handoff-label {
+  font-size: 0.88rem;
+  margin-bottom: 7px;
+  color: var(--muted);
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .handoff-name {
+  font-size: clamp(2.4rem, 8vw, 3.5rem);
+  padding: 4px 10px 7px;
+  border-radius: 6px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  > .lede {
+  grid-area: intro;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-identity {
+  grid-area: identity;
+  display: grid;
+  justify-items: center;
+  align-self: center;
+  gap: 7px;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-identity
+  > .avatar {
+  width: 78px;
+  height: 78px;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+.identity-signature {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .peek-face {
+  grid-area: secret;
+  display: block;
+  margin: 0;
+  width: 100%;
+  min-height: 0;
+  align-self: stretch;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card.stable-secret {
+  height: 100%;
+  min-height: 280px;
+  max-height: 350px;
+  border-radius: 16px;
+  background: #222d25;
+  border: 1px solid #66765e;
+  color: #f3f5e9;
+  transition:
+    background-color 160ms var(--deck-ease),
+    border-color 160ms var(--deck-ease);
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card.stable-secret::before {
+  content: "";
+  position: absolute;
+  width: 38px;
+  height: 5px;
+  border-radius: 3px;
+  top: 12px;
+  left: calc(50% - 19px);
+  background: #839378;
+  opacity: 0.65;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card.revealed {
+  background: #d4fa77;
+  border-color: #d4fa77;
+  color: #19211c;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card.imposter-reveal {
+  background: #ff604d;
+  border-color: #ff604d;
+  color: #201712;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-content {
+  gap: 9px;
+  padding: 25px 20px 20px;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card:not(.revealed)
+  h2 {
+  font-size: clamp(1.25rem, 4vw, 1.8rem);
+  line-height: 1.15;
+  max-width: 24ch;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card:not(.revealed)
+  p {
+  font-size: 0.86rem;
+  color: #c1cebd;
+  max-width: 30ch;
+}
+.secret-sleeve {
+  width: min(100%, 300px);
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+.secret-sleeve svg {
+  width: 100%;
+  height: 145px;
+  overflow: visible;
+}
+.secret-sleeve > span {
+  color: #d4fa77;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+.secret-sleeve .sleeve-tab {
+  opacity: 0.4;
+  transform: translateY(3px);
+  transition:
+    transform 220ms var(--deck-ease),
+    opacity 220ms var(--deck-ease);
+}
+.secret-sleeve.is-ready .sleeve-tab {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .peek-controls {
+  grid-area: controls;
+  margin-top: 0;
+  gap: 9px;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-cue {
+  min-height: 2.2em;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-controls
+  .hold-button {
+  min-height: 60px;
+  border-radius: 12px;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-controls
+  .hold-button:active {
+  transform: none;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-controls
+  > .helper {
+  font-size: 0.72rem;
+}
+
+/* Round winners use the real cast, framed as a signed party card. */
+.winner-artwork {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 230px;
+  margin: 0 auto 14px;
+  isolation: isolate;
+}
+.winner-ticket {
+  position: absolute;
+  width: min(84%, 360px);
+  height: 192px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+}
+.winner-ticket-back {
+  background: #bcb0ff;
+  transform: rotate(-5deg);
+  color: #19211c;
+  align-items: end;
+  padding-bottom: 8px;
+  font-weight: 700;
+}
+.winner-ticket-front {
+  background: #d4fa77;
+  color: #19211c;
+  transform: rotate(3deg);
+  padding: 18px;
+  gap: 6px;
+}
+.winner-cast {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.winner-cast > .avatar {
+  width: 90px;
+  height: 90px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  flex: 0 1 90px;
+}
+.winner-cast > .avatar:nth-child(2) {
+  transform: translateY(-6px) rotate(-5deg);
+}
+.winner-stamp {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  color: #19211c;
+}
+.winner-ticket-label {
+  font-weight: 700;
+  font-size: 0.67rem;
+  letter-spacing: 0.08em;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .results-stage
+  > .answer {
+  padding: 14px;
+  margin: 0 0 10px;
+  background: var(--surface);
+  border-radius: 12px;
+  color: var(--ink);
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .results-stage {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+@media (min-width: 800px) {
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .is-playing
+    .peek-stage {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    grid-template-areas: "name secret" "intro secret" "identity secret" ". controls";
+    grid-template-rows: auto auto 1fr auto;
+    gap: 18px 40px;
+    width: min(100%, 980px);
+    min-height: 0;
+    margin-top: 36px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .peek-identity {
+    justify-self: start;
+    margin-top: 18px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-identity
+    > .avatar {
+    width: 150px;
+    height: 150px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .secret-card.stable-secret {
+    height: 350px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .secret-sleeve
+    svg {
+    height: 180px;
+  }
+}
+@media (max-width: 420px) {
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .score-list
+    > .score-entry {
+    grid-template-columns: 20px 48px minmax(0, 1fr) auto;
+    padding: 12px;
+    gap: 9px;
+    min-height: 80px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .score-entry
+    .avatar {
+    width: 48px;
+    height: 48px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .score-entry
+    .score-player {
+    font-size: 1rem;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .score-entry
+    .score-points {
+    min-width: 48px;
+    font-size: 1.35rem;
+    padding: 9px;
+  }
+}
+@media (max-height: 740px) and (max-width: 799px) {
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .is-playing
+    .peek-stage {
+    min-height: 0;
+    grid-template-rows: auto auto 260px auto;
+    gap: 9px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .secret-card.stable-secret {
+    min-height: 260px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .secret-content {
+    padding: 22px 14px 14px;
+    gap: 7px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .secret-sleeve
+    svg {
+    height: 120px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .winner-ticket-front {
+    animation: winner-card-in 280ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+  .winner-ticket-back {
+    animation: winner-back-in 260ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+  [data-art-direction="deck"] .peek-stage.is-peeking .peek-identity .identity {
+    transform: rotate(-5deg);
+  }
+  [data-art-direction="deck"] .peek-identity .identity {
+    transition: transform 180ms var(--deck-ease);
+  }
+  [data-art-direction="deck"] .score-entry {
+    animation: score-arrive 220ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+  [data-art-direction="deck"] .score-entry:nth-child(2) {
+    animation-delay: 30ms;
+  }
+  [data-art-direction="deck"] .score-entry:nth-child(3) {
+    animation-delay: 60ms;
+  }
+  [data-art-direction="deck"] .score-entry:nth-child(n + 4) {
+    animation-delay: 90ms;
+  }
+  @keyframes winner-card-in {
+    from {
+      transform: translateY(14px) rotate(-3deg);
+    }
+    to {
+      transform: translateY(0) rotate(3deg);
+    }
+  }
+  @keyframes winner-back-in {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(-5deg);
+    }
+  }
+  @keyframes score-arrive {
+    from {
+      transform: translateY(7px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .secret-sleeve .sleeve-tab {
+    transition: none;
+    transform: none;
+  }
+  [data-art-direction="deck"] .peek-stage .secret-card.stable-secret {
+    transition: none;
+  }
+}
+/* The artwork moves away; secret text never waits for an animation to hide. */
+.sleeve-motion {
+  position: absolute;
+  inset: 18px 0 auto;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 120ms ease-out;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card:not(.revealed)
+  .secret-content {
+  align-content: end;
+  padding-bottom: 25px;
+}
+.secret-card.revealed .sleeve-motion {
+  transform: translateY(-70px) rotate(-5deg);
+  opacity: 0;
+}
+@media (min-width: 800px) {
+  .sleeve-motion {
+    top: 28px;
+  }
+}
+@media (max-height: 740px) and (max-width: 799px) {
+  .sleeve-motion {
+    top: 15px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sleeve-motion {
+    transition: none;
+  }
+  .secret-card.revealed .sleeve-motion {
+    transform: none;
+  }
+}
+
+.secret-sleeve > span {
+  display: none;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .peek-stage
+  .secret-card:not(.revealed)
+  .secret-content {
+  top: 162px;
+  align-content: center;
+  padding: 12px 20px 20px;
+}
+[data-design="club"][data-edition="remix"] .score-entry .score-player small {
+  color: #38442e;
+}
+[data-design="club"][data-edition="remix"] .score-entry .score-points small {
+  color: #e6edbd;
+}
+@media (min-width: 800px) {
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .secret-sleeve
+    svg {
+    height: 160px;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .secret-card:not(.revealed)
+    .secret-content {
+    top: 180px;
+  }
+}
+@media (max-height: 740px) and (max-width: 799px) {
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .peek-stage
+    .secret-card:not(.revealed)
+    .secret-content {
+    top: 135px;
+    padding: 10px 14px 16px;
+  }
+}
+/* Revealing is immediate: the closing sleeve must never cross private text. */
+.secret-card.revealed .sleeve-motion {
+  visibility: hidden;
+}

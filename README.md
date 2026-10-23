@@ -1,6 +1,7 @@
 <div align="center">
 
 # hudl n game.
+
 ### Good company. Bad alibis.
 
 **One phone. Five games. Everyone in.**
@@ -17,13 +18,13 @@ Free to play · No accounts · No ads · Phone-first
 
 Add your crew, choose a game and pass the phone. A short interactive welcome lets new players practise holding to reveal a secret before the real round begins. Names, scores and custom packs stay on the device.
 
-| Your kind of chaos | The game | Crew |
-| --- | --- | --- |
-| A word everyone knows. Almost everyone. | **Imposter** — secret words, clues, accusations and a last-chance guess. | 3–20 |
-| Trust nobody after dark. | **Mafia** — narrated nights, secret roles and village votes. | 5–20 |
-| Same place. One very lost spy. | **Where Are We?** — location clues, questioning and a hidden outsider. | 3–20 |
-| Big gestures. Absolutely no words. | **Heads Up! / Charades** — choose team clues or silent acting, with private actor prompts. | 3–20 |
-| You know exactly who it is. | **Most Likely To / Hot Takes** — point votes or private agreement ratings. | 3–20 |
+| Your kind of chaos                      | The game                                                                                   | Crew |
+| --------------------------------------- | ------------------------------------------------------------------------------------------ | ---- |
+| A word everyone knows. Almost everyone. | **Imposter** — secret words, clues, accusations and a last-chance guess.                   | 3–20 |
+| Trust nobody after dark.                | **Mafia** — narrated nights, secret roles and village votes.                               | 5–20 |
+| Same place. One very lost spy.          | **Where Are We?** — location clues, questioning and a hidden outsider.                     | 3–20 |
+| Big gestures. Absolutely no words.      | **Heads Up! / Charades** — choose team clues or silent acting, with private actor prompts. | 3–20 |
+| You know exactly who it is.             | **Most Likely To / Hot Takes** — point votes or private agreement ratings.                 | 3–20 |
 
 ## A little character. A lot of replay.
 
@@ -115,3 +116,5 @@ Browser tests use installed Google Chrome and start/reuse a preview at port 4173
 No accounts, analytics or tracking cookies are built into the app. Browser storage holds the party data; clearing it removes the saved crew, packs and scores. Optional AI sends the theme, batch size and up to 48 recent studio words to the configured provider to discourage repeats. Player identities, roles and active secrets are not sent. Shared links carry the custom pack in the URL fragment.
 
 Created by **[Sayam](https://github.com/SayamDev)**. Source code is [MIT licensed](LICENSE); fonts and icon assets retain their own licences. © 2026 Sayam.
+
+Private handoffs now use an original sealed-deck illustration with a stable hold control, responsive two-column tablet layout and immediate concealment on release. Results feature the real winning alibis and the same readable score rows as the leaderboard. Compare with the previous presentation under **Settings → Refined deck styling**; player data stays intact. Motion and Phosphor Icons are MIT-licensed open-source dependencies, and the deck artwork is authored locally.

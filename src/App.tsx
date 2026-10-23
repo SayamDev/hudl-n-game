@@ -1,4 +1,5 @@
 import Welcome from "./components/Welcome";
+import { Scoreboard } from "./components/Scoreboard";
 import ClubHome, { ClubLogo } from "./components/ClubHome";
 import { Component, lazy, Suspense, useEffect, useState } from "react";
 import type { ErrorInfo, ReactNode } from "react";
@@ -142,6 +143,8 @@ export default function App() {
   } = useRegisterSW();
   useEffect(() => {
     document.documentElement.dataset.theme = p.dark ? "dark" : "light";
+    document.documentElement.dataset.artDirection =
+      p.deckStyle === false ? "previous" : "deck";
     document.documentElement.dataset.design =
       p.design === "classic" ? "classic" : "club";
     document.documentElement.dataset.edition =
@@ -506,24 +509,7 @@ export default function App() {
                   </div>
                 ) : null}
                 {players.length ? (
-                  <div className="score-list">
-                    {[...players]
-                      .sort((a, b) => b.score - a.score)
-                      .map((pl) => (
-                        <div key={pl.id}>
-                          <span
-                            className="score-rank"
-                            aria-label={`Rank ${players.filter((p) => p.score > pl.score).length + 1}`}
-                          >
-                            {players.filter((p) => p.score > pl.score).length +
-                              1}
-                          </span>
-                          <Avatar player={pl} />
-                          <strong>{pl.name}</strong>
-                          <b>{pl.score} pts</b>
-                        </div>
-                      ))}
-                  </div>
+                  <Scoreboard players={players} />
                 ) : (
                   <p>No scores yet. Your first game starts the story.</p>
                 )}

@@ -14,6 +14,7 @@ export type Pack = {
   adult?: boolean;
 };
 export type Preferences = {
+  deckStyle?: boolean;
   design: "club" | "club-original" | "classic";
   dark: boolean;
   family: boolean;

@@ -59,6 +59,12 @@ export default function Preferences() {
         </div>
       </fieldset>
       <Toggle
+        label="Refined deck styling"
+        description="New handoff artwork and results. Switch off to compare with the previous Social Club design."
+        checked={p.deckStyle !== false}
+        onChange={(deckStyle) => setPreferences({ deckStyle })}
+      />
+      <Toggle
         label="Dark party mode"
         checked={p.dark}
         onChange={(dark) => setPreferences({ dark })}

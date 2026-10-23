@@ -13,3 +13,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 
 import "./remix.css";
+
+import "./deck.css";

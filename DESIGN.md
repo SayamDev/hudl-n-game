@@ -254,6 +254,7 @@ A mature, playful party identity built from lime and charcoal, five distinct gam
 Social Club is the default masked identity edition. Settings > Design > Social Club original restores the previous Social Club home and logo; Classic restores the original home, logo, Fredoka/Nunito typography and sticker-book styling. The original specification is preserved in [the Classic design archive](docs/design-archive/classic/DESIGN.md). The user-authorized replacement is recorded in [the surface brief](docs/surface.md) and current PRODUCT.md brand commitments; the underlying five-game product, player names and twenty stored avatar identifiers remain. The default edition renders those identifiers as deterministic masked SVG identities; the original editions retain their prior presentation.
 
 **Key Characteristics:**
+
 - Lime lobby actions, charcoal typography and five game-specific palettes and surface forms.
 - Self-hosted Space Grotesk throughout the default design.
 - Compact phone layouts, generous touch controls and a persistent lobby navigation.
@@ -268,10 +269,12 @@ Documentation is extracted from `src/club.css`, `src/remix.css`, inherited rules
 The lobby uses bright lime and warm neutrals; each game carries a distinct palette through setup and play. Game tokens are scoped by `.app-shell:has(main[data-game])` within the default remix edition, including header, fields and supporting text. Imposter, Mafia and Spy have intentionally dark worlds in both theme preferences; Heads Up and Most Likely have explicit dark variants.
 
 ### Primary
+
 - **Lime:** shared lobby controls, selected packs and Imposter-game ordinary revealed secrets; the featured home card uses the same colour.
 - **Charcoal:** lettering on coloured cards and the dark lobby play actions. It stays fixed on those cards in dark mode.
 
 ### Secondary
+
 - **Mafia midnight and gold, Spy dossier green, Heads Up coral and cream, Most Likely yellow and purple:** define the current home cards and complete game stages. Mafia narration is gold, Spy secrets are pale green dossiers, Heads Up prompts are coral, and Most Likely prompts are purple with pale yellow text.
 - **Mafia lilac, Spy mint, Charades peach and Party blue:** remain contextual legacy tokens for the original edition and inherited rules; they are not the current default game palettes.
 - **Identity palette:** lime, lavender, mint, peach, yellow and blue form the current six-colour cast. Avatar salmon remains a legacy token and is distinct from the private Imposter coral.
@@ -279,6 +282,7 @@ The lobby uses bright lime and warm neutrals; each game carries a distinct palet
 - **Imposter coral and Imposter ink:** explicit private role identity. Coral is only mounted for the Imposter while held; ordinary reveals follow the active game accent in the default edition; the original editions retain lime.
 
 ### Neutral
+
 - **Background, surface, muted and border:** warm pale canvas, white foreground surfaces, subdued helper text and thin outlines.
 - **Focus:** dark green keyboard outlines; dark mode uses lime focus. Dark canvas, surface, ink, muted and border values replace the corresponding root variables.
 - **Control accent and switch off:** native selected inputs and inactive toggle tracks.
@@ -414,6 +418,7 @@ Classic Charades shares the coral Heads Up shell and uses a lavender actor stage
 ## Do's and Don'ts
 
 ### Do:
+
 - **Do** use the Social Club tokens for new default screens and preserve both original design choices.
 - **Do** retain readable labels, native checked states and visible keyboard focus.
 - **Do** show draft provenance and keep review, manual editing and saving distinct.
@@ -424,8 +429,17 @@ Classic Charades shares the coral Heads Up shell and uses a lavender actor stage
 - **Do** retain player names and stable avatar identifiers; use the masked identity artwork in the default edition.
 
 ### Don't:
+
 - **Don't** bring the Classic mascot or sticker-book shadows back into the Social Club home.
 - **Don't** overwrite the archived Classic design or remove its self-hosted fonts.
 - **Don't** put the lobby navigation over an active game.
 - **Don't** claim complete functional or accessibility validation from a scoped visual review.
 - **Don't** make AI generation automatic or required for pack creation.
+
+### Refined deck: handoffs and results
+
+The default Social Club edition now groups the player's coloured name and actual alibi with a sealed sleeve. The original geometric sleeve carries the tilted n signature; its artwork reseals over 220ms after release. Artwork hides immediately while private text is shown. Secret text is still synchronously removed on release. The action group is stable and below the reveal, with release instructions above the fingertip. Tablet/desktop use a bounded two-column composition rather than stretching a phone card across the viewport.
+
+Round results and the running leaderboard share a four-cell Scoreboard: rank, avatar, wrapping name, compact points. A results card displays the actual winning cast. Score entries arrive with transform-only motion, at most 90ms stagger; reduced motion removes those entrances. Refined deck styling can be switched off in Settings without touching scores or players. Layout corrections remain in both presentations.
+
+Refinement colours: deck surface #222d25, sleeve edge #66765e, muted seam #839378, rank #46513d, gain copy #38442e. Small signatures use 0.55–0.7rem, rank 1.1rem, score 1.6rem; gameplay instructions remain at least 0.85rem. Shared open-source tools are Motion (MIT) and Phosphor Icons (MIT); deck and winner graphics are original local SVG/CSS.

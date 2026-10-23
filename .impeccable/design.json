@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-10-10T06:17:40.569965+00:00",
-  "title": "Design System: Hudl N Game — Social Club",
+  "title": "Design System: Hudl N Game \u2014 Social Club",
   "extensions": {
     "colorMeta": {
       "lime": {
@@ -801,9 +801,9 @@
       "targetMinimum": "48px for method and theme choices",
       "provenance": [
         "Curated offline mix",
-        "AI draft · Review before playing"
+        "AI draft \u00b7 Review before playing"
       ],
-      "flow": "Draft preview → manual editor → explicit save",
+      "flow": "Draft preview \u2192 manual editor \u2192 explicit save",
       "states": [
         "Curated offline ready",
         "AI ready with theme and provider disclosure",
@@ -922,6 +922,19 @@
       "voting": "Quick group point-vote default for future rounds; optional secret mode; sealed public envelope can be swiped up or opened with a native button, no timed gate.",
       "motion": "Cards and geometric game emblems enter once on viewport intersection. Three-identity Imposter stack; 220ms envelope lift and 250ms verdict copy. Reduced motion removes these effects.",
       "charades": "Classic actor mode uses coral shell and full-width lavender actor stage. Prompt appears only during protected hold; acting screen has no secret. Timed handoffs pause; no-timer option available. Four-player minimum for classic teams."
+    },
+    "brandedDeck": {
+      "enabledUnless": "preferences.deckStyle === false",
+      "scoreStructure": [
+        "rank",
+        "avatar",
+        "player",
+        "points"
+      ],
+      "privateText": "synchronous unmount; never animated out",
+      "artwork": "original local sealed sleeve and actual winner cast",
+      "motion": "220ms reseal; 280ms winner card; reduced-motion supported",
+      "responsive": "single column phone; bounded two columns at 800px"
     }
   },
   "components": [
@@ -945,7 +958,7 @@
       "name": "Lobby Play",
       "kind": "button",
       "description": "Charcoal action within a coloured game card.",
-      "html": "<button class=\"ds-control\">Let’s play <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 18 18 6M6 6h12v12\"/></svg></button>",
+      "html": "<button class=\"ds-control\">Let\u2019s play <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 18 18 6M6 6h12v12\"/></svg></button>",
       "css": ".ds-control{font-family:\"Space Grotesk\",sans-serif;cursor:pointer}.ds-control:disabled{opacity:.48;cursor:not-allowed}.ds-control:focus-visible{outline:3px solid var(--focus,#315b20);outline-offset:5px}.ds-control{display:flex;justify-content:space-between;align-items:center;gap:22px;min-height:52px;border:0;border-radius:10px;background:#19211c;color:#fff;padding:12px 18px;font-size:.95rem;font-weight:600;transition:transform .15s}.ds-control:active{transform:scale(.97)}@media(max-width:767px){.ds-control{min-height:48px;padding:10px 12px;font-size:.8rem;gap:8px}}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}",
       "refersTo": "button-play"
     },
@@ -992,7 +1005,7 @@
       "kind": "chip",
       "refersTo": "pack-tile-selected",
       "description": "Default Imposter setup pack with native selection, word count and a visible check.",
-      "html": "<label class=\"ds-pack\"><input type=\"checkbox\" checked/><span class=\"ds-mono\">F</span><span class=\"ds-copy\"><strong>Food</strong><small>Word pack</small></span><span class=\"ds-check\" aria-hidden=\"true\">✓</span></label>",
+      "html": "<label class=\"ds-pack\"><input type=\"checkbox\" checked/><span class=\"ds-mono\">F</span><span class=\"ds-copy\"><strong>Food</strong><small>Word pack</small></span><span class=\"ds-check\" aria-hidden=\"true\">\u2713</span></label>",
       "css": ".ds-pack{position:relative;display:flex;align-items:center;gap:10px;min-height:78px;padding:10px;border:1px solid var(--border,#cbd1c8);border-radius:10px;background:var(--surface,#fff);color:var(--ink,#19211c);font-family:\"Space Grotesk\",sans-serif;cursor:pointer;transition:transform .16s}.ds-pack:has(input:checked){background:#e5f8bc;color:#19211c;border-color:#54772a}.ds-pack input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}.ds-pack:has(input:focus-visible){outline:3px solid var(--focus,#315b20);outline-offset:3px}.ds-mono{display:grid;place-items:center;width:34px;height:42px;background:#d4fa77;border-radius:5px;font-size:1.4rem;font-weight:700}.ds-copy{flex:1}.ds-copy strong{display:block;font-size:.82rem}.ds-copy small{display:block;margin-top:5px;font-size:.7rem}.ds-check{display:grid;place-items:center;width:20px;height:20px;border:1px solid currentColor;border-radius:5px}.ds-pack:has(input:checked) .ds-check{background:#19211c;color:#d4fa77}.ds-pack:not(:has(input:checked)) .ds-check{font-size:0}@media(prefers-reduced-motion:no-preference){.ds-pack:active{transform:scale(.97)}}"
     },
     {

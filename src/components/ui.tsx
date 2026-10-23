@@ -1,5 +1,6 @@
 import { hintFor } from "../lib/hints";
 import { Identity } from "./Identity";
+import { SecretSleeve } from "./SecretSleeve";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, ButtonHTMLAttributes } from "react";
 import { motion, useReducedMotion } from "motion/react";
@@ -43,18 +44,20 @@ export function Screen({
   children,
   title,
   subtitle,
+  className = "",
 }: {
   children: ReactNode;
   title?: ReactNode;
   subtitle?: string;
+  className?: string;
 }) {
   const reduce = useReducedMotion();
   return (
     <motion.section
-      className="stage"
-      initial={reduce ? false : { opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 360, damping: 30 }}
+      className={`stage ${className}`}
+      initial={reduce ? false : { opacity: 1, transform: "translateY(8px)" }}
+      animate={{ opacity: 1, transform: "translateY(0px)" }}
+      transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
     >
       {title && <h1 tabIndex={-1}>{title}</h1>}
       {subtitle && <p className="lede">{subtitle}</p>}
@@ -202,6 +205,11 @@ export function Peek({
     };
   }, []);
   if (!player) return null;
+  const refined =
+    useGame.getState().preferences.deckStyle !== false &&
+    !["classic", "club-original"].includes(
+      useGame.getState().preferences.design,
+    );
   const role = session.roles[player.id];
   const secret = actor
     ? session.deck[session.cardIndex % session.deck.length]
@@ -230,6 +238,7 @@ export function Peek({
   };
   return (
     <Screen
+      className={`peek-stage ${holding ? "is-peeking" : ""} ${seen ? "has-peeked" : ""}`}
       title={
         <>
           <span className="handoff-label">Pass to </span>
@@ -242,11 +251,22 @@ export function Peek({
           : `Player ${session.peekIndex + 1} of ${players.length}. Everyone else, look away.`
       }
     >
-      <div className="peek-face">
+      <div className="peek-identity" aria-hidden="true">
         <Avatar player={player} big />
+        <span className="identity-signature">
+          {actor ? "THE ACTOR" : "YOUR ALIBI"}
+        </span>
+      </div>
+      <div className="peek-face">
+        {!refined && <Avatar player={player} big />}
         <div
           className={`secret-card stable-secret ${holding ? "revealed" : ""} ${holding && isImposter ? "imposter-reveal" : ""}`}
         >
+          {refined && (
+            <div className="sleeve-motion" aria-hidden="true">
+              <SecretSleeve ready={guard === 0} seen={seen} />
+            </div>
+          )}
           <div className="secret-content" aria-live="off">
             {holding ? (
               <>
@@ -326,7 +346,7 @@ export function Peek({
               </>
             ) : (
               <>
-                <LockKey size={42} weight="duotone" />
+                {!refined && <LockKey size={42} weight="duotone" />}
                 <h2>
                   {guard ? `Ready in ${guard}` : "Nobody’s looking… right?"}
                 </h2>

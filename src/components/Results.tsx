@@ -1,7 +1,9 @@
+import { Scoreboard } from "./Scoreboard";
+import { WinnerArtwork } from "./WinnerArtwork";
 import { Identity } from "./Identity";
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../store/useGame";
-import { Avatar, Button, Screen, Mascot } from "./ui";
+import { Button, Screen, Mascot } from "./ui";
 import { feedback } from "../lib/feedback";
 import type { Session } from "../lib/types";
 export default function Results({
@@ -14,11 +16,14 @@ export default function Results({
   onPlayers: () => void;
 }) {
   const { players, start, preferences } = useGame();
-  const remix=preferences.design !== "classic" && preferences.design !== "club-original";
+  const remix =
+    preferences.design !== "classic" && preferences.design !== "club-original";
+  const refined = remix && preferences.deckStyle !== false;
   const [animated, setAnimated] = useState(false);
   const animation = useRef<HTMLDivElement>(null);
   useEffect(() => {
     feedback("success");
+    if (refined) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let disposed = false;
     let player: { destroy: () => void } | undefined;
@@ -29,7 +34,9 @@ export default function Results({
           spread: 75,
           origin: { y: 0.65 },
           disableForReducedMotion: true,
-          colors: remix ? ["#d4fa77", "#dacdeb", "#c9e4d7", "#f0d0b3"] : ["#7C3AED", "#FFD60A", "#2EE6A6", "#FF3D8B"],
+          colors: remix
+            ? ["#d4fa77", "#dacdeb", "#c9e4d7", "#f0d0b3"]
+            : ["#7C3AED", "#FFD60A", "#2EE6A6", "#FF3D8B"],
         });
     });
     void Promise.all([
@@ -58,37 +65,31 @@ export default function Results({
   }, []);
   return (
     <Screen
+      className="results-stage"
       title={session.result}
       subtitle="Same friends. New bragging rights."
     >
-      <div className="win-animation" aria-hidden="true">
-        {!animated && (remix ? <Identity seed="🐸"/> : <Mascot mood="win" />)}
-        <div ref={animation} />
-      </div>
+      {refined ? (
+        <WinnerArtwork
+          players={players.filter((p) => session.winners.includes(p.id))}
+        />
+      ) : (
+        <div className="win-animation" aria-hidden="true">
+          {!animated &&
+            (remix ? <Identity seed="🐸" /> : <Mascot mood="win" />)}
+          <div ref={animation} />
+        </div>
+      )}
       {["imposter", "spy"].includes(session.game) && (
         <p className="answer">
           The secret was <strong>{session.secret}</strong>.
         </p>
       )}
-      <div className="score-list">
-        {[...players]
-          .sort((a, b) => b.score - a.score)
-          .map((p) => (
-            <div key={p.id}>
-              <Avatar player={p} />
-              <strong>
-                {p.name}
-                {session.winners.includes(p.id) && (
-                  <small>+{session.options.points} this game</small>
-                )}
-              </strong>
-              <b>
-                {p.score}
-                <small>pts</small>
-              </b>
-            </div>
-          ))}
-      </div>
+      <Scoreboard
+        players={players}
+        winners={session.winners}
+        points={session.options.points}
+      />
       {session.history.length > 0 && (
         <details>
           <summary>Round recap</summary>

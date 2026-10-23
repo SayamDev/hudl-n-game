@@ -29,7 +29,9 @@ async function tilt(page: any, beta: number, gamma = 0) {
   );
 }
 async function neutral(page: any, landscape = false) {
-  for (let i = 0; i < 5; i++) {
+  // One sensor sample can precede the React effect registering the listener.
+  // Six samples still provide the required 250ms upright dwell in that case.
+  for (let i = 0; i < 6; i++) {
     await tilt(page, landscape ? 0 : 90, landscape ? 90 : 0);
     await page.waitForTimeout(80);
   }
