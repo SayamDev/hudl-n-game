@@ -22,7 +22,7 @@ Add your crew, choose a game and pass the phone. A short interactive welcome let
 | A word everyone knows. Almost everyone. | **Imposter** — secret words, clues, accusations and a last-chance guess. | 3–20 |
 | Trust nobody after dark. | **Mafia** — narrated nights, secret roles and village votes. | 5–20 |
 | Same place. One very lost spy. | **Where Are We?** — location clues, questioning and a hidden outsider. | 3–20 |
-| Big gestures. Absolutely no words. | **Heads Up!** — team charades against the clock, with correct and skip controls. | 3–20 |
+| Big gestures. Absolutely no words. | **Heads Up! / Charades** — choose team clues or silent acting, with private actor prompts. | 3–20 |
 | You know exactly who it is. | **Most Likely To / Hot Takes** — point votes or private agreement ratings. | 3–20 |
 
 ## A little character. A lot of replay.
@@ -53,6 +53,12 @@ In **Heads Up!**, choose **Enable tilt controls** before starting and allow moti
 - **Esc:** pause a game; dismiss the pause dialog to resume.
 
 Motion support depends on the device and browser. Sensor behaviour is covered by simulated browser events; physical iOS/Android verification is still needed. [Control design and API references](docs/adr/0004-phone-tilt.md).
+
+## Keep the party moving
+
+Imposter defaults to a quick group vote: point together, then tap the accused. Secret pass-and-vote is available in setup. The sealed verdict opens with a swipe or a button, with no forced countdown. Easier hint words give imposters a familiar association—Pizza → Cheese—alongside the category; category-only hints remain available for a harder round.
+
+Choose **No timer** to play at your own pace. **Play Charades** starts classic silent acting for two teams of at least four people: privately check the prompt, hide it, then act. Correct/Skip passes the next prompt to another actor; timed games pause for these handoffs. Heads Up remains available as the other play style.
 
 ## Voices, tension and fresh words
 

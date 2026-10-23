@@ -15,3 +15,5 @@ The optional pack studio sends a submitted theme, batch size and up to 48 recent
 Public Mafia scripts use exported VoiceStudio/Qwen recordings. No private role or secret is narrated. Playback cancellation, timer audio stop conditions and word-library limits are documented in docs/adr/0005-party-audio.md.
 
 Narrator selection is limited to the two bundled VoiceStudio hosts. Legacy device-voice selections resolve to the storyteller. No browser TTS fallback is used; original clip speed preserves phrasing.
+
+Future-round vote defaults upgrade once via voteFlowVersion=2; active ballots remain unchanged. Related hint words are in src/content/hints.json; unknown custom words fall back to category. seconds=0 is untimed. Classic Charades is a charadesMode on the existing game id: actor-peek privacy handoff, >=4 players, prompt absent while acting, clock paused between actors. See docs/adr/0006-faster-party.md.

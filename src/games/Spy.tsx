@@ -11,7 +11,9 @@ export default function Spy({ session: s }: GameProps) {
       <Peek
         key={s.peekIndex}
         session={s}
-        onDone={() => patch({ phase: "discuss", timerRunning: true })}
+        onDone={() =>
+          patch({ phase: "discuss", timerRunning: s.options.seconds !== 0 })
+        }
       />
     );
   if (s.phase === "discuss")

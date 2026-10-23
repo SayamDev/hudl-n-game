@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from "motion/react";
 import {
   Detective,
   Fingerprint,
@@ -189,12 +190,36 @@ export function Identity({
   );
 }
 
-export function GameArt({ game }: { game: GameId }) {
+export function GameArt({
+  game,
+  onScroll = false,
+}: {
+  game: GameId;
+  onScroll?: boolean;
+}) {
+  const reduce = useReducedMotion();
   return (
-    <div className={`game-emblem game-emblem-${game}`} aria-hidden="true">
+    <motion.div
+      className={`game-emblem game-emblem-${game}`}
+      aria-hidden="true"
+      initial={
+        onScroll && !reduce
+          ? { transform: "translateY(18px) rotate(-10deg)" }
+          : false
+      }
+      whileInView={
+        onScroll ? { transform: "translateY(0) rotate(0deg)" } : undefined
+      }
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+    >
       {game === "imposter" ? (
         <>
-          <Fingerprint weight="bold" />
+          <span className="suspect-cast">
+            <Identity seed="🦊" />
+            <Identity seed="🐸" />
+            <Identity seed="🐙" />
+          </span>
           <span className="emblem-censor">?</span>
         </>
       ) : game === "mafia" ? (
@@ -224,6 +249,6 @@ export function GameArt({ game }: { game: GameId }) {
           <span className="party-call">YOU!</span>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }

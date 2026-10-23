@@ -32,6 +32,9 @@ export type GameOptions = {
   imposters: number;
   randomImposters: boolean;
   hint: boolean;
+  hintStyle?: "word" | "category";
+  voteFlowVersion?: number;
+  charadesMode?: "heads-up" | "classic";
   chaos: boolean;
   seconds: number;
   packIds: string[];
@@ -57,6 +60,7 @@ export type Session = {
   secret: string;
   category: string;
   decoy: string;
+  actorIndex?: number;
   peekIndex: number;
   alive: string[];
   votes: Record<string, string>;

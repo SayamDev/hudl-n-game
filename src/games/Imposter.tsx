@@ -1,3 +1,4 @@
+import { Verdict } from "../components/Verdict";
 import { useState } from "react";
 import { useGame } from "../store/useGame";
 import { normalize } from "../lib/logic";
@@ -14,7 +15,9 @@ export default function Imposter({ session: s }: GameProps) {
       <Peek
         key={s.peekIndex}
         session={s}
-        onDone={() => patch({ phase: "discuss", timerRunning: true })}
+        onDone={() =>
+          patch({ phase: "discuss", timerRunning: s.options.seconds !== 0 })
+        }
       />
     );
   if (s.phase === "discuss") {
@@ -64,20 +67,11 @@ export default function Imposter({ session: s }: GameProps) {
     const caught = s.roles[p.id] === "Imposter";
     return (
       <Screen title={`${p.name} was…`}>
-        <div className="center">
-          <Avatar player={p} big />
-          <h2 className="reveal-title">
-            {caught ? "THE IMPOSTER!" : "INNOCENT!"}
-          </h2>
-          <p>
-            {caught
-              ? "Caught red-handed. But there’s one last chance…"
-              : "That poker face fooled everyone."}
-          </p>
-        </div>
-        <Button
-          className="primary"
-          onClick={() =>
+        <Verdict
+          key={p.id}
+          player={p}
+          caught={caught}
+          onContinue={() =>
             caught
               ? patch({ phase: "guess" })
               : finish(
@@ -85,9 +79,7 @@ export default function Imposter({ session: s }: GameProps) {
                   imposters.map((p) => p.id),
                 )
           }
-        >
-          {caught ? "One last guess" : "See results"}
-        </Button>
+        />
       </Screen>
     );
   }

@@ -48,10 +48,13 @@ export const defaultOptions: GameOptions = {
   imposters: 1,
   randomImposters: false,
   hint: true,
+  hintStyle: "word",
+  voteFlowVersion: 2,
+  charadesMode: "heads-up",
   chaos: false,
   seconds: 120,
   packIds: ["food", "animals"],
-  voteMode: "secret",
+  voteMode: "point",
   points: 2,
   doctor: true,
   detective: true,
@@ -113,7 +116,15 @@ export const useGame = create<State>()(
       setOptions: (o) => set((s) => ({ options: { ...s.options, ...o } })),
       start: (game) => {
         const { players, options, preferences, customPacks, variety } = get();
-        if (players.length < (game === "mafia" ? 5 : 3)) return;
+        if (
+          players.length <
+          (game === "mafia"
+            ? 5
+            : game === "charades" && options.charadesMode === "classic"
+              ? 4
+              : 3)
+        )
+          return;
         const all = [...builtInPacks, ...customPacks].filter(
           (p) => !p.adult || (!preferences.family && preferences.adult),
         );
@@ -143,7 +154,8 @@ export const useGame = create<State>()(
             if (roles[p.id] !== "Spy")
               roles[p.id] = location.roles[i % location.roles.length];
           });
-        const seconds = game === "charades" ? 60 : options.seconds;
+        const seconds =
+          game === "charades" && options.seconds !== 0 ? 60 : options.seconds;
         const safeOptions = {
           ...options,
           intensity: preferences.family
@@ -233,7 +245,10 @@ export const useGame = create<State>()(
           if (!state.session) return {};
           const session = { ...state.session, ...s };
           const variety = { ...state.variety };
-          if (session.game === "charades" && session.phase === "acting") {
+          if (
+            session.game === "charades" &&
+            ["acting", "actor-peek"].includes(session.phase)
+          ) {
             const word = session.deck[session.cardIndex % session.deck.length];
             if (word) variety.charades = remember(variety.charades, [word]);
           }
@@ -281,6 +296,23 @@ export const useGame = create<State>()(
     {
       name: "hudl-game-v1",
       version: 1,
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<State> | undefined;
+        const options = { ...defaultOptions, ...saved?.options };
+        if (
+          options.voteFlowVersion !== 2 ||
+          saved?.options?.voteFlowVersion !== 2
+        ) {
+          options.voteMode = "point";
+          options.voteFlowVersion = 2;
+        }
+        return {
+          ...current,
+          ...saved,
+          preferences: { ...initialPreferences, ...saved?.preferences },
+          options,
+        };
+      },
       storage: createJSONStorage(() => safeStorage),
       partialize: (s) => ({
         players: s.players,

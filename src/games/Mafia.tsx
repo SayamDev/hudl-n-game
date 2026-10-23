@@ -202,7 +202,7 @@ export default function Mafia({ session: s }: GameProps) {
               patch({
                 phase: "discuss",
                 timerRemaining: s.options.seconds,
-                timerRunning: true,
+                timerRunning: s.options.seconds !== 0,
               });
           }}
         >

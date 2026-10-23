@@ -44,6 +44,9 @@ test("tilt practice and actual scoring require deliberate gestures and reset; ke
 }) => {
   await start(page);
   await page.bringToFront();
+  const focus = await page.context().newCDPSession(page);
+  await focus.send("Emulation.setFocusEmulationEnabled", { enabled: true });
+  await expect.poll(() => page.evaluate(() => document.hasFocus())).toBe(true);
   await page.getByRole("button", { name: "Enable tilt controls" }).click();
   await neutral(page, true);
   await gesture(page, -170);
@@ -147,7 +150,9 @@ test("reveal remains stationary, words and hints are strong, secrets disappear o
     expect(Math.abs(before!.y - after!.y)).toBeLessThan(1);
     expect(await page.evaluate(() => scrollY)).toBe(scroll);
     if (role === "Imposter")
-      await expect(page.locator(".imposter-hint strong")).toHaveText("Food");
+      await expect(page.locator(".imposter-hint strong")).toHaveText(
+        "Tropical",
+      );
     else
       await expect(
         page.getByRole("heading", { name: secret, exact: true }),

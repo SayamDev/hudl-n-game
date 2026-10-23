@@ -915,6 +915,13 @@
       "narration": "Only the two bundled VoiceStudio hosts are selectable. Original clip speed preserves phrasing; legacy device selections use storyteller. No browser TTS fallback. Preview/stop controls and immediate cancellation; no private roles or words spoken.",
       "countdown": "Optional sound follows master volume/sound and changes at 60, 30 and 10 seconds. Numeric timer remains authoritative.",
       "vocabulary": "Expanded finite offline library with Celebrities; unseen first then recycled. Append unique batches and save more packs; no unlimited free AI claim."
+    },
+    "fasterParty": {
+      "updated": "2026-10-24",
+      "hint": "Bold familiar one-word association plus category in the existing private hint inset; category-only harder option. No delay on concealment.",
+      "voting": "Quick group point-vote default for future rounds; optional secret mode; sealed public envelope can be swiped up or opened with a native button, no timed gate.",
+      "motion": "Cards and geometric game emblems enter once on viewport intersection. Three-identity Imposter stack; 220ms envelope lift and 250ms verdict copy. Reduced motion removes these effects.",
+      "charades": "Classic actor mode uses coral shell and full-width lavender actor stage. Prompt appears only during protected hold; acting screen has no secret. Timed handoffs pause; no-timer option available. Four-player minimum for classic teams."
     }
   },
   "components": [

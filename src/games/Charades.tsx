@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../store/useGame";
 import { feedback } from "../lib/feedback";
-import { Avatar, Button, Screen, Timer } from "../components/ui";
+import { Avatar, Button, Screen, Timer, Peek } from "../components/ui";
 import {
   Check,
   ArrowBendUpRight,
@@ -14,6 +14,10 @@ import type { TiltPose } from "../lib/tilt";
 import type { GameProps } from "../lib/types";
 export default function Charades({ session: s }: GameProps) {
   const { players, patch, finish } = useGame();
+  const classic = s.options.charadesMode === "classic";
+  const untimed = s.options.seconds === 0;
+  const teamPlayers = players.filter((_, i) => i % 2 === s.team);
+  const actor = teamPlayers[(s.actorIndex || 0) % teamPlayers.length];
   const [tilt, setTilt] = useState(false);
   const [sensor, setSensor] = useState<
     "off" | "requesting" | "listening" | "connected" | "unavailable"
@@ -31,7 +35,7 @@ export default function Charades({ session: s }: GameProps) {
       current.game !== "charades" ||
       current.phase !== "acting" ||
       current.paused ||
-      current.timerRemaining <= 0
+      (current.options.seconds !== 0 && current.timerRemaining <= 0)
     )
       return;
     gesture.current.reset();
@@ -40,6 +44,13 @@ export default function Charades({ session: s }: GameProps) {
       cardIndex: current.cardIndex + 1,
       correct: current.correct + (correct ? 1 : 0),
       skipped: current.skipped + (correct ? 0 : 1),
+      ...(current.options.charadesMode === "classic"
+        ? {
+            phase: "actor-peek",
+            timerRunning: false,
+            actorIndex: (current.actorIndex || 0) + 1,
+          }
+        : {}),
     });
   };
   useEffect(() => {
@@ -47,7 +58,7 @@ export default function Charades({ session: s }: GameProps) {
     setPractice("");
   }, [s.phase, s.paused]);
   useEffect(() => {
-    if (!tilt) return;
+    if (!tilt || classic) return;
     let received = false;
     const timeout = setTimeout(() => {
       if (!received) {
@@ -100,7 +111,7 @@ export default function Charades({ session: s }: GameProps) {
       window.removeEventListener("blur", reset);
       document.removeEventListener("visibilitychange", reset);
     };
-  }, [tilt]);
+  }, [tilt, classic]);
   useEffect(() => {
     if (s.phase !== "acting" || s.paused) return;
     const onKey = (e: KeyboardEvent) => {
@@ -172,11 +183,24 @@ export default function Charades({ session: s }: GameProps) {
         (pose === "upright"
           ? "Upright. Now tilt to practise, then return upright."
           : "Hold the screen upright to get ready.");
+  if (s.phase === "actor-peek")
+    return (
+      <Peek
+        key={`${s.team}-${s.cardIndex}`}
+        session={s}
+        actor={actor}
+        onDone={() => patch({ phase: "acting", timerRunning: !untimed })}
+      />
+    );
   if (s.phase === "ready")
     return (
       <Screen
         title={`Team ${s.team + 1}, you’re up!`}
-        subtitle="One teammate holds the phone facing the others. No saying the word."
+        subtitle={
+          classic
+            ? "One actor sees the prompt. Everyone else guesses. No words, no sounds."
+            : "One teammate holds the phone facing the others. No saying the word."
+        }
       >
         <div className="charades-ready-grid">
           <section className="ready-cast" aria-label="This turn’s team">
@@ -191,58 +215,77 @@ export default function Charades({ session: s }: GameProps) {
                 ))}
             </div>
             <p>
-              <strong>60 seconds.</strong> Each correct answer earns one team
-              point.
+              <strong>{untimed ? "No timer." : "60 seconds."}</strong> Each
+              correct answer earns one team point.
             </p>
           </section>
           <section className="ready-controls" aria-label="Ways to play">
-            <h2>Tap, tilt or use your keys.</h2>
-            <div className="gesture-guide">
-              <div>
-                <ArrowDown size={24} weight="bold" />
-                <span>
-                  <strong>Screen to the floor</strong>Correct answer
-                </span>
-              </div>
-              <div>
-                <ArrowUp size={24} weight="bold" />
-                <span>
-                  <strong>Screen to the ceiling</strong>Skip this word
-                </span>
-              </div>
-            </div>
-            <p>
-              Return upright between tilts. Try it here before the clock starts
-              — practice adds no points.
-            </p>
-            <Button
-              className="tilt-enable"
-              disabled={sensor === "requesting"}
-              onClick={() => {
-                if (tilt) {
-                  setTilt(false);
-                  setSensor("off");
-                  setMessage("");
-                } else void enable();
-              }}
-            >
-              <DeviceMobile size={22} />
-              {tilt
-                ? "Turn off tilt"
-                : sensor === "requesting"
-                  ? "Requesting permission…"
-                  : "Enable tilt controls"}
-            </Button>
-            {(tilt || message) && (
-              <p className="tilt-status" role="status">
-                {tilt ? motionStatus : message}
-              </p>
+            {classic ? (
+              <>
+                <h2>{actor?.name}, you’re the actor.</h2>
+                <p>
+                  Privately check your prompt, then hide it. Act it out with
+                  gestures only while your teammates guess.
+                </p>
+                <p>
+                  Correct or Skip passes a fresh prompt to the next actor.{" "}
+                  {untimed
+                    ? "Finish the turn when your team is ready."
+                    : "The clock pauses while the next actor checks their card."}
+                </p>
+                <p className="keyboard-guide">→ correct · ← skip · Esc pause</p>
+              </>
+            ) : (
+              <>
+                <h2>Tap, tilt or use your keys.</h2>
+                <div className="gesture-guide">
+                  <div>
+                    <ArrowDown size={24} weight="bold" />
+                    <span>
+                      <strong>Screen to the floor</strong>Correct answer
+                    </span>
+                  </div>
+                  <div>
+                    <ArrowUp size={24} weight="bold" />
+                    <span>
+                      <strong>Screen to the ceiling</strong>Skip this word
+                    </span>
+                  </div>
+                </div>
+                <p>
+                  Return upright between tilts. Try it here before the clock
+                  starts — practice adds no points.
+                </p>
+                <Button
+                  className="tilt-enable"
+                  disabled={sensor === "requesting"}
+                  onClick={() => {
+                    if (tilt) {
+                      setTilt(false);
+                      setSensor("off");
+                      setMessage("");
+                    } else void enable();
+                  }}
+                >
+                  <DeviceMobile size={22} />
+                  {tilt
+                    ? "Turn off tilt"
+                    : sensor === "requesting"
+                      ? "Requesting permission…"
+                      : "Enable tilt controls"}
+                </Button>
+                {(tilt || message) && (
+                  <p className="tilt-status" role="status">
+                    {tilt ? motionStatus : message}
+                  </p>
+                )}
+                <p className="keyboard-guide">
+                  Keyboard: <kbd>→</kbd> correct · <kbd>←</kbd> skip ·{" "}
+                  <kbd>Esc</kbd> pause. Tab between other controls; Enter or
+                  Space selects.
+                </p>
+              </>
             )}
-            <p className="keyboard-guide">
-              Keyboard: <kbd>→</kbd> correct · <kbd>←</kbd> skip ·{" "}
-              <kbd>Esc</kbd> pause. Tab between other controls; Enter or Space
-              selects.
-            </p>
           </section>
         </div>
         <div className="ready-launch">
@@ -253,29 +296,44 @@ export default function Charades({ session: s }: GameProps) {
               gesture.current.reset();
               setPractice("");
               patch({
-                phase: "acting",
-                timerRemaining: 60,
-                timerRunning: true,
+                phase: classic ? "actor-peek" : "acting",
+                actorIndex: 0,
+                timerRemaining: untimed ? 0 : 60,
+                timerRunning: !classic && !untimed,
                 correct: 0,
                 skipped: 0,
               });
             }}
           >
-            Start the clock
+            {classic
+              ? "Draw your prompt"
+              : untimed
+                ? "Start the turn"
+                : "Start the clock"}
           </Button>
         </div>
       </Screen>
     );
   if (s.phase === "acting")
     return (
-      <Screen title="Show your team!">
+      <Screen
+        title={classic ? `${actor?.name}, act it out!` : "Show your team!"}
+      >
         <p className="acting-team">
-          Heads Up! <span>Team {s.team + 1}</span>
+          {classic ? "Charades" : "Heads Up!"} <span>Team {s.team + 1}</span>
         </p>
         <Timer session={s} onEnd={end} />
-        <div className="charades-word" key={s.cardIndex}>
-          {s.deck[s.cardIndex % s.deck.length]}
-        </div>
+        {classic ? (
+          <div className="charades-acting">
+            <Avatar player={actor} big />
+            <h2>All eyes on {actor?.name}.</h2>
+            <p>Gestures only. Guess what they’re acting.</p>
+          </div>
+        ) : (
+          <div className="charades-word" key={s.cardIndex}>
+            {s.deck[s.cardIndex % s.deck.length]}
+          </div>
+        )}
         <div className="split">
           <Button
             className="mint"
@@ -317,7 +375,7 @@ export default function Charades({ session: s }: GameProps) {
         <Button
           className="primary"
           onClick={() => {
-            if (s.team === 0) patch({ team: 1, phase: "ready" });
+            if (s.team === 0) patch({ team: 1, phase: "ready", actorIndex: 0 });
             else {
               const winning =
                 s.teamScores[0] === s.teamScores[1]

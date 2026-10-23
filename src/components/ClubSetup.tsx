@@ -86,11 +86,27 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
         />
         <div className="rule-switches">
           <Toggle
-            label="Give imposters a category hint"
-            description="A small clue to help them blend in."
+            label="Give imposters a hint"
+            description="A familiar related word to help them blend in."
             checked={o.hint}
             onChange={(hint) => setOptions({ hint })}
           />
+          {o.hint && !o.chaos && (
+            <label className="hint-style">
+              Hint style
+              <select
+                value={o.hintStyle || "word"}
+                onChange={(e) =>
+                  setOptions({
+                    hintStyle: e.target.value as "word" | "category",
+                  })
+                }
+              >
+                <option value="word">Related word · easier to blend in</option>
+                <option value="category">Category only · harder</option>
+              </select>
+            </label>
+          )}
           <Toggle
             label="Chaos mode"
             description="Imposters know their role and get a decoy word."
@@ -160,7 +176,7 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
         <fieldset>
           <legend>Discussion time</legend>
           <div className="time-options">
-            {[60, 120, 180, 300].map((seconds) => (
+            {[0, 60, 120, 180, 300].map((seconds) => (
               <button
                 key={seconds}
                 aria-pressed={o.seconds === seconds}
@@ -174,8 +190,8 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
                   />
                 )}
                 <span>
-                  {seconds / 60}
-                  <small>min</small>
+                  {seconds === 0 ? "No timer" : seconds / 60}
+                  {seconds !== 0 && <small>min</small>}
                 </span>
               </button>
             ))}
@@ -191,7 +207,7 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
               }
             >
               <option value="secret">Secret pass-and-vote</option>
-              <option value="point">Point on three</option>
+              <option value="point">Quick group vote</option>
             </select>
           </label>
           <label>
@@ -219,7 +235,8 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
         <div>
           <strong>Ready to deal?</strong>
           <small>
-            {players.length} players · {o.seconds / 60} min discussion
+            {players.length} players ·{" "}
+            {o.seconds === 0 ? "No timer" : `${o.seconds / 60} min discussion`}
           </small>
         </div>
         <Button className="primary" onClick={onStart}>

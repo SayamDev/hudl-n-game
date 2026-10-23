@@ -45,10 +45,12 @@ export function Players({
   game: GameId;
   onNext: () => void;
 }) {
-  const { players, setPlayers } = useGame();
+  const { players, setPlayers, options } = useGame();
   const [name, setName] = useState(""),
     [error, setError] = useState("");
   const metadata = gameById(game);
+  const classic = game === "charades" && options.charadesMode === "classic";
+  const minimum = classic ? 4 : metadata.min;
   const add = () => {
     const n = name.trim();
     if (!n) {
@@ -86,7 +88,7 @@ export function Players({
   return (
     <Screen
       title="Who’s in the huddle?"
-      subtitle={`${metadata.name} needs ${metadata.min}-20 players. Nicknames encouraged.`}
+      subtitle={`${classic ? "Charades" : metadata.name} needs ${minimum}-20 players. Nicknames encouraged.`}
     >
       <form
         className="add-player"
@@ -185,11 +187,11 @@ export function Players({
       )}
       <Button
         className="primary"
-        disabled={players.length < metadata.min}
+        disabled={players.length < minimum}
         onClick={onNext}
       >
-        {players.length < metadata.min
-          ? `Add ${metadata.min - players.length} more to play`
+        {players.length < minimum
+          ? `Add ${minimum - players.length} more to play`
           : `Let’s play, all ${players.length} of us`}
         <ArrowRight size={22} />
       </Button>
@@ -222,14 +224,61 @@ export function GameSettings({
   );
   return (
     <Screen
-      title={`Let’s play ${meta.name}.`}
+      title={`Let’s play ${game === "charades" && o.charadesMode === "classic" ? "Charades" : meta.name}.`}
       subtitle="Good defaults. Your kind of chaos."
     >
-      <Button className="primary" onClick={onStart}>
+      <Button
+        className="primary"
+        disabled={
+          game === "charades" &&
+          o.charadesMode === "classic" &&
+          players.length < 4
+        }
+        onClick={onStart}
+      >
         Quick start
         <ArrowRight size={22} />
       </Button>
+      {game === "charades" &&
+        o.charadesMode === "classic" &&
+        players.length < 4 && (
+          <p role="status">
+            Classic Charades needs at least four players for two teams. Add
+            another player in Crew.
+          </p>
+        )}
       <details className="settings-details" open>
+        {game === "charades" && (
+          <>
+            <label>
+              Play style
+              <select
+                value={o.charadesMode || "heads-up"}
+                onChange={(e) =>
+                  setOptions({
+                    charadesMode: e.target.value as "heads-up" | "classic",
+                  })
+                }
+              >
+                <option value="heads-up">Heads Up — team gives clues</option>
+                <option value="classic">Charades — actor acts silently</option>
+              </select>
+            </label>
+            <label>
+              Turn timer
+              <select
+                value={o.seconds === 0 ? 0 : 60}
+                onChange={(e) =>
+                  setOptions({ seconds: Number(e.target.value) })
+                }
+              >
+                <option value={60}>60 seconds</option>
+                <option value={0}>No timer</option>
+              </select>
+            </label>
+          </>
+        )}
+
         <summary>Make it your game</summary>
         {game === "imposter" && (
           <>
@@ -260,10 +309,28 @@ export function GameSettings({
               onChange={(randomImposters) => setOptions({ randomImposters })}
             />
             <Toggle
-              label="Give imposters a category hint"
+              label="Give imposters a hint"
               checked={o.hint}
               onChange={(hint) => setOptions({ hint })}
             />
+            {o.hint && !o.chaos && (
+              <label className="hint-style">
+                Hint style
+                <select
+                  value={o.hintStyle || "word"}
+                  onChange={(e) =>
+                    setOptions({
+                      hintStyle: e.target.value as "word" | "category",
+                    })
+                  }
+                >
+                  <option value="word">
+                    Related word · easier to blend in
+                  </option>
+                  <option value="category">Category only · harder</option>
+                </select>
+              </label>
+            )}
             <Toggle
               label="Chaos mode"
               description="Imposters know their role and get a decoy word."
@@ -309,6 +376,7 @@ export function GameSettings({
                   setOptions({ seconds: Number(e.target.value) })
                 }
               >
+                <option value={0}>No timer</option>
                 <option value={60}>1 minute</option>
                 <option value={120}>2 minutes</option>
                 <option value={180}>3 minutes</option>
@@ -324,7 +392,7 @@ export function GameSettings({
                 }
               >
                 <option value="secret">Secret pass-and-vote</option>
-                <option value="point">Point on three</option>
+                <option value="point">Quick group vote</option>
               </select>
             </label>
           </>

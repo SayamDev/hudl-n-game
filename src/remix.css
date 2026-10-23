@@ -2258,3 +2258,175 @@
 .voice-studio .split .button {
   min-height: 56px;
 }
+
+/* A public verdict envelope: one optional gesture, no timed gate. */
+.verdict-art {
+  position: relative;
+  width: min(100%, 320px);
+  height: 260px;
+  margin: 12px auto;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.verdict-identity .avatar {
+  width: 144px;
+  height: 144px;
+}
+.verdict-envelope {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+  cursor: grab;
+  transition:
+    transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 220ms ease;
+}
+.verdict-envelope > svg:first-child {
+  width: 100%;
+  height: 100%;
+}
+.verdict-envelope > svg:last-child {
+  position: absolute;
+  top: 52px;
+  color: #19211c;
+}
+.verdict-art.is-open .verdict-envelope {
+  transform: translateY(-105%);
+  opacity: 0;
+  pointer-events: none;
+}
+.verdict-copy {
+  text-align: center;
+}
+.verdict-copy h2 {
+  margin: 0 0 12px;
+  font-size: 2.4rem;
+}
+.verdict-copy p,
+.verdict-instruction {
+  text-align: center;
+  margin: 0;
+}
+.verdict-copy {
+  animation: verdict-arrives 250ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes verdict-arrives {
+  from {
+    opacity: 0.7;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.untimed-label {
+  padding: 16px 0;
+  font-weight: 700;
+  text-align: center;
+}
+.imposter-hint small {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  font-weight: 400;
+}
+.hint-style {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+.time-options {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.time-options button:first-child {
+  font-size: 0.9rem;
+}
+.charades-acting {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  padding: 24px;
+  border-radius: 16px;
+  background: #bcb0ff;
+  color: #201b32;
+  text-align: center;
+}
+.charades-acting h2,
+.charades-acting p {
+  margin: 0;
+}
+.charades-acting .avatar {
+  width: 108px;
+  height: 108px;
+}
+.charades-launch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+}
+[data-edition="remix"] .club-game-actions:has(.charades-launch) {
+  flex-wrap: wrap;
+}
+[data-edition="remix"] .club-game-actions .charades-launch {
+  flex-basis: 100%;
+  text-decoration: none;
+  border: 1px solid currentColor;
+  border-radius: 10px;
+}
+@media (max-width: 370px) {
+  .time-options {
+    gap: 4px;
+  }
+  .time-options button:first-child {
+    font-size: 0.75rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .verdict-envelope {
+    transition: none;
+  }
+  .verdict-copy {
+    animation: none;
+  }
+}
+.suspect-cast {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.suspect-cast > .identity {
+  position: absolute;
+  width: 62%;
+  height: 80%;
+  left: 19%;
+  top: 12%;
+}
+.suspect-cast > .identity:nth-child(1) {
+  transform: translateX(-32%) rotate(-15deg);
+}
+.suspect-cast > .identity:nth-child(2) {
+  transform: translateX(32%) rotate(15deg);
+}
+.suspect-cast > .identity:nth-child(3) {
+  transform: translateY(4%);
+}
+[data-design="club"][data-edition="remix"]
+  .club-featured
+  > .game-emblem
+  .identity {
+  width: 62%;
+  height: 80%;
+}
+.verdict-envelope:active {
+  transition: none;
+  cursor: grabbing;
+}
+.charades-acting {
+  grid-column: 1 / -1;
+  min-height: min(320px, 36dvh);
+}

@@ -54,6 +54,7 @@ test("phone Imposter round, hold privacy, voting, results and replay", async ({
   await page.getByRole("button", { name: "Time to vote" }).click();
   await page.getByRole("button", { name: /Maya/ }).click();
   await page.getByRole("button", { name: "Reveal the accused" }).click();
+  await page.getByRole("button", { name: "Reveal identity" }).click();
   if (await page.getByRole("button", { name: "One last guess" }).isVisible()) {
     await page.getByRole("button", { name: "One last guess" }).click();
     await page.getByLabel("Your guess").fill("Definitely incorrect");
@@ -247,10 +248,11 @@ test("Hot Takes keeps each rating private until the group reveal", async ({
   await expect(page.getByText("80% agree")).toBeVisible();
 });
 
-test("default secret voting keeps ballots private and reaches a reveal", async ({
+test("optional secret voting keeps ballots private and reaches a reveal", async ({
   page,
 }) => {
   await addCrew(page);
+  await page.getByLabel("Voting style").selectOption("secret");
   await page.getByRole("button", { name: "Quick start" }).click();
   await peekAll(page);
   await page.getByRole("button", { name: "Time to vote" }).click();
@@ -450,6 +452,8 @@ test("branded identities, round controls, visible motion and original design fal
   await expect(
     page.getByText("1 selected. Tap a pack to add or remove it."),
   ).toBeVisible();
+  // Let the pack selection colour transition finish before measuring contrast.
+  await page.waitForTimeout(200);
   const scan = await new AxeBuilder({ page }).analyze();
   expect(scan.violations).toEqual([]);
   await page.getByRole("button", { name: "Your crew", exact: true }).click();

@@ -403,6 +403,14 @@ Live peek controls form a lower action group on portrait phones. A stable two-li
 
 Settings offers Voice studio with two curated VoiceStudio hosts and scene selectors, preview and stop controls, and accurate disclosure that recordings are generated. The numeric timer remains authoritative; optional sound builds at 60, 30 and 10 seconds without adding flashing visuals.
 
+### Suspense without delays
+
+The public Imposter verdict uses a lime masked envelope over the accused player's identity. Swipe up on the envelope or use the native Reveal identity button. The envelope moves out in 220ms; the verdict copy enters in 250ms, with no mandatory wait. Reduced motion removes these effects. Private hold concealment stays immediate.
+
+Home cards and their geometric game art enter once when they reach the viewport, so the artwork remains visible while scrolling. Imposter's emblem is a three-character cast, distinct from Mafia's moon, Spy's globe, the acting stage and the pointing-hand party mark.
+
+Classic Charades shares the coral Heads Up shell and uses a lavender actor stage spanning the full play grid. The active prompt exists only in the protected actor handoff. The untimed label replaces countdown controls. Setup gives No timer equal status among the pace choices, and the helpful one-word hint is bold inside the existing dark inset panel with the category beneath.
+
 ## Do's and Don'ts
 
 ### Do:

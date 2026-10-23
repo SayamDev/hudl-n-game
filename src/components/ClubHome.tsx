@@ -60,20 +60,25 @@ export default function ClubHome({
           return (
             <motion.article
               initial={reduce ? false : { y: 18, rotate: i % 2 ? 1 : -1 }}
-              animate={{ y: 0, rotate: 0 }}
+              whileInView={{ y: 0, rotate: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{
                 duration: 0.5,
-                delay: i * 0.065,
+                delay: 0,
                 ease: [0.16, 1, 0.3, 1],
               }}
               key={g.id}
               className={`club-game club-${g.id} ${i === 0 ? "club-featured" : ""}`}
             >
               <div className="club-game-title">
-                {i !== 0 && <GameArt game={g.id} />}
+                {i !== 0 && <GameArt game={g.id} onScroll />}
                 <h2>{g.name}</h2>
               </div>
-              <p>{g.subtitle}</p>
+              <p>
+                {g.id === "charades"
+                  ? "Heads Up or classic Charades. Pick your stage."
+                  : g.subtitle}
+              </p>
               <div className="club-meta">
                 <span>
                   <UsersThree size={15} />
@@ -84,9 +89,18 @@ export default function ClubHome({
                   {g.duration}
                 </span>
               </div>
-              {i === 0 && <GameArt game={g.id} />}
+              {i === 0 && <GameArt game={g.id} onScroll />}
               <div className="club-game-actions">
-                <button className="club-play" onClick={() => choose(g.id)}>
+                <button
+                  className="club-play"
+                  onClick={() => {
+                    if (g.id === "charades")
+                      useGame
+                        .getState()
+                        .setOptions({ charadesMode: "heads-up" });
+                    choose(g.id);
+                  }}
+                >
                   Let’s play
                   <ArrowUpRight size={22} />
                 </button>
@@ -97,6 +111,19 @@ export default function ClubHome({
                 >
                   How to play
                 </button>
+                {g.id === "charades" && (
+                  <button
+                    className="club-rules charades-launch"
+                    onClick={() => {
+                      useGame
+                        .getState()
+                        .setOptions({ charadesMode: "classic" });
+                      choose("charades");
+                    }}
+                  >
+                    Play Charades <ArrowRight size={18} />
+                  </button>
+                )}
               </div>
             </motion.article>
           );

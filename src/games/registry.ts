@@ -59,7 +59,7 @@ export const games: GameDefinition[] = [
     ...sharedScreens,
     id: "charades",
     name: "Heads Up!",
-    subtitle: "Big gestures. Absolutely no words.",
+    subtitle: "Heads Up or classic Charades. Big gestures, no words.",
     color: "yellow",
     emoji: "🎭",
     min: 3,
@@ -67,7 +67,7 @@ export const games: GameDefinition[] = [
     rules: [
       "Split into two teams, alternating players in your crew list.",
       "One player holds the phone facing their teammates.",
-      "Act or describe the word without saying it. Tap correct or skip.",
+      "Heads Up: teammates give clues. Classic Charades: the actor privately checks the prompt, hides it, then acts silently. Tap correct or skip.",
       "Enable and practise tilt before starting: screen toward the floor for correct, toward the ceiling to skip. Return upright between gestures. Or use buttons / the right and left arrow keys. Two turns decide the winner.",
     ],
     load: () => import("./Charades"),

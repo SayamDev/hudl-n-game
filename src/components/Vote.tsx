@@ -72,6 +72,18 @@ export function Vote({
         >
           {guard ? `Ready in ${guard}` : "I’m ready to vote"}
         </Button>
+        <Button
+          onClick={() => {
+            setSelected("");
+            patch({
+              options: { ...session.options, voteMode: "point" },
+              votes: {},
+              voterIndex: 0,
+            });
+          }}
+        >
+          Use quick group vote
+        </Button>
       </Screen>
     );
   return (
@@ -99,6 +111,21 @@ export function Vote({
       <Button className="primary" disabled={!selected} onClick={cast}>
         {point ? "Reveal the accused" : "Lock my vote"}
       </Button>
+      {point && (
+        <Button
+          onClick={() => {
+            setSelected("");
+            setTie(true);
+          }}
+        >
+          It’s a tie — keep discussing
+        </Button>
+      )}
+      {point && tie && (
+        <p role="status">
+          No one is eliminated. Talk it out, then point again.
+        </p>
+      )}
     </Screen>
   );
 }

@@ -1,3 +1,4 @@
+import { hintFor } from "../lib/hints";
 import { Identity } from "./Identity";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, ButtonHTMLAttributes } from "react";
@@ -161,9 +162,11 @@ export function Toggle({
 export function Peek({
   session,
   onDone,
+  actor,
 }: {
   session: Session;
   onDone: () => void;
+  actor?: Player;
 }) {
   const players = useGame((s) => s.players),
     patch = useGame((s) => s.patch);
@@ -173,7 +176,7 @@ export function Peek({
   useEffect(() => {
     if (session.paused) setHolding(false);
   }, [session.paused]);
-  const player = players[session.peekIndex];
+  const player = actor || players[session.peekIndex];
   const active = useRef(false);
   useEffect(() => {
     setHolding(false);
@@ -200,8 +203,9 @@ export function Peek({
   }, []);
   if (!player) return null;
   const role = session.roles[player.id];
-  const secret =
-    session.game === "mafia"
+  const secret = actor
+    ? session.deck[session.cardIndex % session.deck.length]
+    : session.game === "mafia"
       ? role
       : session.game === "spy"
         ? role === "Spy"
@@ -232,7 +236,11 @@ export function Peek({
           <span className="handoff-name">{player.name}</span>
         </>
       }
-      subtitle={`Player ${session.peekIndex + 1} of ${players.length}. Everyone else, look away.`}
+      subtitle={
+        actor
+          ? "Actor only. Memorise your prompt, then hide it before acting."
+          : `Player ${session.peekIndex + 1} of ${players.length}. Everyone else, look away.`
+      }
     >
       <div className="peek-face">
         <Avatar player={player} big />
@@ -257,11 +265,13 @@ export function Peek({
                 ) : (
                   <>
                     <span className="secret-caption">
-                      {session.game === "mafia"
-                        ? "YOUR ROLE"
-                        : session.game === "spy"
-                          ? "YOUR LOCATION"
-                          : "YOUR SECRET"}
+                      {actor
+                        ? "YOUR PROMPT"
+                        : session.game === "mafia"
+                          ? "YOUR ROLE"
+                          : session.game === "spy"
+                            ? "YOUR LOCATION"
+                            : "YOUR SECRET"}
                     </span>
                     <h2
                       className={`secret-word ${secret.length > 16 ? "secret-word-long" : ""}`}
@@ -284,8 +294,25 @@ export function Peek({
                     !session.options.chaos &&
                     session.options.hint ? (
                     <>
-                      <span>Hint: </span>
-                      <strong>{session.category}</strong>
+                      <span>
+                        Hint:{" "}
+                        {session.options.hintStyle === "category" ||
+                        !hintFor(session.secret)
+                          ? "category"
+                          : "related word"}
+                      </span>
+                      <strong>
+                        {session.options.hintStyle === "category"
+                          ? session.category
+                          : hintFor(session.secret) || session.category}
+                      </strong>
+                      {session.options.hintStyle !== "category" &&
+                        hintFor(session.secret) && (
+                          <small>
+                            {session.category} · Use this as a starting point,
+                            not your only clue.
+                          </small>
+                        )}
                     </>
                   ) : session.game === "mafia" && role === "Mafia" ? (
                     `Your team: ${players
@@ -352,7 +379,7 @@ export function Peek({
           disabled={!seen || holding}
           onClick={() => {
             hide();
-            if (session.peekIndex === players.length - 1) onDone();
+            if (actor || session.peekIndex === players.length - 1) onDone();
             else {
               setGuard(3);
               setSeen(false);
@@ -360,9 +387,11 @@ export function Peek({
             }
           }}
         >
-          {session.peekIndex === players.length - 1
-            ? "Everyone’s ready"
-            : "Hide & pass"}
+          {actor
+            ? "Hide & start acting"
+            : session.peekIndex === players.length - 1
+              ? "Everyone’s ready"
+              : "Hide & pass"}
           <ArrowRight size={20} />
         </Button>
         <p className="helper" id="peek-help">
@@ -403,7 +432,12 @@ export function Timer({
   const callback = useRef(onEnd);
   callback.current = onEnd;
   useEffect(() => {
-    if (!session.timerRunning || session.paused) return;
+    if (
+      session.options.seconds === 0 ||
+      !session.timerRunning ||
+      session.paused
+    )
+      return;
     let last = Date.now();
     const id = setInterval(() => {
       const state = useGame.getState().session;
@@ -422,6 +456,8 @@ export function Timer({
     }, 200);
     return () => clearInterval(id);
   }, [session.timerRunning, session.paused, patch]);
+  if (session.options.seconds === 0)
+    return <p className="untimed-label">No timer · Play at your pace</p>;
   return (
     <div className="timer">
       <span
