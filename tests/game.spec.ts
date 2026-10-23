@@ -66,6 +66,11 @@ test("phone Imposter round, hold privacy, voting, results and replay", async ({
   await expect(page.getByText(/The secret was/)).toBeVisible();
   await page.getByRole("button", { name: "Play again", exact: true }).click();
   await expect(
+    page.getByRole("heading", { name: "Who’s in the huddle?" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Let’s play, all 5 of us" }).click();
+  await page.getByRole("button", { name: "Quick start" }).click();
+  await expect(
     page.getByRole("heading", { name: "Pass to Maya" }),
   ).toBeVisible();
 });

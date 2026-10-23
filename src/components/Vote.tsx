@@ -26,6 +26,16 @@ export function Vote({
     return () => clearInterval(id);
   }, [session.voterIndex]);
   const point = session.options.voteMode === "point";
+  const useVerbalVote = () => {
+    setSelected("");
+    setReady(false);
+    setTie(false);
+    patch({
+      options: { ...session.options, voteMode: "point" },
+      votes: {},
+      voterIndex: 0,
+    });
+  };
   const voter = players[session.voterIndex];
   const cast = () => {
     if (!selected) return;
@@ -72,26 +82,15 @@ export function Vote({
         >
           {guard ? `Ready in ${guard}` : "I’m ready to vote"}
         </Button>
-        <Button
-          onClick={() => {
-            setSelected("");
-            patch({
-              options: { ...session.options, voteMode: "point" },
-              votes: {},
-              voterIndex: 0,
-            });
-          }}
-        >
-          Use quick group vote
-        </Button>
+        <Button onClick={useVerbalVote}>We voted out loud</Button>
       </Screen>
     );
   return (
     <Screen
-      title={point ? "Point on three!" : `${voter?.name}, who is it?`}
+      title={point ? "Who did you choose?" : `${voter?.name}, who is it?`}
       subtitle={
         point
-          ? "Count 3, 2, 1 together. Pick the person with the most votes."
+          ? "Vote out loud, then tap the person your group accused. Only one person needs to use the phone."
           : "Choose one player, then confirm your secret vote."
       }
     >
@@ -111,6 +110,7 @@ export function Vote({
       <Button className="primary" disabled={!selected} onClick={cast}>
         {point ? "Reveal the accused" : "Lock my vote"}
       </Button>
+      {!point && <Button onClick={useVerbalVote}>We voted out loud</Button>}
       {point && (
         <Button
           onClick={() => {
@@ -123,7 +123,7 @@ export function Vote({
       )}
       {point && tie && (
         <p role="status">
-          No one is eliminated. Talk it out, then point again.
+          No one is eliminated. Talk it out, then choose again.
         </p>
       )}
     </Screen>

@@ -15,7 +15,7 @@ export default function Results({
   onHome: () => void;
   onPlayers: () => void;
 }) {
-  const { players, start, preferences } = useGame();
+  const { players, preferences } = useGame();
   const remix =
     preferences.design !== "classic" && preferences.design !== "club-original";
   const refined = remix && preferences.deckStyle !== false;
@@ -100,13 +100,10 @@ export default function Results({
           </ol>
         </details>
       )}
-      <Button className="primary" onClick={() => start(session.game)}>
+      <Button className="primary" onClick={onPlayers}>
         Play again
       </Button>
-      <div className="split">
-        <Button onClick={onHome}>Next game</Button>
-        <Button onClick={onPlayers}>Change players</Button>
-      </div>
+      <Button onClick={onHome}>Next game</Button>
     </Screen>
   );
 }

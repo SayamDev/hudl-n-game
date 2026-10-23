@@ -52,6 +52,19 @@ export default function Imposter({ session: s }: GameProps) {
         >
           Time to vote
         </Button>
+        <Button
+          onClick={() =>
+            patch({
+              phase: "vote",
+              timerRunning: false,
+              options: { ...s.options, voteMode: "point" },
+              votes: {},
+              voterIndex: 0,
+            })
+          }
+        >
+          We voted out loud
+        </Button>
       </Screen>
     );
   }

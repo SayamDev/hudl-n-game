@@ -88,7 +88,7 @@ export function Players({
   return (
     <Screen
       title="Who’s in the huddle?"
-      subtitle={`${classic ? "Charades" : metadata.name} needs ${minimum}-20 players. Nicknames encouraged.`}
+      subtitle={`Same crew this round? Add or remove people below. ${classic ? "Charades" : metadata.name} needs ${minimum}-20 players.`}
     >
       <form
         className="add-player"
@@ -201,9 +201,11 @@ export function Players({
 export function GameSettings({
   game,
   onStart,
+  onPlayers,
 }: {
   game: GameId;
   onStart: () => void;
+  onPlayers?: () => void;
 }) {
   const {
     players,
@@ -217,7 +219,7 @@ export function GameSettings({
     preferences.design !== "classic" &&
     preferences.design !== "club-original"
   )
-    return <ClubSetup onStart={onStart} />;
+    return <ClubSetup onStart={onStart} onPlayers={onPlayers} />;
   const meta = gameById(game);
   const packs = [...builtInPacks, ...customPacks].filter(
     (p) => !p.adult || (!preferences.family && preferences.adult),
@@ -227,6 +229,11 @@ export function GameSettings({
       title={`Let’s play ${game === "charades" && o.charadesMode === "classic" ? "Charades" : meta.name}.`}
       subtitle="Good defaults. Your kind of chaos."
     >
+      {onPlayers && (
+        <Button onClick={onPlayers}>
+          Edit crew · {players.length} players
+        </Button>
+      )}
       <Button
         className="primary"
         disabled={
@@ -392,7 +399,7 @@ export function GameSettings({
                 }
               >
                 <option value="secret">Secret pass-and-vote</option>
-                <option value="point">Quick group vote</option>
+                <option value="point">Out loud — tap the accused</option>
               </select>
             </label>
           </>

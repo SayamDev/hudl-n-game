@@ -90,7 +90,11 @@ export type Session = {
   promptDeck?: string[];
 };
 export type GameProps = { session: Session };
-export type SettingsProps = { game: GameId; onStart: () => void };
+export type SettingsProps = {
+  game: GameId;
+  onStart: () => void;
+  onPlayers?: () => void;
+};
 export type ResultsProps = {
   session: Session;
   onHome: () => void;

@@ -118,3 +118,5 @@ No accounts, analytics or tracking cookies are built into the app. Browser stora
 Created by **[Sayam](https://github.com/SayamDev)**. Source code is [MIT licensed](LICENSE); fonts and icon assets retain their own licences. © 2026 Sayam.
 
 Private handoffs now use an original sealed-deck illustration with a stable hold control, responsive two-column tablet layout and immediate concealment on release. Results feature the real winning alibis and the same readable score rows as the leaderboard. Compare with the previous presentation under **Settings → Refined deck styling**; player data stays intact. Motion and Phosphor Icons are MIT-licensed open-source dependencies, and the deck artwork is authored locally.
+
+Every new game and replay checks who is in the crew, and game setup includes **Edit crew**. For face-to-face accusations, choose **Out loud — tap the accused**, or use **We voted out loud** during Imposter discussion/private voting. One person selects the accused; no individual phone ballots are required. Secret voting remains available.

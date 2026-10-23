@@ -13,7 +13,13 @@ import { Button, Screen, Toggle } from "./ui";
 import { GameArt } from "./Identity";
 import builtInPacks from "../content/packs.json";
 import { gameById } from "../games/registry";
-export default function ClubSetup({ onStart }: { onStart: () => void }) {
+export default function ClubSetup({
+  onStart,
+  onPlayers,
+}: {
+  onStart: () => void;
+  onPlayers?: () => void;
+}) {
   const {
     players,
     options: o,
@@ -44,6 +50,11 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
         </div>
         <GameArt game="imposter" />
       </div>
+      {onPlayers && (
+        <Button onClick={onPlayers}>
+          Edit crew · {players.length} players
+        </Button>
+      )}
       <section className="setup-section" aria-labelledby="roles-heading">
         <div className="setup-section-title">
           <Fingerprint size={25} />
@@ -207,7 +218,7 @@ export default function ClubSetup({ onStart }: { onStart: () => void }) {
               }
             >
               <option value="secret">Secret pass-and-vote</option>
-              <option value="point">Quick group vote</option>
+              <option value="point">Out loud — tap the accused</option>
             </select>
           </label>
           <label>

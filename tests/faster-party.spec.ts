@@ -98,7 +98,7 @@ test("familiar word hint, no timer, quick vote and swipe verdict protect secrets
   ).toBe(0);
   await page.getByRole("button", { name: "Time to vote" }).click();
   await expect(
-    page.getByRole("heading", { name: "Point on three!" }),
+    page.getByRole("heading", { name: "Who did you choose?" }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "It’s a tie — keep discussing" })
@@ -151,9 +151,9 @@ test("legacy active secret ballots are retained while future rounds use quick vo
   await expect(
     page.getByRole("heading", { name: "Pass to Noah", exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Use quick group vote" }).click();
+  await page.getByRole("button", { name: "We voted out loud" }).click();
   await expect(
-    page.getByRole("heading", { name: "Point on three!" }),
+    page.getByRole("heading", { name: "Who did you choose?" }),
   ).toBeVisible();
 });
 test("classic Charades is discoverable, private, untimed and advances to another actor", async ({

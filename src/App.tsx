@@ -215,7 +215,7 @@ export default function App() {
   }, [page, session?.phase]);
   const choose = (id: GameId) => {
     setSelected(id);
-    setPage(players.length >= gameById(id).min ? "game-settings" : "players");
+    setPage("players");
   };
   const home = () => {
     quit();
@@ -481,7 +481,11 @@ export default function App() {
                 onNext={() => setPage("game-settings")}
               />
             ) : page === "game-settings" ? (
-              <GameSettings game={selected} onStart={() => start(selected)} />
+              <GameSettings
+                game={selected}
+                onStart={() => start(selected)}
+                onPlayers={() => setPage("players")}
+              />
             ) : page === "settings" ? (
               <Preferences />
             ) : page === "packs" ? (
