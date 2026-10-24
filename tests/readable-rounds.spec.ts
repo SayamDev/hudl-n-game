@@ -45,6 +45,19 @@ test("Charades cards stay readable after release, scroll without hiding and a ch
     await expect(page.locator(".secret-word")).toBeVisible();
     await page.getByRole("button", { name: "Hide & start acting" }).click();
     await expect(page.locator(".secret-word")).toHaveCount(0);
+    const heading=await page.locator(".silent-stage > h1").boundingBox();
+    const team=await page.locator(".acting-team").boundingBox();
+    expect(heading!.y+heading!.height).toBeLessThanOrEqual(team!.y);
+    const panel = await page.locator(".charades-acting").boundingBox();
+    const artwork = await page
+      .locator(".charades-acting .game-scene")
+      .boundingBox();
+    expect(artwork!.width).toBeGreaterThan(panel!.width * 0.95);
+    expect(artwork!.height).toBeGreaterThan(panel!.height * 0.6);
+    if (turn === 0)
+      await page.screenshot({
+        path: ".impeccable/review/charades-large-art.png",
+      });
     const finish = await page
       .getByRole("button", { name: "Finish this turn", exact: true })
       .boundingBox();

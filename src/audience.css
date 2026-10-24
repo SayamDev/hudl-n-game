@@ -654,3 +654,115 @@
     width: 100%;
   }
 }
+/* One large performance image, followed by a compact actor caption. */
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  justify-items: stretch;
+  align-items: stretch;
+  align-content: stretch;
+  gap: 8px;
+  padding: 0 0 14px;
+  overflow: hidden;
+  background: #24182f;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting
+  .game-scene {
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  transform: none;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting
+  .game-scene
+  svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting
+  > .avatar {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 56px;
+  height: 56px;
+  margin: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting
+  h2 {
+  grid-row: 2;
+  margin: 0;
+  padding: 4px 16px 0;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  line-height: 1.1;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting
+  p {
+  grid-row: 3;
+  margin: 0;
+  padding: 0 16px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage:has(.charades-acting)
+  .acting-team {
+  background: transparent;
+  padding: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .is-playing
+  main[data-game="charades"][data-phase="acting"]
+  .silent-stage:has(.charades-acting)
+  > h1 {
+  grid-column: 1;
+  grid-row: 1;
+  position: static;
+  margin: 0;
+  align-self: center;
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .is-playing
+  main[data-game="charades"][data-phase="acting"]
+  .silent-stage:has(.charades-acting)
+  :is(.timer, .untimed-label) {
+  grid-column: 2;
+  grid-row: 1;
+  position: static;
+  margin: 0;
+  padding: 0;
+  max-width: 140px;
+  font-size: 0.75rem;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .is-playing
+  main[data-game="charades"][data-phase="acting"]
+  .silent-stage:has(.charades-acting)
+  .acting-team {
+  grid-column: 1/-1;
+  grid-row: 2;
+  position: static;
+  margin: 0;
+}
