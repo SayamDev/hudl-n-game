@@ -27,8 +27,26 @@ export function IllustratedPortrait({ seed }: { seed: string }) {
 export function WorldArt({
   world,
 }: {
-  world: "imposter" | "mafia" | "spy" | "heads-up" | "charades" | "party";
+  world:
+    | "imposter"
+    | "mafia"
+    | "spy"
+    | "heads-up"
+    | "charades"
+    | "party"
+    | "secret-hitler";
 }) {
+  if (world === "spy" || world === "secret-hitler")
+    return (
+      <img
+        className="world-illustration"
+        data-world-art={world}
+        src={`${import.meta.env.BASE_URL}art/after-hours/${world === "spy" ? "spyfall" : "secret-hitler"}.webp`}
+        alt=""
+        aria-hidden="true"
+        style={{ objectFit: "cover" }}
+      />
+    );
   const index = [
     "imposter",
     "mafia",

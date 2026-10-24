@@ -85,6 +85,18 @@ export default function Results({
           The secret was <strong>{session.secret}</strong>.
         </p>
       )}
+      {session.game === "secret-hitler" && session.parliament && (
+        <details open>
+          <summary>Secret roles revealed</summary>
+          <ul>
+            {players.map((p) => (
+              <li key={p.id}>
+                {p.name} · {session.parliament!.roles[p.id]}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
       <Scoreboard
         players={players}
         winners={session.winners}

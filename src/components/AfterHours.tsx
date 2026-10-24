@@ -74,7 +74,7 @@ export function AfterHoursHome({
               <div className="night-meta">
                 <span>
                   <UsersThree size={14} />
-                  {g.min}–20
+                  {g.min}–{g.max || 20}
                 </span>
                 <span>
                   <Clock size={14} />

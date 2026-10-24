@@ -22,7 +22,8 @@ Add your crew, choose a game and pass the phone. A short interactive welcome let
 | --------------------------------------- | ------------------------------------------------------------------------------------------ | ---- |
 | A word everyone knows. Almost everyone. | **Imposter** — secret words, clues, accusations and a last-chance guess.                   | 3–20 |
 | Trust nobody after dark.                | **Mafia** — narrated nights, secret roles and village votes.                               | 5–20 |
-| Same place. One very lost spy.          | **Where Are We?** — location clues, questioning and a hidden outsider.                     | 3–20 |
+| Same place. One very lost spy.          | **Spyfall** — location clues, questions and unanimous accusations.                         | 3–8 |
+| Elect carefully. Question every motive. | **Secret Hitler** — secret factions, elections, policies and executive powers. | 5–10 |
 | Big gestures. Absolutely no words.      | **Heads Up!** — hold the screen up while your team gives clues. | 3–20 |
 | You know exactly who it is.             | **Most Likely To / Hot Takes** — point votes or private agreement ratings.                 | 3–20 |
 
@@ -107,6 +108,10 @@ The **public GitHub Pages demo uses the offline mixer and manual packs**. It doe
 For local AI generation, copy `.env.example` to `.env.local`, add your own Groq key and confirm the account's free-tier configuration. Restart Vite. The server adapter requests a themed draft, validates it and returns it for you to edit before saving. Your crew names and scores are not included in the request.
 
 The adapter has small in-memory usage caps and no paid fallback. Provider availability and free quotas can change. A public AI service needs separate server hosting and durable abuse controls; see the [setup and deployment notes](docs/pack-studio-setup.md). Never put secrets in a `VITE_` variable or commit `.env.local`.
+
+Secret Hitler is a noncommercial [CC BY-NC-SA 4.0 digital adaptation](docs/secret-hitler-license.md), with original artwork and rewritten interface copy. Spyfall uses original locations and the app’s winner-point scoring. Both have new local noir covers.
+
+Most Likely To offers a separate **After Dark 18+** selection: enable adult content in its setup (or Settings), turn Family mode off, then choose the pack under Intensity. Any prompt can be skipped.
 
 ## Possible next games
 

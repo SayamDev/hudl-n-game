@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
-export type GameId = "imposter" | "mafia" | "spy" | "charades" | "party";
+export type GameId =
+  "imposter" | "mafia" | "spy" | "charades" | "party" | "secret-hitler";
 export type Player = {
   id: string;
   name: string;
@@ -53,11 +54,12 @@ export type GameOptions = {
   showRoles: boolean;
   manual: boolean;
   tilt: boolean;
-  intensity: "Family" | "Friends" | "Spicy";
+  intensity: "Family" | "Friends" | "Spicy" | "After Dark 18+";
   partyMode: "likely" | "takes";
 };
 export type Session = {
   id: string;
+  parliament?: import("./parliament").Parliament;
   game: GameId;
   phase: string;
   options: GameOptions;
@@ -113,6 +115,7 @@ export type GameDefinition = {
   color: string;
   emoji: string;
   min: number;
+  max?: number;
   duration: string;
   rules: string[];
   load: () => Promise<{ default: ComponentType<GameProps> }>;

@@ -1,7 +1,22 @@
 /** Approved decorative faces. Selection depends on the game, never a secret role. */
 export type CardWorld =
-  "imposter" | "mafia" | "spy" | "heads-up" | "charades" | "party";
+  | "imposter"
+  | "mafia"
+  | "spy"
+  | "heads-up"
+  | "charades"
+  | "party"
+  | "secret-hitler";
 export function CardFace({ world }: { world: CardWorld }) {
+  if (world === "secret-hitler")
+    return (
+      <img
+        className="card-face-art"
+        src={`${import.meta.env.BASE_URL}art/after-hours/secret-hitler.webp`}
+        alt=""
+        aria-hidden="true"
+      />
+    );
   const index = [
     "imposter",
     "mafia",

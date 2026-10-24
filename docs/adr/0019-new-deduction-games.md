@@ -1,0 +1,9 @@
+# 0019 — Spyfall, Secret Hitler and opt-in adult prompts
+
+The user requested both named games and fresh relevant artwork. Spyfall replaces the lobby name of `spy`, preserving saved sessions and original location content. Its rounds are eight minutes with unanimous verbal accusations and a voluntary location guess. Question recipients take the next turn and cannot immediately question back. The shared-phone host records unanimous decisions; no remote synchronisation is implied. Scoring uses the app's configurable winner points, rather than the published tournament score table.
+
+Secret Hitler is a separately registered 5–10-player game. The pure parliament reducer owns roles, policies, ballots, powers and outcomes. Private screen state is transient; blur, pause and document visibility loss close it. Roles/policy hands are never placed in the hidden DOM. The existing local-only session persistence and paused restore apply. Chosen social groups do not replace random hidden factions. See ../secret-hitler-license.md for the adaptation licence and credits.
+
+New local original generated covers: spyfall.webp and secret-hitler.webp; all other pinned covers stay unchanged. Art generated with the built-in image-generation tool: masked spy over a question-mark route map; masked parliamentary chamber around a sealed ballot box. Purple/ivory/lime print palette; no original boardgame art, real people or political insignia. Both are used for lobby and game cover scenes.
+
+Most Likely To offers 60 original After Dark 18+ prompts, requiring an explicit adult opt-in with Family mode disabled. Store deals downgrade adult selections when the gate is off; running Party screens also enforce current preferences. Existing Family/Friends/Spicy content remains separate. Skipping is always available.

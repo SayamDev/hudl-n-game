@@ -17,7 +17,9 @@ test("private swipe and hold conceal on release, including keyboard and named ha
     .getByRole("button", { name: "Let’s play" })
     .click();
   for (const name of ["Maya", "Noah", "Zara"]) {
-    await page.getByLabel("Player name", { exact: true }).fill(name);
+    await page
+      .getByRole("textbox", { name: "Player name", exact: true })
+      .fill(name);
     await page.getByRole("button", { name: "Add player", exact: true }).click();
   }
   await page.getByRole("button", { name: "Let’s play, all 3 of us" }).click();

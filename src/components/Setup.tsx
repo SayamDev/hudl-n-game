@@ -60,6 +60,7 @@ export function Players({
   const metadata = gameById(game);
   const classic = game === "charades" && options.charadesMode === "classic";
   const minimum = classic ? 4 : metadata.min;
+  const maximum = metadata.max || 20;
   const add = () => {
     const n = name.trim();
     if (!n) {
@@ -70,8 +71,8 @@ export function Players({
       setError("That name is taken. Add an initial or nickname.");
       return;
     }
-    if (players.length >= 20) {
-      setError("This crew is full: 20 players maximum.");
+    if (players.length >= maximum) {
+      setError(`This game supports up to ${maximum} players.`);
       return;
     }
     setPlayers([
@@ -98,7 +99,7 @@ export function Players({
     <Screen
       className="crew-stage"
       title="Who’s in the huddle?"
-      subtitle={`Same crew this round? Add or remove people below. ${classic ? "Charades" : metadata.name} needs ${minimum}-20 players.`}
+      subtitle={`Same crew this round? Add or remove people below. ${classic ? "Charades" : metadata.name} needs ${minimum}–${maximum} players.`}
     >
       <form
         className="add-player"
@@ -197,7 +198,7 @@ export function Players({
       )}
       <Button
         className="primary"
-        disabled={players.length < minimum}
+        disabled={players.length < minimum || players.length > maximum}
         onClick={onNext}
         data-crew-confirm="true"
       >
@@ -222,6 +223,7 @@ export function GameSettings({
     players,
     options: o,
     setOptions,
+    setPreferences,
     preferences,
     customPacks,
   } = useGame();
@@ -245,11 +247,19 @@ export function GameSettings({
           Edit crew · {players.length} players
         </Button>
       )}
-      <TeamSetup game={game} />
+      {game !== "secret-hitler" && <TeamSetup game={game} />}
+      {players.length > (meta.max || 20) && (
+        <p role="alert">
+          {meta.name} supports up to {meta.max} players. Edit the crew before
+          starting.
+        </p>
+      )}
       <Button
         className="primary"
         disabled={
-          !!teamError(players, game, o) ||
+          players.length < meta.min ||
+          players.length > (meta.max || 20) ||
+          (game !== "secret-hitler" && !!teamError(players, game, o)) ||
           (game === "charades" &&
             o.charadesMode === "classic" &&
             players.length < 4)
@@ -385,7 +395,7 @@ export function GameSettings({
             <small>No packs selected? We’ll use all family packs.</small>
           </fieldset>
         )}
-        {["imposter", "spy", "mafia"].includes(game) && (
+        {["imposter", "mafia"].includes(game) && (
           <>
             <label>
               Discussion time
@@ -400,6 +410,7 @@ export function GameSettings({
                 <option value={120}>2 minutes</option>
                 <option value={180}>3 minutes</option>
                 <option value={300}>5 minutes</option>
+                <option value={480}>8 minutes</option>
               </select>
             </label>
             <label>
@@ -455,6 +466,21 @@ export function GameSettings({
         )}
         {game === "party" && (
           <>
+            <p>
+              After Dark has adult dating and bedroom humour. Anyone can skip a
+              prompt without explaining.
+            </p>
+            <Toggle
+              label="Enable 18+ prompts for this adult group"
+              checked={preferences.adult && !preferences.family}
+              onChange={(adult) =>
+                setPreferences({
+                  adult,
+                  family: adult ? false : preferences.family,
+                })
+              }
+            />
+
             <label>
               Play style
               <select
@@ -475,14 +501,18 @@ export function GameSettings({
                 value={preferences.family ? "Family" : o.intensity}
                 onChange={(e) =>
                   setOptions({
-                    intensity: e.target.value as "Family" | "Friends" | "Spicy",
+                    intensity: e.target.value as
+                      "Family" | "Friends" | "Spicy" | "After Dark 18+",
                   })
                 }
               >
                 <option>Family</option>
                 {!preferences.family && <option>Friends</option>}
                 {!preferences.family && preferences.adult && (
-                  <option>Spicy</option>
+                  <>
+                    <option>Spicy</option>
+                    <option>After Dark 18+</option>
+                  </>
                 )}
               </select>
             </label>

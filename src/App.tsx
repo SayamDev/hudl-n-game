@@ -380,7 +380,9 @@ export default function App() {
                   <section className="game-shelf" aria-labelledby="pick-game">
                     <div className="shelf-heading">
                       <h2 id="pick-game">Pick your kind of chaos</h2>
-                      <span>5 games. Zero awkward small talk.</span>
+                      <span>
+                        {lobbyGames.length} games. Zero awkward small talk.
+                      </span>
                     </div>
                     <div className="games-grid">
                       {lobbyGames.map((g, i) => (
@@ -392,7 +394,7 @@ export default function App() {
                             <div className="game-meta">
                               <span>
                                 <UsersThree size={17} />
-                                {g.min}-20
+                                {g.min}–{g.max || 20}
                               </span>
                               <span>
                                 <Clock size={17} />

@@ -52,7 +52,9 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          globPatterns: ["**/*.{js,css,html,svg,png,jpg,ttf,woff2,json,mp3}"],
+          globPatterns: [
+            "**/*.{js,css,html,svg,png,jpg,webp,ttf,woff2,json,mp3}",
+          ],
           navigateFallback: "index.html",
           navigateFallbackDenylist: [/^\/api\//],
           maximumFileSizeToCacheInBytes: 4000000,

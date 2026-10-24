@@ -1,0 +1,76 @@
+.parliament-stage {
+  --accent: #dded92;
+  gap: 1rem;
+}
+.parliament-cover {
+  width: 100%;
+  max-height: min(32vh, 320px);
+  object-fit: cover;
+  border-radius: 18px;
+  object-position: 50% 45%;
+}
+.parliament-private {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(18px, 4vw, 36px);
+  border: 1px solid var(--border, #8c7598);
+  border-radius: 22px;
+  background: #171121;
+  color: #faf0d5;
+}
+.parliament-private h2 {
+  color: #e0f991;
+  font-size: clamp(2rem, 7vw, 3.6rem);
+  margin: 0;
+}
+.parliament-private p {
+  color: #e3d6e9;
+  line-height: 1.6;
+}
+.policy-tracks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  padding: 1rem;
+  background: #241a33;
+  color: #faf0d5;
+  border-radius: 16px;
+}
+.policy-tracks strong {
+  font-size: clamp(0.85rem, 3vw, 1.1rem);
+}
+.policy-tracks span {
+  font-size: 0.85rem;
+  color: #d1c2df;
+}
+.policy-hand {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+}
+.policy-hand .policy-tile {
+  min-height: 125px;
+  font-weight: 700;
+  color: #101019;
+}
+.policy-hand .policy-liberal {
+  background: #9edce6;
+}
+.policy-hand .policy-fascist {
+  background: #f3ae94;
+}
+.ballot-box {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  border: 1px solid #8e7a9f;
+  border-radius: 18px;
+}
+.game-attribution {
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.game-attribution a {
+  color: inherit;
+  text-decoration: underline;
+}

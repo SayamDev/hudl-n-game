@@ -13,6 +13,7 @@ import { lobbyGames } from "../games/registry";
 import { useGame } from "../store/useGame";
 import type { GameId } from "../lib/types";
 const icons = {
+  "secret-hitler": Detective,
   imposter: Detective,
   mafia: MoonStars,
   spy: MapPin,

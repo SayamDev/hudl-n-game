@@ -1,3 +1,5 @@
+import { adultLikely } from "../content/adult-likely";
+import { createParliament } from "../lib/parliament";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type {
@@ -126,12 +128,22 @@ export const useGame = create<State>()(
       setOptions: (o) => set((s) => ({ options: { ...s.options, ...o } })),
       start: (game) => {
         const { players, options, preferences, customPacks, variety } = get();
-        if (teamError(players, game, options)) return;
-        const teams = options.teams?.length
-          ? cleanTeams(options.teams, players)
-          : game === "charades"
-            ? defaultTeams(players)
-            : undefined;
+        if (
+          game === "secret-hitler" &&
+          (players.length < 5 || players.length > 10)
+        )
+          return;
+        if (game === "spy" && players.length > 8) return;
+        if (game !== "secret-hitler" && teamError(players, game, options))
+          return;
+        const teams =
+          game === "secret-hitler"
+            ? undefined
+            : options.teams?.length
+              ? cleanTeams(options.teams, players)
+              : game === "charades"
+                ? defaultTeams(players)
+                : undefined;
         if (
           players.length <
           (game === "mafia"
@@ -164,19 +176,29 @@ export const useGame = create<State>()(
           players.map((p) => p.id),
           variety.starters,
         )[0];
-        const roles = assignRoles(players, game, options);
+        const parliament =
+          game === "secret-hitler"
+            ? createParliament(players.map((p) => p.id))
+            : undefined;
+        const roles = parliament?.roles || assignRoles(players, game, options);
         if (game === "spy")
           players.forEach((p, i) => {
             if (roles[p.id] !== "Spy")
               roles[p.id] = location.roles[i % location.roles.length];
           });
         const seconds =
-          game === "charades" && options.seconds !== 0 ? 60 : options.seconds;
+          game === "spy"
+            ? 480
+            : game === "charades" && options.seconds !== 0
+              ? 60
+              : options.seconds;
         const safeOptions = {
           ...options,
+          seconds,
           intensity: preferences.family
             ? "Family"
-            : options.intensity === "Spicy" && !preferences.adult
+            : ["Spicy", "After Dark 18+"].includes(options.intensity) &&
+                !preferences.adult
               ? "Friends"
               : options.intensity,
         } as GameOptions;
@@ -184,9 +206,11 @@ export const useGame = create<State>()(
         const promptDeck =
           game === "party"
             ? freshOrder(
-                (safeOptions.partyMode === "takes" ? takes : likely)[
-                  safeOptions.intensity
-                ],
+                safeOptions.intensity === "After Dark 18+"
+                  ? adultLikely
+                  : (safeOptions.partyMode === "takes" ? takes : likely)[
+                      safeOptions.intensity
+                    ],
                 variety[promptKey],
               )
             : undefined;
@@ -207,6 +231,7 @@ export const useGame = create<State>()(
           session: {
             id: crypto.randomUUID(),
             game,
+            parliament,
             phase:
               game === "charades"
                 ? "ready"

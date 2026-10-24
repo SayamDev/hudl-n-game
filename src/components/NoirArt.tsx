@@ -10,7 +10,18 @@ export function NoirIllustration({
   hero?: boolean;
   charadesMode?: GameOptions["charadesMode"];
 }) {
+  if (game === "spy" || game === "secret-hitler")
+    return (
+      <img
+        className="noir-illustration"
+        src={`${import.meta.env.BASE_URL}art/after-hours/${game === "spy" ? "spyfall" : "secret-hitler"}.webp`}
+        alt=""
+        aria-hidden="true"
+        style={{ objectFit: "cover" }}
+      />
+    );
   const index = {
+    "secret-hitler": 0,
     mafia: 0,
     spy: 1,
     charades: charadesMode === "classic" ? 3 : 2,

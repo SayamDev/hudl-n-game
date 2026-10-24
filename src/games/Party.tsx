@@ -1,3 +1,4 @@
+import { adultLikely } from "../content/adult-likely";
 import { GameWorld } from "../components/GameWorld";
 import { CardFace } from "../components/CardFace";
 import { useState } from "react";
@@ -13,12 +14,22 @@ export default function Party({ session: s }: GameProps) {
   const [value, setValue] = useState(50),
     [ready, setReady] = useState(false);
   const hot = s.options.partyMode === "takes";
-  const pool = (hot ? takes : likely)[s.options.intensity];
+  const adultAllowed = preferences.adult && !preferences.family;
+  const intensity = preferences.family
+    ? "Family"
+    : !adultAllowed && ["Spicy", "After Dark 18+"].includes(s.options.intensity)
+      ? "Friends"
+      : s.options.intensity;
+  const pool =
+    intensity === "After Dark 18+"
+      ? adultLikely
+      : (hot ? takes : likely)[intensity];
   const offset =
     Array.from(s.id).reduce((a, c) => a + c.charCodeAt(0), 0) % pool.length;
   const prompt =
-    s.promptDeck?.[s.promptIndex % s.promptDeck.length] ??
-    pool[(offset + s.promptIndex) % pool.length];
+    (intensity === s.options.intensity
+      ? s.promptDeck?.[s.promptIndex % s.promptDeck.length]
+      : undefined) ?? pool[(offset + s.promptIndex) % pool.length];
   const next = () => {
     setReady(false);
     setValue(50);
@@ -46,7 +57,7 @@ export default function Party({ session: s }: GameProps) {
       <Screen
         className="party-spotlight-stage"
         title={hot ? "Hot take incoming." : "Who’s most likely to…"}
-        subtitle={`Prompt ${s.promptIndex + 1} of 5 · ${s.options.intensity}`}
+        subtitle={`Prompt ${s.promptIndex + 1} of 5 · ${intensity}`}
       >
         <div className="prompt-card" key={s.promptIndex}>
           {refined ? (
