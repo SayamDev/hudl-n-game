@@ -26,7 +26,7 @@ test("branded gameplay artwork and main controls fit phones, tablets, desktop an
   const saved = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("hudl-game-v1")!),
   );
-  for (const { game, mode, phase, action } of [
+  for (const { game, mode, phase, action, dark } of [
     {
       game: "charades",
       mode: "heads-up",
@@ -53,8 +53,9 @@ test("branded gameplay artwork and main controls fit phones, tablets, desktop an
       phase: "prompt",
       action: "Point on three",
     },
-  ]) {
+  ].flatMap((item) => [false, true].map((dark) => ({ ...item, dark })))) {
     const fixture = structuredClone(saved);
+    fixture.state.preferences.dark = dark;
     Object.assign(fixture.state.session, {
       game,
       phase,
@@ -80,7 +81,10 @@ test("branded gameplay artwork and main controls fit phones, tablets, desktop an
     await page.waitForLoadState("networkidle");
     if (phase === "peek")
       await expect(
-        page.getByRole("button", { name: "Hold to peek" }),
+        page.getByRole("button", {
+          name: game === "imposter" ? "Hold to peek" : "Reveal card",
+          exact: true,
+        }),
       ).toBeEnabled();
     for (const [width, height] of [
       [320, 568],
@@ -156,10 +160,14 @@ test("branded gameplay artwork and main controls fit phones, tablets, desktop an
           [],
         );
         if (phase === "peek") {
-          const hold = page.getByRole("button", { name: "Hold to peek" });
+          const hold = page.getByRole("button", {
+            name: game === "imposter" ? "Hold to peek" : "Reveal card",
+            exact: true,
+          });
           await hold.focus();
           const before = await hold.boundingBox();
-          await page.keyboard.down("Space");
+          if (game === "imposter") await page.keyboard.down("Space");
+          else await hold.click();
           await expect(page.locator(".secret-word")).toBeVisible();
           const bounds = await page.locator(".stable-secret").boundingBox();
           const word = await page.locator(".secret-word").boundingBox();
@@ -171,7 +179,11 @@ test("branded gameplay artwork and main controls fit phones, tablets, desktop an
             path: `${shots}/${game}-held-390.png`,
             animations: "disabled",
           });
-          await page.keyboard.up("Space");
+          if (game === "imposter") await page.keyboard.up("Space");
+          else
+            await page
+              .getByRole("button", { name: "Hide card", exact: true })
+              .click();
           await expect(page.locator(".secret-word")).toHaveCount(0);
           expect(
             Math.abs((await hold.boundingBox())!.y - before!.y),

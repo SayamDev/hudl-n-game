@@ -622,3 +622,35 @@
   grid-row: 6;
   margin: 0;
 }
+/* Validation surfaces own their foreground in every theme. */
+:root .error {
+  background: #ffe3ec;
+  color: #741b38;
+  border: 1px solid #bc6a85;
+  padding: 12px 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+:root .error :is(strong, span, small, a) {
+  color: inherit;
+}
+:root[data-theme="dark"] .error {
+  background: #452337;
+  color: #ffe3ec;
+  border-color: #bc6a85;
+}
+.team-setup > p.error {
+  color: #741b38;
+}
+:root[data-theme="dark"] .team-setup > p.error {
+  color: #ffe3ec;
+}
+@media (max-width: 480px) {
+  .team-members label {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+  .team-members select {
+    width: 100%;
+  }
+}
