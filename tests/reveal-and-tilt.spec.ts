@@ -310,3 +310,35 @@ test("private, vote and verdict controls stay reachable at compact phone, tablet
     }
   }
 });
+test("calibration learns a natural grip and preserves correct/skip direction", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  const page = await context.newPage();
+  await page.goto("http://127.0.0.1:4173/");
+  await seed(page, "Heads Up!", 4);
+  await page
+    .getByRole("button", { name: "Start the clock", exact: true })
+    .click();
+  await pose(page, 70, 0, 650);
+  await page
+    .getByRole("button", { name: "Calibrate tilt", exact: true })
+    .click();
+  await expect(
+    page.getByText("Calibrated. Return to this position between tilts."),
+  ).toBeVisible();
+  await pose(page, 70);
+  await pose(page, 130, 0, 220);
+  await expect(page.locator(".answer-correct")).toBeVisible();
+  await pose(page, 70);
+  await pose(page, 0, 0, 220);
+  await expect(page.locator(".answer-skip")).toBeVisible();
+  await expect(
+    page.getByText("1 correct · 1 skipped", { exact: true }),
+  ).toBeVisible();
+  await context.close();
+});

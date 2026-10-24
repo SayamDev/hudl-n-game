@@ -766,3 +766,8 @@
   position: static;
   margin: 0;
 }
+@media (orientation:landscape) and (max-height:600px) {
+ :root[data-art-direction="deck"] .acting-status {gap:4px;}
+ :root[data-art-direction="deck"] .acting-status .button {padding:4px;font-size:.6rem;}
+ :root[data-art-direction="deck"] .acting-status .helper {font-size:.6rem;}
+}

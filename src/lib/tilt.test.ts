@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createTiltGesture, tiltPose } from "./tilt";
+import { createTiltGesture, tiltPose, createTiltCalibration } from "./tilt";
 describe("phone tilt gestures", () => {
   it("recognises screen direction across portrait, landscape and inverted grips", () => {
     expect(tiltPose(90, 0)).toBe("upright");
@@ -35,5 +35,31 @@ describe("phone tilt gestures", () => {
     expect(g.sample("floor", 500)).toBeNull();
     g.reset();
     expect(g.sample("floor", 800)).toBeNull();
+  });
+});
+
+describe("holder calibration", () => {
+  it("accepts a steady inclined grip and makes it the neutral reset", () => {
+    const c = createTiltCalibration();
+    for (let t = 0; t <= 600; t += 100) c.sample(70, 0, t);
+    expect(c.calibrate(600)).toBe(true);
+    expect(c.sample(70, 0, 700)).toBe("upright");
+    expect(c.sample(10, 0, 800)).toBe("ceiling");
+    expect(c.sample(120, 0, 900)).toBe("floor");
+  });
+  it("rejects stale, moving and flat-phone calibration", () => {
+    const c = createTiltCalibration();
+    for (let t = 0; t <= 600; t += 100) c.sample(t % 200 ? 50 : 90, 0, t);
+    expect(c.calibrate(600)).toBe(false);
+    for (let t = 1000; t <= 1700; t += 100) c.sample(0, 0, t);
+    expect(c.calibrate(1700)).toBe(false);
+    expect(c.calibrate(3000)).toBe(false);
+  });
+  it("uses hysteresis at the trigger and clears invalid input", () => {
+    const c = createTiltCalibration();
+    expect(c.sample(140, 0, 0)).toBe("floor");
+    expect(c.sample(122, 0, 10)).toBe("floor");
+    expect(c.sample(110, 0, 20)).toBe("moving");
+    expect(c.sample(null, null, 30)).toBeNull();
   });
 });

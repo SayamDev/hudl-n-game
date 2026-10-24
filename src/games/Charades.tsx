@@ -13,7 +13,7 @@ import {
   ArrowDown,
   ArrowUp,
 } from "@phosphor-icons/react";
-import { createTiltGesture, tiltPose } from "../lib/tilt";
+import { createTiltGesture, createTiltCalibration } from "../lib/tilt";
 import type { TiltPose } from "../lib/tilt";
 import type { GameProps } from "../lib/types";
 export default function Charades({ session: s }: GameProps) {
@@ -86,6 +86,16 @@ export default function Charades({ session: s }: GameProps) {
     return () => observer.disconnect();
   }, [s.phase, classic, s.cardIndex]);
   const gesture = useRef(createTiltGesture());
+  const calibration = useRef(createTiltCalibration());
+  const [calibrationMessage, setCalibrationMessage] = useState("");
+  const calibrate = () => {
+    gesture.current.reset();
+    setCalibrationMessage(
+      calibration.current.calibrate(performance.now())
+        ? "Calibrated. Return to this position between tilts."
+        : "Hold the phone facing your team, steady for a second, then tap Calibrate again.",
+    );
+  };
   const latest = useRef(s);
   latest.current = s;
   const mark = (correct: boolean) => {
@@ -143,12 +153,21 @@ export default function Charades({ session: s }: GameProps) {
     }, 5000);
     const reset = () => {
       gesture.current.reset();
+      calibration.current.reset();
       setPose(null);
     };
     const handler = (e: DeviceOrientationEvent) => {
       const current = latest.current;
-      const next = tiltPose(e.beta, e.gamma);
-      if (next === null) return;
+      const next = calibration.current.sample(
+        e.beta,
+        e.gamma,
+        performance.now(),
+      );
+      if (next === null) {
+        gesture.current.reset();
+        setPose(null);
+        return;
+      }
       received = true;
       clearTimeout(timeout);
       setSensor("connected");
@@ -360,6 +379,8 @@ export default function Charades({ session: s }: GameProps) {
                   ? "Requesting permission…"
                   : "Enable tilt controls"}
             </Button>
+            {tilt && <Button onClick={calibrate}>Calibrate tilt</Button>}
+            {calibrationMessage && <p role="status">{calibrationMessage}</p>}
             {(tilt || message) && (
               <p className="tilt-status" role="status">
                 {tilt ? motionStatus : message}
@@ -476,6 +497,16 @@ export default function Charades({ session: s }: GameProps) {
             <DeviceMobile size={18} />
             {tilt ? "Turn off tilt" : "Enable tilt controls"}
           </Button>
+          {tilt && (
+            <Button className="tilt-live-toggle" onClick={calibrate}>
+              Calibrate tilt
+            </Button>
+          )}
+          {calibrationMessage && (
+            <p className="tilt-live" role="status">
+              {calibrationMessage}
+            </p>
+          )}
           {tilt && (
             <p className="tilt-live" role="status">
               {pose === "upright" ? "Tilt ready" : "Return upright to rearm"}

@@ -62,3 +62,56 @@ export function createTiltGesture() {
     },
   };
 }
+/** A per-holder neutral angle. Never persist a previous person's grip. */
+export function createTiltCalibration() {
+  let neutral = 0;
+  let previous: TiltPose = "moving";
+  let samples: { angle: number; at: number }[] = [];
+  return {
+    sample(
+      beta: number | null,
+      gamma: number | null,
+      at: number,
+    ): TiltPose | null {
+      const normal = screenFacing(beta, gamma);
+      if (normal === null) {
+        previous = "moving";
+        samples = [];
+        return null;
+      }
+      const angle =
+        (Math.asin(Math.max(-1, Math.min(1, normal))) * 180) / Math.PI;
+      samples = samples.filter((s) => at - s.at <= 800);
+      samples.push({ angle, at });
+      const delta = angle - neutral;
+      if (Math.abs(delta) <= 15) previous = "upright";
+      else if (delta <= -38 || (previous === "floor" && delta <= -30))
+        previous = "floor";
+      else if (delta >= 38 || (previous === "ceiling" && delta >= 30))
+        previous = "ceiling";
+      else previous = "moving";
+      return previous;
+    },
+    calibrate(at: number) {
+      const recent = samples.filter((s) => at - s.at <= 800);
+      if (
+        recent.length < 4 ||
+        at - recent[0].at < 400 ||
+        at - recent[recent.length - 1].at > 200
+      )
+        return false;
+      const angles = recent.map((s) => s.angle);
+      if (Math.max(...angles) - Math.min(...angles) > 6) return false;
+      const mean = angles.reduce((a, b) => a + b, 0) / angles.length;
+      if (Math.abs(mean) > 35) return false;
+      neutral = mean;
+      previous = "upright";
+      samples = [];
+      return true;
+    },
+    reset() {
+      previous = "moving";
+      samples = [];
+    },
+  };
+}
