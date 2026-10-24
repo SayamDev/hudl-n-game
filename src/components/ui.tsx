@@ -431,9 +431,11 @@ export function Peek({
 export function Timer({
   session,
   onEnd,
+  compact = false,
 }: {
   session: Session;
   onEnd?: () => void;
+  compact?: boolean;
 }) {
   const patch = useGame((s) => s.patch);
   const preferences = useGame((s) => s.preferences);
@@ -484,7 +486,11 @@ export function Timer({
     return () => clearInterval(id);
   }, [session.timerRunning, session.paused, patch]);
   if (session.options.seconds === 0)
-    return <p className="untimed-label">No timer · Play at your pace</p>;
+    return (
+      <p className="untimed-label">
+        {compact ? "No timer" : "No timer · Play at your pace"}
+      </p>
+    );
   return (
     <div className="timer">
       <span

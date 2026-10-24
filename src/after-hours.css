@@ -1028,7 +1028,7 @@
   margin: 10px 0 18px;
 }
 .private-secret {
-  background: #14111def;
+  background: #14111d;
   border: 1px solid #75627e;
   border-radius: 14px;
   padding: 24px;
@@ -1446,10 +1446,10 @@
   border-radius: 12px;
   flex: none;
 }
-/* Keep a stable reveal window while the artwork returns on release. */
+/* A stable, content-sized private card: secret removal is always immediate. */
 .private-window {
-  height: 260px;
-  min-height: 260px;
+  height: 300px;
+  min-height: 300px;
   flex: none;
 }
 .private-reveal-cover,
@@ -1461,24 +1461,309 @@
   display: grid;
   align-items: end;
   opacity: 1;
-  transition: opacity 160ms ease-out;
+  transition: opacity 160ms var(--night-ease);
 }
 .private-reveal-cover.is-lifted {
   opacity: 0;
-  transform: none;
   pointer-events: none;
+}
+.private-swipe {
+  padding: 18px 0 0;
+}
+.private-seal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #c7bad3;
+}
+.private-seal span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.private-swipe p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+.private-swipe p svg {
+  flex: none;
 }
 .private-window > .private-secret {
   margin: 0;
   max-height: none;
-  display: grid;
-  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  padding: 22px 18px;
+  overflow-y: auto;
+  overflow-anchor: none;
+  scrollbar-width: thin;
+}
+.private-stage .private-secret h2 {
+  flex: none;
+  font-size: clamp(2.1rem, 10vw, 4rem);
+  line-height: 1.05;
+  margin: 10px 0;
+  overflow-wrap: anywhere;
+}
+.private-stage .private-secret h2:has(+ .private-hint) {
+  font-size: clamp(2.3rem, 10vw, 3.4rem);
+}
+.private-hint {
+  flex: none;
+  margin: 8px 0 12px;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid #514061;
+}
+.private-hint span {
+  font-size: 0.8rem;
+}
+.private-hint strong {
+  font-size: clamp(1.8rem, 8vw, 2.8rem);
+}
+.swipe-hide-cue {
+  display: block;
+  flex: none;
+  color: #c7bad3;
+  font-size: 0.75rem;
+  margin-top: 10px;
+}
+.private-stage > h1 {
+  padding-right: 58px;
+}
+.private-stage > .lede {
+  max-width: 34ch;
 }
 .private-portrait {
-  inset: 90px 0 140px;
+  inset: 85px 0 150px;
 }
 .private-portrait .illustrated-portrait {
   object-fit: contain;
+}
+.private-pass-zone p {
+  font-size: 0.85rem;
+}
+.private-stage .private-pass-zone small {
+  font-size: 0.65rem;
+  margin-top: 8px;
+}
+
+/* Public clue table: current voice, next voice, then the group's decision. */
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .imposter-clues {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.imposter-clues > h1 {
+  margin: 0;
+}
+.imposter-clues > .lede {
+  margin: -8px 0 0;
+  font-size: 0.95rem;
+}
+.clue-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.clue-meta > span {
+  font-weight: 600;
+}
+.imposter-clues .untimed-label {
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.imposter-clues .timer {
+  padding: 0;
+  gap: 8px;
+}
+.imposter-clues .timer > span {
+  font-size: 1.6rem;
+}
+.imposter-clues .timer .icon-button {
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
+}
+.clue-table {
+  display: grid;
+  gap: 16px;
+}
+.imposter-clues .clue-speaker {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  background: #1a1624;
+}
+.clue-speaker .avatar.identity-avatar.big {
+  width: 110px;
+  height: 136px;
+  margin: 0;
+}
+.clue-speaker .identity {
+  width: 100%;
+  height: 100%;
+}
+.clue-eyebrow {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-bottom: 6px;
+}
+.imposter-clues .clue-speaker strong {
+  display: block;
+  font:
+    400 clamp(2.4rem, 9vw, 4rem)/1.05 "Bebas Neue",
+    sans-serif;
+  color: #f8efd8;
+  overflow-wrap: anywhere;
+}
+.imposter-clues .clue-speaker p {
+  font-size: 0.8rem;
+  margin: 8px 0 0;
+  line-height: 1.4;
+}
+.clue-turn-controls {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.clue-next {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.clue-next > .avatar {
+  width: 40px;
+  height: 44px;
+  flex-basis: 40px;
+  margin: 0;
+}
+.clue-next > span:not(.avatar) {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.clue-next strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.clue-next > svg {
+  margin-left: auto;
+  color: var(--muted);
+}
+.clue-turn-controls > .button {
+  justify-content: space-between;
+}
+.clue-order {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0;
+  padding: 2px 0 6px;
+  list-style: none;
+}
+.clue-order li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+.clue-order li > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  flex: none;
+}
+.clue-order [aria-current="step"] {
+  color: #f8efd8;
+  font-weight: 700;
+}
+.clue-order [aria-current="step"] > span {
+  color: #d5fa43;
+  border-color: #d5fa43;
+}
+.clue-accuse {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.clue-vote-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.clue-accuse > .button.primary {
+  width: 100%;
+  justify-content: space-between;
+}
+.clue-accuse > p {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+}
+.imposter-clues .clue-verbal-link {
+  margin: 8px auto 0;
+  border: 0;
+  background: transparent;
+  text-decoration: underline;
+  font-size: 0.8rem;
+  min-height: 44px;
+}
+/* Public verdict: one brief anticipation beat, with an immediate skip. */
+.imposter-verdict {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+.imposter-verdict > h1 {
+  overflow-wrap: anywhere;
+}
+.verdict-message {
+  min-height: 110px;
+  display: grid;
+  align-items: center;
+}
+.verdict-message .verdict-instruction {
+  margin: 12px auto;
+  max-width: 32ch;
+}
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .verdict-art.is-suspense
+  .verdict-envelope {
+  transform: translateY(-12px) rotate(-4deg) scale(1.03);
+  transition: transform 250ms var(--night-ease);
+}
+.verdict-art.is-suspense .noir-verdict-cover span {
+  color: #f8efd8;
 }
 @media (min-width: 760px) {
   .private-window {
@@ -1488,10 +1773,158 @@
   .private-portrait {
     inset: 70px 30px 120px;
   }
+  .clue-table {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: center;
+  }
+  .imposter-clues .clue-speaker {
+    grid-template-columns: minmax(0, 1fr);
+    text-align: center;
+    padding: 22px;
+  }
+  .clue-speaker .avatar.identity-avatar.big {
+    width: 150px;
+    height: 180px;
+    margin: 0 auto;
+  }
+  .clue-speaker .clue-speaker-copy strong {
+    font-size: 3.6rem;
+  }
+  .clue-order {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+  .clue-accuse {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 8px 24px;
+  }
+  .clue-vote-prompt {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  .clue-accuse > p {
+    grid-column: 2;
+  }
+  .clue-accuse > .clue-verbal-link {
+    grid-column: 2;
+    margin: 0;
+  }
+}
+@media (max-width: 759px) and (max-height: 740px) {
+  [data-design="club"][data-edition="remix"] .private-stage {
+    padding: 16px;
+    gap: 10px;
+  }
+  .private-window {
+    height: 250px;
+    min-height: 250px;
+  }
+  .private-stage .private-player-name {
+    font-size: 2.7rem;
+  }
+  .private-stage .private-window h2 {
+    font-size: 2.2rem;
+  }
+  .private-seal {
+    display: none;
+  }
+  .private-stage .private-secret {
+    padding: 16px;
+  }
+  .private-hint {
+    margin: 4px 0;
+    padding-top: 8px;
+  }
+  .private-hint strong {
+    font-size: 1.8rem;
+  }
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .imposter-clues {
+    gap: 12px;
+  }
+  .imposter-clues .clue-speaker {
+    padding: 12px;
+    grid-template-columns: 84px minmax(0, 1fr);
+  }
+  .clue-speaker .avatar.identity-avatar.big {
+    width: 84px;
+    height: 96px;
+  }
+  .clue-turn-controls {
+    gap: 8px;
+  }
+  .clue-accuse {
+    padding-top: 12px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .private-reveal-cover {
     transition: none;
     transform: none !important;
   }
+}
+
+/* The outer shell already reserves the header and phase rail. */
+[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  main[data-phase="peek"]
+  .private-stage {
+  min-height: calc(100svh - 150px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.private-stage .private-portrait {
+  transition:
+    transform 250ms var(--night-ease),
+    opacity 160ms var(--night-ease);
+}
+.private-stage.is-reading .private-portrait {
+  transform: translateY(-12px) scale(1.015);
+  opacity: 0.55;
+}
+@media (min-width: 760px) {
+  [data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    main[data-phase="peek"]
+    .private-stage {
+    min-height: min(740px, calc(100svh - 180px));
+  }
+}
+@media (max-width: 759px) {
+  [data-design="club"][data-edition="remix"] .private-player-name {
+    font-size: clamp(2.2rem, 7vw, 3.2rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .private-stage .private-portrait,
+  .private-stage.is-reading .private-portrait {
+    transition: none;
+    transform: none;
+  }
+}
+
+.private-stage .private-secret .private-word.is-long {
+  font-size: clamp(1.55rem, 6.5vw, 3rem);
+  line-height: 1.12;
+}
+.private-stage .private-secret p {
+  margin: 6px 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+@media (max-width: 759px) {
+  .private-stage > h1 {
+    padding-right: 0;
+  }
+  .private-badge {
+    width: 32px;
+    height: 32px;
+    top: 14px;
+    right: 16px;
+  }
+}
+
+.private-stage .private-hint.is-long strong {
+  font-size: clamp(1.35rem, 5vw, 2rem);
 }

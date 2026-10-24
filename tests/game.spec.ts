@@ -55,6 +55,7 @@ test("phone Imposter round, hold privacy, voting, results and replay", async ({
   await page.getByRole("button", { name: /Maya/ }).click();
   await page.getByRole("button", { name: "Reveal the accused" }).click();
   await page.getByRole("button", { name: "Reveal identity" }).click();
+  await expect(page.locator(".verdict-copy")).toBeVisible();
   if (await page.getByRole("button", { name: "One last guess" }).isVisible()) {
     await page.getByRole("button", { name: "One last guess" }).click();
     await page.getByLabel("Your guess").fill("Definitely incorrect");

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowUp, EyeSlash } from "@phosphor-icons/react";
+import { ArrowUp, Fingerprint } from "@phosphor-icons/react";
 import { useGame } from "../store/useGame";
 import { hintFor } from "../lib/hints";
 import { IllustratedPortrait } from "./IllustratedCast";
@@ -69,14 +69,14 @@ export function PrivateReveal({
       : hintFor(session.secret) || session.category;
   return (
     <Screen
-      className="private-stage"
+      className={`private-stage ${visible ? "is-reading" : ""}`}
       title={
         <>
           <span className="private-turn-label">Your turn</span>
           <span className="private-player-name">{player.name}</span>
         </>
       }
-      subtitle={`Secret ${session.peekIndex + 1} of ${players.length} · Everyone else, look away.`}
+      subtitle={`Card ${session.peekIndex + 1} of ${players.length} · Everyone else, look away.`}
     >
       <div className="private-portrait" aria-hidden="true">
         <IllustratedPortrait seed={player.avatar} />
@@ -109,9 +109,15 @@ export function PrivateReveal({
             animate={{ y: 0 }}
             transition={{ duration: reduce ? 0 : 0.22 }}
           >
-            <ArrowUp size={25} />
-            <h2>{seen ? "Secret hidden." : "Only you should see this."}</h2>
-            <p>Swipe up and hold to read. Lift your finger to hide.</p>
+            <div className="private-seal" aria-hidden="true">
+              <Fingerprint size={30} weight="light" />
+              <span>FOR YOUR EYES ONLY</span>
+            </div>
+            <h2>{seen ? "Back under cover." : "Keep your cover."}</h2>
+            <p>
+              <ArrowUp size={17} aria-hidden="true" /> Swipe up & hold. Release
+              to hide.
+            </p>
             <button
               className="private-action"
               disabled={!ready}
@@ -144,30 +150,35 @@ export function PrivateReveal({
             }}
           >
             <span className="private-turn-label">
-              {imposter ? "Your role" : "Your secret word"}
+              {imposter ? "Keep this to yourself" : "Your secret word"}
             </span>
-            <h2>{imposter ? "IMPOSTER" : session.secret}</h2>
+            <h2
+              className={`private-word ${!imposter && session.secret.length > 24 ? "is-long" : ""}`}
+            >
+              {imposter ? "IMPOSTER" : session.secret}
+            </h2>
             {imposter && session.options.chaos ? (
-              <p>
-                Your decoy word: <strong>{session.decoy}</strong>
-              </p>
+              <div
+                className={`private-hint ${session.decoy.length > 18 ? "is-long" : ""}`}
+              >
+                <span>Your decoy word</span>
+                <strong>{session.decoy}</strong>
+              </div>
             ) : imposter && session.options.hint ? (
-              <div className="private-hint">
-                <span>Your hint word</span>
+              <div
+                className={`private-hint ${hint.length > 18 ? "is-long" : ""}`}
+              >
+                <span>Your hint · blend in with this</span>
                 <strong>{hint}</strong>
               </div>
-            ) : (
+            ) : !imposter && session.secret.length > 24 ? null : (
               <p>
                 {imposter
                   ? "Listen. Blend in. Keep your cover."
-                  : "Give a clue. Keep the word to yourself."}
+                  : "Clue them in. Don’t say the word."}
               </p>
             )}
-            <button className="private-action" onClick={() => setOpen(false)}>
-              <EyeSlash size={21} />
-              Hide my secret
-            </button>
-            <small className="swipe-hide-cue">Lift your finger to hide</small>
+            <small className="swipe-hide-cue">Release to hide</small>
           </motion.div>
         )}
       </section>
@@ -175,10 +186,10 @@ export function PrivateReveal({
         <p>
           {next ? (
             <>
-              Up next: <strong>{next.name}</strong>
+              Next phone handoff: <strong>{next.name}</strong>
             </>
           ) : (
-            "Everyone has checked? Start the clues together."
+            "Last card. The clues are up next."
           )}
         </p>
         <button
@@ -188,7 +199,7 @@ export function PrivateReveal({
         >
           {next ? `Hide & pass to ${next.name}` : "Hide & start clues"}
         </button>
-        <small>Release to hide before passing. Escape pauses and hides.</small>
+        <small>Hold Space / Enter to read · Esc to pause</small>
       </div>
     </Screen>
   );

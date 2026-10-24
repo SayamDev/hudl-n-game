@@ -136,3 +136,5 @@ The illustrated deck, character cast and game-world scenes were generated for th
 Every new game and replay checks who is in the crew, and game setup includes **Edit crew**. For face-to-face accusations, choose **Out loud — tap the accused**, or use **We voted out loud** during Imposter discussion/private voting. One person selects the accused; no individual phone ballots are required. Secret voting remains available.
 
 Imposter supports swipe up and hold to reveal, then automatically conceals on finger release. The reveal button and Space/Enter use the same hold-and-release behavior. Each saved alibi now has a distinct portrait. Game-specific scenes and interaction framing distinguish the Mafia council, location investigation, team guessing board and silent stage. [Artwork provenance](docs/art-after-hours.md).
+
+The Imposter clue table shows the current speaker, the next person and the crew’s clue order. Group voting has a single **Choose a suspect** action. The public identity reveal adds a short, skippable suspense beat; keyboard and reduced-motion users get an immediate result. Private words still disappear immediately on release.

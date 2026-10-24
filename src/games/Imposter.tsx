@@ -1,3 +1,4 @@
+import { ImposterClues } from "../components/ImposterClues";
 import { PrivateReveal } from "../components/PrivateReveal";
 import { Verdict } from "../components/Verdict";
 import { useState } from "react";
@@ -11,13 +12,13 @@ export default function Imposter({ session: s }: GameProps) {
   const [guess, setGuess] = useState("");
   const imposters = players.filter((p) => s.roles[p.id] === "Imposter");
   const crew = players.filter((p) => s.roles[p.id] !== "Imposter");
+  const modern =
+    useGame.getState().preferences.swipeReveal !== false &&
+    useGame.getState().preferences.deckStyle !== false &&
+    !["classic", "club-original"].includes(
+      useGame.getState().preferences.design,
+    );
   if (s.phase === "peek") {
-    const modern =
-      useGame.getState().preferences.swipeReveal !== false &&
-      useGame.getState().preferences.deckStyle !== false &&
-      !["classic", "club-original"].includes(
-        useGame.getState().preferences.design,
-      );
     if (modern)
       return (
         <PrivateReveal
@@ -39,6 +40,7 @@ export default function Imposter({ session: s }: GameProps) {
     );
   }
   if (s.phase === "discuss") {
+    if (modern) return <ImposterClues session={s} />;
     const first = Math.max(
       0,
       players.findIndex((p) => p.id === s.startingPlayer),
@@ -112,7 +114,7 @@ export default function Imposter({ session: s }: GameProps) {
     const p = players.find((p) => p.id === s.accused)!;
     const caught = s.roles[p.id] === "Imposter";
     return (
-      <Screen title={`${p.name} was…`}>
+      <Screen className="imposter-verdict" title={`${p.name} was…`}>
         <Verdict
           key={p.id}
           player={p}

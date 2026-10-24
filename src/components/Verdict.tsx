@@ -1,11 +1,12 @@
 import { NoirIllustration } from "./NoirArt";
 import { useGame } from "../store/useGame";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "motion/react";
 import { ArrowUp, Fingerprint } from "@phosphor-icons/react";
 import { Avatar, Button } from "./ui";
 import { feedback } from "../lib/feedback";
 import type { Player } from "../lib/types";
-/** Public group reveal. Swipe is optional; native button gives the same result without waiting. */
+/** Public group reveal. The suspense beat is skippable and never applies to private cards. */
 export function Verdict({
   player,
   caught,
@@ -20,28 +21,51 @@ export function Verdict({
       s.preferences.deckStyle !== false &&
       !["classic", "club-original"].includes(s.preferences.design),
   );
+  const reduce = useReducedMotion();
+  const paused = useGame((s) => s.session?.paused);
+  const [suspense, setSuspense] = useState(false);
   const [open, setOpen] = useState(false),
     [lift, setLift] = useState(0);
   const pointer = useRef<{ id: number; y: number } | null>(null);
-  const reveal = () => {
-    if (!open) {
-      setOpen(true);
+  const show = () => {
+    setSuspense(false);
+    setOpen(true);
+    setLift(0);
+    feedback("success");
+  };
+  useEffect(() => {
+    if (!suspense) return;
+    if (paused) {
+      setSuspense(false);
+      return;
+    }
+    const id = setTimeout(show, 850);
+    return () => clearTimeout(id);
+  }, [suspense, paused]);
+  const reveal = (instant = false) => {
+    if (open || paused) return;
+    if (instant || reduce || !noir || suspense) show();
+    else {
       setLift(0);
-      feedback("success");
+      setSuspense(true);
     }
   };
   return (
     <>
-      <div className={`verdict-art ${open ? "is-open" : ""}`}>
+      <div
+        className={`verdict-art ${open ? "is-open" : ""} ${suspense ? "is-suspense" : ""}`}
+      >
         <div className="verdict-identity">
           <Avatar player={player} big />
         </div>
         <div
           className="verdict-envelope"
           aria-hidden="true"
-          style={{ transform: open ? undefined : `translateY(${lift}px)` }}
+          style={{
+            transform: open || suspense ? undefined : `translateY(${lift}px)`,
+          }}
           onPointerDown={(e) => {
-            if (open) return;
+            if (open || suspense) return;
             pointer.current = { id: e.pointerId, y: e.clientY };
             e.currentTarget.setPointerCapture(e.pointerId);
           }}
@@ -100,32 +124,39 @@ export function Verdict({
           <Fingerprint size={32} weight="bold" />
         </div>
       </div>
-      {open ? (
-        <div className="verdict-copy" role="status">
-          <h2 className="reveal-title">
-            {caught ? "THE IMPOSTER!" : "INNOCENT!"}
-          </h2>
-          <p>
-            {caught
-              ? "Caught red-handed. But there’s one last chance…"
-              : "That poker face fooled everyone."}
+      <div className="verdict-message">
+        {open ? (
+          <div className="verdict-copy" role="status">
+            <h2 className="reveal-title">
+              {caught ? "THE IMPOSTER!" : "INNOCENT!"}
+            </h2>
+            <p>
+              {caught
+                ? "Caught red-handed. But there’s one last chance…"
+                : "That poker face fooled everyone."}
+            </p>
+          </div>
+        ) : (
+          <p className="verdict-instruction" role="status">
+            {suspense
+              ? "The room goes quiet…"
+              : noir
+                ? "The vote is in. Swipe up on the card, or tap below."
+                : "The vote is in. Swipe up on the envelope, or tap below."}
           </p>
-        </div>
-      ) : (
-        <p className="verdict-instruction">
-          {noir
-            ? "The vote is in. Swipe up on the card, or tap below."
-            : "The vote is in. Swipe up on the envelope, or tap below."}
-        </p>
-      )}
+        )}
+      </div>
       {open ? (
         <Button className="primary" onClick={onContinue}>
           {caught ? "One last guess" : "See results"}
         </Button>
       ) : (
-        <Button className="primary" onClick={reveal}>
+        <Button
+          className="primary"
+          onClick={(event) => reveal(event.detail === 0)}
+        >
           <ArrowUp size={22} />
-          Reveal identity
+          {suspense ? "Reveal now" : "Reveal identity"}
         </Button>
       )}
     </>
