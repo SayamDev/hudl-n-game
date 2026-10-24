@@ -65,6 +65,12 @@ export default function Preferences() {
         onChange={(deckStyle) => setPreferences({ deckStyle })}
       />
       <Toggle
+        label="Swipe to reveal"
+        description="Illustrated Imposter handoff. Switch off for hold-to-peek controls."
+        checked={p.swipeReveal !== false}
+        onChange={(swipeReveal) => setPreferences({ swipeReveal })}
+      />
+      <Toggle
         label="Dark party mode"
         checked={p.dark}
         onChange={(dark) => setPreferences({ dark })}

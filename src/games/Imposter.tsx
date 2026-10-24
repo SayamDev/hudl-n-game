@@ -1,3 +1,4 @@
+import { PrivateReveal } from "../components/PrivateReveal";
 import { Verdict } from "../components/Verdict";
 import { useState } from "react";
 import { useGame } from "../store/useGame";
@@ -10,7 +11,23 @@ export default function Imposter({ session: s }: GameProps) {
   const [guess, setGuess] = useState("");
   const imposters = players.filter((p) => s.roles[p.id] === "Imposter");
   const crew = players.filter((p) => s.roles[p.id] !== "Imposter");
-  if (s.phase === "peek")
+  if (s.phase === "peek") {
+    const modern =
+      useGame.getState().preferences.swipeReveal !== false &&
+      useGame.getState().preferences.deckStyle !== false &&
+      !["classic", "club-original"].includes(
+        useGame.getState().preferences.design,
+      );
+    if (modern)
+      return (
+        <PrivateReveal
+          key={s.peekIndex}
+          session={s}
+          onDone={() =>
+            patch({ phase: "discuss", timerRunning: s.options.seconds !== 0 })
+          }
+        />
+      );
     return (
       <Peek
         key={s.peekIndex}
@@ -20,8 +37,19 @@ export default function Imposter({ session: s }: GameProps) {
         }
       />
     );
+  }
   if (s.phase === "discuss") {
-    const start = players.find((p) => p.id === s.startingPlayer)!;
+    const first = Math.max(
+      0,
+      players.findIndex((p) => p.id === s.startingPlayer),
+    );
+    const step = s.direction === "anticlockwise" ? -1 : 1;
+    const turn = s.clueIndex || 0;
+    const index =
+      (first + step * (turn % players.length) + players.length) %
+      players.length;
+    const start = players[index];
+    const next = players[(index + step + players.length) % players.length];
     return (
       <Screen
         title="Okay. Act natural."
@@ -30,10 +58,15 @@ export default function Imposter({ session: s }: GameProps) {
         <div className="start-player">
           <Avatar player={start} />
           <div>
-            <strong>{start.name} starts</strong>
-            <p>Go {s.direction}</p>
+            <strong>{start.name} gives the clue</strong>
+            <p>
+              Next: {next.name} · {s.direction} through your crew list
+            </p>
           </div>
         </div>
+        <Button onClick={() => patch({ clueIndex: turn + 1 })}>
+          Next clue · {next.name}
+        </Button>
         <Timer session={s} />
         <p className="helper">
           Crew win +{s.options.points} points. Imposters steal the same points

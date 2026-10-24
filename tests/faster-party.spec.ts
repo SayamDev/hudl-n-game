@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./legacy-peek";
 import AxeBuilder from "@axe-core/playwright";
 import fs from "node:fs";
 const dir = ".impeccable/review/faster-party";

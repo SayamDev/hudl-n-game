@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./legacy-peek";
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() =>
     localStorage.setItem("hudl-welcome-v1", "true"),

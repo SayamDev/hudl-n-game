@@ -82,7 +82,7 @@ export default function Welcome({
           {
             [
               "Add your names, pick a game and pass the phone. Five ways to turn hanging out into game night.",
-              "In secret-role games, only the named player looks. Hold to reveal your word; let go before passing the phone.",
+              "Only the named player looks. In Imposter, swipe up or tap Reveal, then hide before passing to the next name. Other games use hold to peek—try that control below.",
               "Give everyone a name and an alibi. Start with Imposter, or explore the other games — each has its own quick rules.",
             ][step]
           }

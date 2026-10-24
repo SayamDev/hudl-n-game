@@ -15,6 +15,7 @@ export type Pack = {
 };
 export type Preferences = {
   deckStyle?: boolean;
+  swipeReveal?: boolean;
   design: "club" | "club-original" | "classic";
   dark: boolean;
   family: boolean;
@@ -83,6 +84,7 @@ export type Session = {
   timerRunning: boolean;
   paused: boolean;
   startingPlayer: string;
+  clueIndex?: number;
   direction: string;
   guessOptions: string[];
   partyVotes: Record<string, number>;

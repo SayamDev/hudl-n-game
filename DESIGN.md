@@ -236,3 +236,7 @@ Not canonized: no unverified finish verdict, approved-comp fidelity, seed or qua
 ### Separate acting games
 
 Heads Up and Charades each occupy one lobby card with one primary launch and one rules action. Heads Up describes teammate clues; Charades describes silent acting with at least four players. No extra stretched secondary launch panel or setup mode dropdown. Charades uses a violet surface alongside the coral Heads Up card. Earlier lobby variants also expose both choices separately.
+
+### Illustrated private handoff
+
+After Hours Imposter has a role-independent portrait cover across the private screen. Current player's name and stable alibi emblem stay visible; the next recipient is named above and within the pass action. Swipe up at least 65px or activate Reveal my secret. Revealed text stays until explicitly hidden/passed or interrupted by pause/blur/visibility/cancel. Both roles use the same dark ground and subdued cream/lavender text; no lime/coral role flash. There is no private exit animation. Settings → Swipe to reveal restores the hold interaction without changing the artwork theme. Individual alibi badges remain the existing twenty emblems; the shared portrait is not a new unique portrait for each player.

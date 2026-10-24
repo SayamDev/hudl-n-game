@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-10-24T00:16:03.300849+00:00",
-  "title": "Design System: Hudl N Game — After Hours",
+  "title": "Design System: Hudl N Game \u2014 After Hours",
   "extensions": {
     "colorMeta": {
       "night-lime": {
@@ -662,7 +662,7 @@
       "kind": "button",
       "refersTo": "button-primary",
       "description": "Primary button as implemented in the shared deck system.",
-      "html": "<button class=\"ds-button-primary\">Let’s play</button>",
+      "html": "<button class=\"ds-button-primary\">Let\u2019s play</button>",
       "css": ".ds-button-primary{background:#d4fa77;color:#19211c;border:1px solid transparent;border-radius:12px;padding:12px 20px;min-height:56px;font:700 1.08rem \"Space Grotesk\",sans-serif;transition:transform 140ms cubic-bezier(.23,1,.32,1),background-color 140ms ease}.ds-button-primary:hover{filter:brightness(.98)}.ds-button-primary:active{transform:scale(.975)}.ds-button-primary:focus-visible{outline:3px solid var(--focus,#593596);outline-offset:3px}"
     },
     {
@@ -670,7 +670,7 @@
       "kind": "button",
       "refersTo": "button-secondary",
       "description": "Secondary button as implemented in the shared deck system.",
-      "html": "<button class=\"ds-button-secondary\">Let’s play</button>",
+      "html": "<button class=\"ds-button-secondary\">Let\u2019s play</button>",
       "css": ".ds-button-secondary{background:var(--surface,#fffaf0);color:var(--ink,#1b1523);border:1px solid var(--border,#c9bed1);border-radius:12px;padding:12px 20px;min-height:56px;font:700 1.08rem \"Space Grotesk\",sans-serif;transition:transform 140ms cubic-bezier(.23,1,.32,1),background-color 140ms ease}.ds-button-secondary:hover{filter:brightness(.98)}.ds-button-secondary:active{transform:scale(.975)}.ds-button-secondary:focus-visible{outline:3px solid var(--focus,#593596);outline-offset:3px}"
     },
     {
@@ -678,7 +678,7 @@
       "kind": "button",
       "refersTo": "deck-play",
       "description": "Deck play as implemented in the shared deck system.",
-      "html": "<button class=\"ds-deck-play\">Let’s play</button>",
+      "html": "<button class=\"ds-deck-play\">Let\u2019s play</button>",
       "css": ".ds-deck-play{background:#d5fa43;color:#17131f;border:1px solid var(--border,#c9bed1);border-radius:7px;padding:12px;min-height:48px;font:700 1rem \"Space Grotesk\",sans-serif;transition:transform 140ms cubic-bezier(.23,1,.32,1),background-color 140ms ease}.ds-deck-play:hover{filter:brightness(.98)}.ds-deck-play:active{transform:scale(.975)}.ds-deck-play:focus-visible{outline:3px solid var(--focus,#593596);outline-offset:3px}"
     },
     {
@@ -686,7 +686,7 @@
       "kind": "input",
       "refersTo": "input",
       "description": "Name field as implemented in the shared deck system.",
-      "html": "<input class=\"ds-input\" aria-label=\"Player name\" placeholder=\"Add a name…\">",
+      "html": "<input class=\"ds-input\" aria-label=\"Player name\" placeholder=\"Add a name\u2026\">",
       "css": ".ds-input{background:var(--surface,#fffaf0);color:var(--ink,#1b1523);border:1px solid var(--border,#c9bed1);border-radius:12px;padding:14px 15px;min-height:56px;font:1rem \"Space Grotesk\",sans-serif}.ds-input:hover{border-color:var(--focus,#593596)}.ds-input:focus-visible{outline:3px solid var(--focus,#593596);outline-offset:3px}"
     },
     {
@@ -716,7 +716,7 @@
   ],
   "narrative": {
     "northStar": "The After Hours illustrated deck",
-    "overview": "After Hours is a playable illustrated noir deck: midnight card faces, ivory lettering, electric lime actions and violet framing. Condensed display lettering supplies the poster character; the existing Space Grotesk body and controls remain intentionally readable. Names, instructions and controls are real accessible DOM; illustration regions supply atmosphere.\n\nThis is a code-led implementation of the direction in `docs/surface-after-hours.md`. Candidate C from 12ui is a critique reference, not an approved pixel comp. Its hosted run ID is not a concept seed. No formal concept-roll seed, quality card or approved-comp pixel gate exists. The previous system is archived at `docs/design-archive/social-club-before-after-hours/DESIGN.md`; Classic has its separate archive. Settings → After Hours art & motion switches back to the previous Social Club look without resetting game data; the original Social Club and Classic design options also remain.",
+    "overview": "After Hours is a playable illustrated noir deck: midnight card faces, ivory lettering, electric lime actions and violet framing. Condensed display lettering supplies the poster character; the existing Space Grotesk body and controls remain intentionally readable. Names, instructions and controls are real accessible DOM; illustration regions supply atmosphere.\n\nThis is a code-led implementation of the direction in `docs/surface-after-hours.md`. Candidate C from 12ui is a critique reference, not an approved pixel comp. Its hosted run ID is not a concept seed. No formal concept-roll seed, quality card or approved-comp pixel gate exists. The previous system is archived at `docs/design-archive/social-club-before-after-hours/DESIGN.md`; Classic has its separate archive. Settings \u2192 After Hours art & motion switches back to the previous Social Club look without resetting game data; the original Social Club and Classic design options also remain.",
     "keyCharacteristics": [
       "Illustration regions within functional game cards; no screenshot UI.",
       "Bebas Neue display with Space Grotesk body and controls.",
@@ -738,7 +738,7 @@
     ],
     "dos": [
       "Do pair every alibi with the player name in functional contexts.",
-      "Do keep private role and word content conditionally mounted only during a hold.",
+      "Do mount private content only while explicitly revealed: swipe mode conceals on hide/pass/interruption; hold mode conceals on release.",
       "Do reuse local artwork, preserve its attribution, and keep text and controls in the DOM.",
       "Do provide a direct button for public reveals and respect reduced motion.",
       "Do retain reversible design preferences and existing player identifiers."

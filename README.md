@@ -40,7 +40,7 @@ Heads Up and **Charades** have separate game cards. Choose Charades for silent a
 </table>
 
 - **Five visual worlds:** acid-green suspicion, midnight Mafia, a green spy world, coral charades and a yellow-and-purple voting party.
-- **Private reveals:** hold to peek; release or switch away to hide. A returning game resumes paused.
+- **Private reveals:** swipe up in Imposter, then hide before passing to the named player. Hold-to-peek remains available in Settings and other games. Switching away hides secrets; returning games resume paused.
 - **Less repetition:** local play history helps rotate words, prompts and secret roles. Small pools can still repeat; this is not a promise of endless unique content.
 - **Make your own night:** mix curated words offline, write an original pack, or import one with a link or QR code. Review shared content before playing.
 - **Browser comfort:** large touch controls, keyboard paths, reduced motion, light/dark modes, optional sound and installable PWA support. Once cached, the core games work offline.
