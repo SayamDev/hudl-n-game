@@ -69,3 +69,7 @@ Original generation outputs, in sheet order:
 5. exec-6e9000c1-346e-4222-8994-5f13e563d0c0.png
 
 The source references were the project's existing artwork and character sheet, not private player photographs. Source PNGs remain in the generator output directory. Shipping JPEGs use quality 90; generation prompts are embedded, with the correction recorded in sheet four. The previous atlas is archived as docs/design-archive/character-atlas-v1.jpg outside the app's precache. No runtime generation or external image provider is involved.
+
+## Distinct Charades cover — 24 October 2026
+
+The user explicitly requested changing the duplicated Charades lobby artwork. This is a narrow exception to the earlier pinned-cover instruction: only Charades changes. NoirIllustration now receives charadesMode, selecting the existing hand-gesture illustration at viewBox `620 842 170 150` for classic Charades. Heads Up retains `430 842 170 150`, and every other cover is unchanged. Both use the original club-illustrations.jpg bytes; no new image generation, image request or asset download was needed. Provenance and licensing remain those of the original sheet.

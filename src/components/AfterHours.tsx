@@ -62,7 +62,11 @@ export function AfterHoursHome({
               viewport={{ once: true, amount: 0.4 }}
               transition={{ type: "spring", duration: 0.65, bounce: 0.16 }}
             >
-              <NoirIllustration game={g.id} hero={i === 0} />
+              <NoirIllustration
+                game={g.id}
+                hero={i === 0}
+                charadesMode={g.charadesMode}
+              />
             </motion.div>
             <div className="night-game-copy">
               <h2>{g.name}</h2>

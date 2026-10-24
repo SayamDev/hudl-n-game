@@ -24,18 +24,32 @@ test("Heads Up and Charades have separate cards and correctly sized actions in b
           .getByRole("button", { name: "hudl n game home", exact: true })
           .click();
       }
-      const heads = page
-        .locator("article")
-        .filter({
-          has: page.getByRole("heading", { name: "Heads Up!", exact: true }),
-        });
-      const silent = page
-        .locator("article")
-        .filter({
-          has: page.getByRole("heading", { name: "Charades", exact: true }),
-        });
+      const heads = page.locator("article").filter({
+        has: page.getByRole("heading", { name: "Heads Up!", exact: true }),
+      });
+      const silent = page.locator("article").filter({
+        has: page.getByRole("heading", { name: "Charades", exact: true }),
+      });
       await expect(heads).toHaveCount(1);
       await expect(silent).toHaveCount(1);
+      if (refined) {
+        // A shared game engine must not give these two games the same cover.
+        const headsArt = heads.locator(".noir-illustration");
+        const silentArt = silent.locator(".noir-illustration");
+        await expect(headsArt).toHaveAttribute("viewBox", "430 842 170 150");
+        await expect(silentArt).toHaveAttribute("viewBox", "620 842 170 150");
+        await expect(silentArt.locator("image")).toHaveAttribute(
+          "href",
+          "/art/after-hours/club-illustrations.jpg",
+        );
+        await silent.locator(".night-art").scrollIntoViewIfNeeded();
+        await page.evaluate(() => document.fonts.ready);
+        fs.mkdirSync(".impeccable/review/charades-cover", { recursive: true });
+        await silent.screenshot({
+          path: `.impeccable/review/charades-cover/${width}.png`,
+          animations: "disabled",
+        });
+      }
       await expect(
         heads.getByRole("button", { name: "Play Charades", exact: true }),
       ).toHaveCount(0);
