@@ -66,7 +66,7 @@ export default function Preferences() {
       />
       <Toggle
         label="Swipe to reveal"
-        description="Illustrated Imposter handoff. Switch off for hold-to-peek controls."
+        description="Swipe up and hold to read; release to hide. Switch off for the earlier button-first hold controls."
         checked={p.swipeReveal !== false}
         onChange={(swipeReveal) => setPreferences({ swipeReveal })}
       />

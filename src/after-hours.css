@@ -1438,4 +1438,60 @@
   .app-shell:has(main[data-game]) {
   --muted: var(--ink);
 }
-.scene-party {width:100%;height:220px;max-width:none;margin:0;border-radius:12px;flex:none;}
+.scene-party {
+  width: 100%;
+  height: 220px;
+  max-width: none;
+  margin: 0;
+  border-radius: 12px;
+  flex: none;
+}
+/* Keep a stable reveal window while the artwork returns on release. */
+.private-window {
+  height: 260px;
+  min-height: 260px;
+  flex: none;
+}
+.private-reveal-cover,
+.private-window > .private-secret {
+  position: absolute;
+  inset: 0;
+}
+.private-reveal-cover {
+  display: grid;
+  align-items: end;
+  opacity: 1;
+  transition: opacity 160ms ease-out;
+}
+.private-reveal-cover.is-lifted {
+  opacity: 0;
+  transform: none;
+  pointer-events: none;
+}
+.private-window > .private-secret {
+  margin: 0;
+  max-height: none;
+  display: grid;
+  align-content: center;
+}
+.private-portrait {
+  inset: 90px 0 140px;
+}
+.private-portrait .illustrated-portrait {
+  object-fit: contain;
+}
+@media (min-width: 760px) {
+  .private-window {
+    height: 320px;
+    min-height: 320px;
+  }
+  .private-portrait {
+    inset: 70px 30px 120px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .private-reveal-cover {
+    transition: none;
+    transform: none !important;
+  }
+}

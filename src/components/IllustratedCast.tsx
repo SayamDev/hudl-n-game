@@ -11,15 +11,15 @@ export function IllustratedPortrait({ seed }: { seed: string }) {
   return (
     <svg
       className="illustrated-portrait"
-      viewBox={`${(index % 5) * 280} ${Math.floor(index / 5) * 280} 280 280`}
+      viewBox={`${index % 2} ${Math.floor((index % 4) / 2)} 1 1`}
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
       data-portrait={index}
     >
       <image
-        href={`${import.meta.env.BASE_URL}art/after-hours/character-atlas.jpg`}
-        width="1400"
-        height="1120"
+        href={`${import.meta.env.BASE_URL}art/after-hours/portraits-${Math.floor(index / 4) + 1}.jpg`}
+        width="2"
+        height="2"
       />
     </svg>
   );

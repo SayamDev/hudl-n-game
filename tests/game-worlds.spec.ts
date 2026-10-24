@@ -12,10 +12,13 @@ test("distinct illustrated worlds, stable cast portraits and question turns", as
   await expect(page.locator(".night-games")).toBeVisible();
   fs.mkdirSync(".impeccable/review/game-worlds", { recursive: true });
   await page.waitForLoadState("networkidle");
-  await page.screenshot({
-    path: ".impeccable/review/game-worlds/home-390.png",
-    fullPage: true,
-  });
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.screenshot({
+      path: `.impeccable/review/game-worlds/home-${width}.png`,
+      fullPage: true,
+    });
+  }
   await page
     .locator("article")
     .filter({
@@ -121,10 +124,13 @@ test("distinct illustrated worlds, stable cast portraits and question turns", as
   const portraits = page.locator(".crew-list .illustrated-portrait");
   await expect(portraits).toHaveCount(20);
   const views = await portraits.evaluateAll((els) =>
-    els.map((el) => el.getAttribute("viewBox")),
+    els.map((el) => el.outerHTML),
   );
   expect(new Set(views).size).toBe(20);
-  for (const file of ["character-atlas.jpg", "world-atlas.jpg"])
+  for (const file of [
+    ...Array.from({ length: 5 }, (_, i) => `portraits-${i + 1}.jpg`),
+    "world-atlas.jpg",
+  ])
     expect((await page.request.get(`/art/after-hours/${file}`)).status()).toBe(
       200,
     );

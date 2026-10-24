@@ -250,3 +250,11 @@ Six game scenes: masked Imposter; oxblood/gold Mafia council under a red moon; p
 Mafia frames a public night/dawn/vote council cycle. Spy frames its current question and next investigator as a map dossier with a dashed seam. Heads Up foregrounds the visible word and tilt/button input; Charades foregrounds a silent actor and hidden prompt with a stage arch. Party uses an awards scene and ticket-shaped prompt. Shared type/navigation unite the app without forcing all game stages into the same composition.
 
 Council arrival: 650ms; investigation sheet: 450ms; theatre arrival: 600ms; party prompt: 300ms. These are one-shot arrivals and disabled under reduced motion. Imposter swipe-down conceals immediately at 48px and never animates private text away. Both roles retain the identical dark private ground.
+
+## Locked lobby artwork — user correction, 24 October 2026
+
+The supplied 01:48 lobby screenshots are the visual authority. Preserve the exact original Imposter, Mafia, Where Are We, Heads Up, Charades and Most Likely To illustration regions from club-illustrations.jpg. The original repeated Heads Up/Charades crop is intentional under this latest instruction. Do not substitute new world-atlas covers or regenerate these images without explicit user authorisation. Distinct gameplay interactions can remain, but character-art requests apply to players, not these cover images.
+
+Current portraits use five four-character sheets: portraits-1.jpg through portraits-5.jpg, with 627×627 source pixels per character. Match the pinned violet/chartreuse/ivory graphic style. Keep faces framed rather than enlarging a 280px face across the whole viewport. The old 20-cell sheet is archived and not part of the runtime cache.
+
+Private reveal is now swipe up AND HOLD. Release immediately hides the role/word; the button and Space/Enter use the same hold/release pattern. The cover fades back in without moving the button; private text never receives an exit animation. This supersedes the earlier persistent swipe/tap reveal descriptions above. Both roles retain the same subdued dark palette.

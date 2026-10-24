@@ -738,7 +738,7 @@
     ],
     "dos": [
       "Do pair every alibi with the player name in functional contexts.",
-      "Do mount private content only while explicitly revealed: swipe mode conceals on hide/pass/interruption; hold mode conceals on release.",
+      "Do mount private content only during an active held pointer or keyboard interaction; release, cancellation, handoff or interruption conceals immediately.",
       "Do reuse local artwork, preserve its attribution, and keep text and controls in the DOM.",
       "Do provide a direct button for public reveals and respect reduced motion.",
       "Do retain reversible design preferences and existing player identifiers."
@@ -752,7 +752,11 @@
     "illustratedWorlds": {
       "cast": "20 stable avatar identifiers select distinct portrait cells; roles never choose artwork",
       "assets": [
-        "character-atlas.jpg",
+        "portraits-1.jpg",
+        "portraits-2.jpg",
+        "portraits-3.jpg",
+        "portraits-4.jpg",
+        "portraits-5.jpg",
         "world-atlas.jpg"
       ],
       "gameScenes": [
@@ -763,7 +767,7 @@
         "aubergine silent theatre",
         "ochre social crown"
       ],
-      "privateSwipeDown": "Conceal immediately at 48px downward pan; native hide control retained",
+      "privateSwipeDown": "Swipe up reveals during the hold; pointer/key release always conceals. No persistent reveal.",
       "motionMs": {
         "council": 650,
         "investigation": 450,
@@ -771,6 +775,9 @@
         "partyPrompt": 300
       },
       "reducedMotion": "No scene entrance animations"
-    }
+    },
+    "pinnedLobbyCovers": "Original club-illustrations.jpg regions are fixed by the user screenshots; no world-atlas substitution in the lobby.",
+    "privateReveal": "Swipe up and hold or hold the button/Space/Enter. Release conceals synchronously. No persistent click reveal. Cover returns by opacity only; input target remains mounted/inert while revealed.",
+    "portraitResolution": "Five 1254-square 2x2 sheets give each of twenty characters 627-square source pixels, with reduced private-screen zoom."
   }
 }

@@ -53,3 +53,19 @@ Two new atlas images were generated with the built-in OpenAI image tool for this
 The original PNGs remain in the generator's local output directory. Shipping JPEGs were converted locally at quality 85; runtime SVG view boxes select cells without modifying the source illustration. Each JPEG embeds a clearly labelled summary of its generation brief and original output identifier, not a claimed verbatim prompt transcript. A scan found three shipping rasters and zero missing provenance records, including the earlier 12ui sheet. These generated illustrations are distinct from the credited Game-icons SVG collection, which is retained as prior asset provenance.
 
 The atlas mapping is stable: each of the twenty existing avatar identifiers has its own portrait index. Portrait selection never reads the player's role. New crew members receive an unused avatar when available; existing identifiers and scores are preserved. There is no runtime image generation or external image request.
+
+## Portrait resolution correction and pinned covers — 24 October 2026
+
+The user clarified that all original lobby cover regions must remain unchanged. AfterHoursHome again uses club-illustrations.jpg, with its original bytes and crop coordinates. world-atlas.jpg remains available for gameplay scenes, not replacement lobby covers.
+
+Five newly generated 2×2 character sheets, portraits-1.jpg to portraits-5.jpg, match the original cover's graphic violet/lime/ivory style. Each source PNG is 1254×1254 pixels, yielding 627×627 per character versus approximately 280×280 in the previous atlas. This is new higher-resolution illustration, not a resized copy of the low-resolution sheet. The private screen also uses a less aggressive crop.
+
+Original generation outputs, in sheet order:
+
+1. exec-c93a3f8b-80fd-4414-81a8-9ee6d096d747.png
+2. exec-49d7ed17-742c-4930-bc42-6d983e2ccc4c.png
+3. exec-1d4ec5bb-2a1f-48eb-8d29-50b7eeb02f8f.png
+4. exec-55fc086e-1f6a-4270-b9ac-c8ee64c064b0.png, corrected to exec-d5386a8f-31b4-4a4a-86fe-b0ca128d2dea.png to distinguish the long-haired lace-mask aristocrat from the bob-haired domino-mask character.
+5. exec-6e9000c1-346e-4222-8994-5f13e563d0c0.png
+
+The source references were the project's existing artwork and character sheet, not private player photographs. Source PNGs remain in the generator output directory. Shipping JPEGs use quality 90; generation prompts are embedded, with the correction recorded in sheet four. The previous atlas is archived as docs/design-archive/character-atlas-v1.jpg outside the app's precache. No runtime generation or external image provider is involved.

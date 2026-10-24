@@ -33,6 +33,14 @@ test("After Hours uses local distinct artwork and fonts, with visible credits an
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   await expect(page.locator(".after-hours-home")).toBeVisible();
+  // The supplied original lobby illustrations are an explicit design constraint.
+  const covers = page.locator(".night-art image");
+  await expect(covers).toHaveCount(6);
+  for (const cover of await covers.all())
+    await expect(cover).toHaveAttribute(
+      "href",
+      "/art/after-hours/club-illustrations.jpg",
+    );
   const hashes = new Set();
   for (const name of names) {
     const r = await page.request.get(`/art/after-hours/alibis/${name}.svg`);

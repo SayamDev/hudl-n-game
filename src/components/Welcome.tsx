@@ -82,7 +82,7 @@ export default function Welcome({
           {
             [
               "Add your names, pick a game and pass the phone. Five ways to turn hanging out into game night.",
-              "Only the named player looks. In Imposter, swipe up or tap Reveal, then hide before passing to the next name. Other games use hold to peek—try that control below.",
+              "Only the named player looks. In Imposter, swipe up and keep your finger down to read, or hold the reveal button. Lift your finger to hide before passing to the next name. Try holding below.",
               "Give everyone a name and an alibi. Start with Imposter, or explore the other games — each has its own quick rules.",
             ][step]
           }

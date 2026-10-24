@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowUp, EyeSlash } from "@phosphor-icons/react";
 import { useGame } from "../store/useGame";
@@ -24,19 +24,27 @@ export function PrivateReveal({
     [seen, setSeen] = useState(false),
     [ready, setReady] = useState(false);
   const reduce = useReducedMotion();
+  const active = useRef(false);
   useEffect(() => {
     const id = setTimeout(() => setReady(true), 900);
     return () => clearTimeout(id);
   }, []);
   useEffect(() => {
-    const hide = () => setOpen(false);
+    const hide = () => {
+      active.current = false;
+      setOpen(false);
+    };
     window.addEventListener("blur", hide);
     document.addEventListener("visibilitychange", hide);
     window.addEventListener("pointercancel", hide);
+    window.addEventListener("pointerup", hide);
+    window.addEventListener("keyup", hide);
     return () => {
       window.removeEventListener("blur", hide);
       document.removeEventListener("visibilitychange", hide);
       window.removeEventListener("pointercancel", hide);
+      window.removeEventListener("pointerup", hide);
+      window.removeEventListener("keyup", hide);
     };
   }, []);
   useEffect(() => {
@@ -44,7 +52,7 @@ export function PrivateReveal({
   }, [session.paused]);
   if (!player) return null;
   const reveal = () => {
-    if (!ready || session.paused) return;
+    if (!ready || session.paused || !active.current) return;
     setOpen(true);
     setSeen(true);
   };
@@ -81,7 +89,53 @@ export function PrivateReveal({
         className={`private-window ${visible ? "is-open" : ""}`}
         aria-label="Private role card"
       >
-        {visible ? (
+        <div
+          className={`private-reveal-cover ${visible ? "is-lifted" : ""}`}
+          aria-hidden={visible}
+          inert={visible}
+          onPointerDownCapture={() => {
+            active.current = true;
+          }}
+        >
+          <motion.div
+            className="private-swipe"
+            drag={ready ? "y" : false}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.18}
+            dragMomentum={false}
+            onDrag={(_, info) => {
+              if (info.offset.y < -65) reveal();
+            }}
+            animate={{ y: 0 }}
+            transition={{ duration: reduce ? 0 : 0.22 }}
+          >
+            <ArrowUp size={25} />
+            <h2>{seen ? "Secret hidden." : "Only you should see this."}</h2>
+            <p>Swipe up and hold to read. Lift your finger to hide.</p>
+            <button
+              className="private-action"
+              disabled={!ready}
+              tabIndex={visible ? -1 : 0}
+              onPointerDown={(event) => {
+                event.preventDefault();
+                active.current = true;
+                reveal();
+              }}
+              onKeyDown={(event) => {
+                if (event.code === "Space" || event.code === "Enter") {
+                  event.preventDefault();
+                  if (!event.repeat) {
+                    active.current = true;
+                    reveal();
+                  }
+                }
+              }}
+            >
+              {ready ? "Hold to reveal" : "Ready in a moment…"}
+            </button>
+          </motion.div>
+        </div>
+        {visible && (
           <motion.div
             className="private-secret"
             aria-live="off"
@@ -113,31 +167,7 @@ export function PrivateReveal({
               <EyeSlash size={21} />
               Hide my secret
             </button>
-            <small className="swipe-hide-cue">Swipe down to hide</small>
-          </motion.div>
-        ) : (
-          <motion.div
-            className="private-swipe"
-            drag={ready ? "y" : false}
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={0.18}
-            dragMomentum={false}
-            onDragEnd={(_, info) => {
-              if (info.offset.y < -65) reveal();
-            }}
-            animate={{ y: 0 }}
-            transition={{ duration: reduce ? 0 : 0.22 }}
-          >
-            <ArrowUp size={25} />
-            <h2>{seen ? "Secret hidden." : "Only you should see this."}</h2>
-            <p>Swipe up to reveal your secret.</p>
-            <button
-              className="private-action"
-              disabled={!ready}
-              onClick={reveal}
-            >
-              {ready ? "Reveal my secret" : "Ready in a moment…"}
-            </button>
+            <small className="swipe-hide-cue">Lift your finger to hide</small>
           </motion.div>
         )}
       </section>
@@ -158,7 +188,7 @@ export function PrivateReveal({
         >
           {next ? `Hide & pass to ${next.name}` : "Hide & start clues"}
         </button>
-        <small>Hide before passing. Escape pauses and hides.</small>
+        <small>Release to hide before passing. Escape pauses and hides.</small>
       </div>
     </Screen>
   );

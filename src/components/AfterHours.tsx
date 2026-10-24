@@ -1,4 +1,4 @@
-import { WorldArt } from "./IllustratedCast";
+import { NoirIllustration } from "./NoirArt";
 import { Identity } from "./Identity";
 import { motion, useReducedMotion } from "motion/react";
 import {
@@ -62,15 +62,7 @@ export function AfterHoursHome({
               viewport={{ once: true, amount: 0.4 }}
               transition={{ type: "spring", duration: 0.65, bounce: 0.16 }}
             >
-              <WorldArt
-                world={
-                  g.id === "charades"
-                    ? g.charadesMode === "classic"
-                      ? "charades"
-                      : "heads-up"
-                    : g.id
-                }
-              />
+              <NoirIllustration game={g.id} hero={i === 0} />
             </motion.div>
             <div className="night-game-copy">
               <h2>{g.name}</h2>

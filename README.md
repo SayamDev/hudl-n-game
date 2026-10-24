@@ -12,7 +12,7 @@ Free to play · No accounts · No ads · Phone-first
 
 </div>
 
-![Six distinct illustrated game worlds — from the Mafia council to the Charades stage](public/art/after-hours/world-atlas.jpg)
+![The original Hudl n game illustrated lobby](.github/assets/home.png)
 
 ## One phone. A whole party.
 
@@ -41,14 +41,16 @@ Heads Up and **Charades** have separate game cards. Choose Charades for silent a
 
 <details><summary>Meet the twenty illustrated alibis</summary>
 
-![Twenty distinct portraits sharing an etched midnight, ivory and violet style](public/art/after-hours/character-atlas.jpg)
+![Preview of the twenty sharper violet, lime and ivory character portraits](public/art/after-hours/portraits-1.jpg)
+
+[Characters 5–8](public/art/after-hours/portraits-2.jpg) · [9–12](public/art/after-hours/portraits-3.jpg) · [13–16](public/art/after-hours/portraits-4.jpg) · [17–20](public/art/after-hours/portraits-5.jpg)
 
 Each saved alibi keeps its character across the crew list, private handoff and results. Portraits never depend on secret roles.
 
 </details>
 
 - **Five visual worlds:** acid-green suspicion, midnight Mafia, a green spy world, coral charades and a yellow-and-purple voting party.
-- **Private reveals:** swipe up in Imposter, then hide before passing to the named player. Hold-to-peek remains available in Settings and other games. Switching away hides secrets; returning games resume paused.
+- **Private reveals:** swipe up and hold in Imposter; lift your finger to hide before passing to the named player. Hold-to-peek remains available in Settings and other games. Switching away hides secrets; returning games resume paused.
 - **Less repetition:** local play history helps rotate words, prompts and secret roles. Small pools can still repeat; this is not a promise of endless unique content.
 - **Make your own night:** mix curated words offline, write an original pack, or import one with a link or QR code. Review shared content before playing.
 - **Browser comfort:** large touch controls, keyboard paths, reduced motion, light/dark modes, optional sound and installable PWA support. Once cached, the core games work offline.
@@ -133,4 +135,4 @@ The illustrated deck, character cast and game-world scenes were generated for th
 
 Every new game and replay checks who is in the crew, and game setup includes **Edit crew**. For face-to-face accusations, choose **Out loud — tap the accused**, or use **We voted out loud** during Imposter discussion/private voting. One person selects the accused; no individual phone ballots are required. Secret voting remains available.
 
-Imposter supports swipe up to reveal and swipe down to conceal, with native button controls as alternatives. Each saved alibi now has a distinct portrait. Game-specific scenes and interaction framing distinguish the Mafia council, location investigation, team guessing board and silent stage. [Artwork provenance](docs/art-after-hours.md).
+Imposter supports swipe up and hold to reveal, then automatically conceals on finger release. The reveal button and Space/Enter use the same hold-and-release behavior. Each saved alibi now has a distinct portrait. Game-specific scenes and interaction framing distinguish the Mafia council, location investigation, team guessing board and silent stage. [Artwork provenance](docs/art-after-hours.md).
