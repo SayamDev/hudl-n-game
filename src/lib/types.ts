@@ -54,7 +54,8 @@ export type GameOptions = {
   showRoles: boolean;
   manual: boolean;
   tilt: boolean;
-  intensity: "Family" | "Friends" | "Spicy" | "After Dark 18+";
+  friendsTopic?: string;
+  intensity: "Family" | "Friends" | "Spicy" | "After Dark 18+" | "Friends 18+";
   partyMode: "likely" | "takes";
 };
 export type Session = {

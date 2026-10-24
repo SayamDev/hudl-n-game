@@ -1,4 +1,4 @@
-import { adultLikely } from "../content/adult-likely";
+import { partyIntensity, partyPool, partyPoolKey } from "../lib/party-pool";
 import { createParliament } from "../lib/parliament";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -12,7 +12,6 @@ import type {
 } from "../lib/types";
 import { assignRoles, shuffle } from "../lib/logic";
 import { freshOrder, remember } from "../lib/variety";
-import { likely, takes } from "../content/prompts";
 import { safeStorage } from "../lib/storage";
 import { cleanTeams, defaultTeams, teamError } from "../lib/teams";
 import builtInPacks from "../content/packs.json";
@@ -195,24 +194,12 @@ export const useGame = create<State>()(
         const safeOptions = {
           ...options,
           seconds,
-          intensity: preferences.family
-            ? "Family"
-            : ["Spicy", "After Dark 18+"].includes(options.intensity) &&
-                !preferences.adult
-              ? "Friends"
-              : options.intensity,
+          intensity: partyIntensity(options, preferences),
         } as GameOptions;
-        const promptKey = `party:${safeOptions.partyMode}:${safeOptions.intensity}`;
+        const promptKey = partyPoolKey(safeOptions);
         const promptDeck =
           game === "party"
-            ? freshOrder(
-                safeOptions.intensity === "After Dark 18+"
-                  ? adultLikely
-                  : (safeOptions.partyMode === "takes" ? takes : likely)[
-                      safeOptions.intensity
-                    ],
-                variety[promptKey],
-              )
+            ? freshOrder(partyPool(safeOptions), variety[promptKey])
             : undefined;
         const nextVariety: Record<string, string[]> = {
           ...variety,
@@ -299,7 +286,7 @@ export const useGame = create<State>()(
             session.phase === "prompt" &&
             session.promptDeck
           ) {
-            const key = `party:${session.options.partyMode}:${session.options.intensity}`;
+            const key = partyPoolKey(session.options);
             const prompt =
               session.promptDeck[
                 session.promptIndex % session.promptDeck.length

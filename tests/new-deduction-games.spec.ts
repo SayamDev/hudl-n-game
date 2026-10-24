@@ -131,7 +131,7 @@ test("adult pack is opt-in and both new covers load in light and dark presentati
   await crew(page, "Most Likely To", 3);
   await expect(
     page.getByRole("option", { name: "After Dark 18+", exact: true }),
-  ).toHaveCount(0);
+  ).toHaveAttribute("disabled", "");
   await expect(page.locator(".scene-transition")).toHaveCount(0);
   await page
     .getByRole("checkbox", { name: "Enable 18+ prompts for this adult group" })

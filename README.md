@@ -111,7 +111,7 @@ The adapter has small in-memory usage caps and no paid fallback. Provider availa
 
 Secret Hitler is a noncommercial [CC BY-NC-SA 4.0 digital adaptation](docs/secret-hitler-license.md), with original artwork and rewritten interface copy. Spyfall uses original locations and the app’s winner-point scoring. Both have new local noir covers.
 
-Most Likely To offers a separate **After Dark 18+** selection: enable adult content in its setup (or Settings), turn Family mode off, then choose the pack under Intensity. Any prompt can be skipped.
+Most Likely To offers a separate **After Dark 18+** selection: enable adult content in its setup (or Settings), turn Family mode off, then choose the pack under Intensity. **Friends 18+** adds 244 supplied questions across 12 selectable topics, separately from After Dark. Any prompt can be skipped.
 
 ## Possible next games
 

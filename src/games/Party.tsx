@@ -1,9 +1,8 @@
-import { adultLikely } from "../content/adult-likely";
+import { partyIntensity, partyPool } from "../lib/party-pool";
 import { GameWorld } from "../components/GameWorld";
 import { CardFace } from "../components/CardFace";
 import { useState } from "react";
 import { useGame } from "../store/useGame";
-import { likely, takes } from "../content/prompts";
 import { Avatar, Button, Screen } from "../components/ui";
 import type { GameProps } from "../lib/types";
 export default function Party({ session: s }: GameProps) {
@@ -14,16 +13,8 @@ export default function Party({ session: s }: GameProps) {
   const [value, setValue] = useState(50),
     [ready, setReady] = useState(false);
   const hot = s.options.partyMode === "takes";
-  const adultAllowed = preferences.adult && !preferences.family;
-  const intensity = preferences.family
-    ? "Family"
-    : !adultAllowed && ["Spicy", "After Dark 18+"].includes(s.options.intensity)
-      ? "Friends"
-      : s.options.intensity;
-  const pool =
-    intensity === "After Dark 18+"
-      ? adultLikely
-      : (hot ? takes : likely)[intensity];
+  const intensity = partyIntensity(s.options, preferences);
+  const pool = partyPool({ ...s.options, intensity });
   const offset =
     Array.from(s.id).reduce((a, c) => a + c.charCodeAt(0), 0) % pool.length;
   const prompt =
@@ -57,7 +48,7 @@ export default function Party({ session: s }: GameProps) {
       <Screen
         className="party-spotlight-stage"
         title={hot ? "Hot take incoming." : "Who’s most likely to…"}
-        subtitle={`Prompt ${s.promptIndex + 1} of 5 · ${intensity}`}
+        subtitle={`Prompt ${s.promptIndex + 1} of 5 · ${intensity}${intensity === "Friends 18+" && s.options.friendsTopic && s.options.friendsTopic !== "All topics" ? ` · ${s.options.friendsTopic}` : ""}`}
       >
         <div className="prompt-card" key={s.promptIndex}>
           {refined ? (

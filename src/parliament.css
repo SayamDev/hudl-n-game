@@ -74,3 +74,110 @@
   color: inherit;
   text-decoration: underline;
 }
+/* A private dark surface must retain readable controls in either page theme. */
+html[data-design]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .stage.parliament-stage {
+  flex: 0 0 auto;
+  min-height: 0;
+  max-width: 680px;
+  margin: 12px auto 20px;
+  padding: 0;
+  gap: 12px;
+  justify-content: flex-start;
+}
+.parliament-stage .parliament-private {
+  align-content: start;
+  gap: 16px;
+  padding: clamp(16px, 3vw, 24px);
+}
+.parliament-stage .parliament-private h2 {
+  font-size: clamp(2rem, 6vw, 3rem);
+}
+.parliament-stage .parliament-private p {
+  margin: 0;
+  max-width: 65ch;
+}
+html[data-design] .parliament-private .button:not(.primary):not(.policy-tile) {
+  color: #faf0d5;
+  background: #2a2038;
+  border: 1px solid #9b85ae;
+}
+html[data-design] .parliament-private .button.text-button {
+  justify-self: center;
+  width: auto;
+  min-height: 44px;
+  padding: 8px 16px;
+  margin: 0;
+  font-size: 0.95rem;
+}
+html[data-design] .parliament-private .button.primary {
+  min-height: 48px;
+  padding: 12px 16px;
+  margin: 0;
+}
+html[data-design] .parliament-stage .game-attribution {
+  margin: 0;
+  padding: 12px 16px;
+}
+/* Keep theme-level hover rules from painting pale text over an accent fill. */
+html[data-design][data-edition]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .parliament-private
+  .button.text-button,
+html[data-design][data-edition]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .parliament-private
+  .button.text-button:is(:hover, :focus-visible, :active) {
+  color: #faf0d5;
+  background: #2a2038;
+}
+html[data-design][data-edition]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .parliament-private
+  .button.primary {
+  color: #171121;
+  background: #dded92;
+}
+html[data-design][data-edition]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .parliament-private
+  .policy-hand
+  .button.policy-tile {
+  color: #101019;
+}
+html[data-design][data-edition]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .parliament-private
+  .policy-hand
+  .policy-liberal {
+  background: #9edce6;
+}
+html[data-design][data-edition]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .parliament-private
+  .policy-hand
+  .policy-fascist {
+  background: #f3ae94;
+}
+/* Role handoffs replace controls immediately; never crossfade their text/fill. */
+html[data-design][data-edition]
+  .is-playing
+  main[data-game="secret-hitler"]
+  .parliament-private
+  .button {
+  transition-property: transform, border-color;
+}
+.parliament-private.private-open .parliament-cover {
+  height: clamp(120px, 20svh, 180px);
+  max-height: none;
+  object-position: 50% 60%;
+  border-radius: 12px;
+}

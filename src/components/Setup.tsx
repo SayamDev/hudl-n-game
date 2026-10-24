@@ -1,3 +1,4 @@
+import { friendsTopics, partyIntensity } from "../lib/party-pool";
 import ClubSetup from "./ClubSetup";
 import { TeamSetup } from "./TeamSetup";
 import { teamError } from "../lib/teams";
@@ -467,8 +468,8 @@ export function GameSettings({
         {game === "party" && (
           <>
             <p>
-              After Dark has adult dating and bedroom humour. Anyone can skip a
-              prompt without explaining.
+              Friends 18+ has savage, chaotic and flirty questions. After Dark
+              focuses on dating. Anyone can skip a prompt.
             </p>
             <Toggle
               label="Enable 18+ prompts for this adult group"
@@ -498,24 +499,49 @@ export function GameSettings({
             <label>
               Intensity
               <select
-                value={preferences.family ? "Family" : o.intensity}
+                value={partyIntensity(o, preferences)}
                 onChange={(e) =>
                   setOptions({
                     intensity: e.target.value as
-                      "Family" | "Friends" | "Spicy" | "After Dark 18+",
+                      | "Family"
+                      | "Friends"
+                      | "Spicy"
+                      | "After Dark 18+"
+                      | "Friends 18+",
                   })
                 }
               >
                 <option>Family</option>
                 {!preferences.family && <option>Friends</option>}
-                {!preferences.family && preferences.adult && (
+                <option disabled={preferences.family || !preferences.adult}>
+                  Spicy
+                </option>
+                {o.partyMode === "likely" && (
                   <>
-                    <option>Spicy</option>
-                    <option>After Dark 18+</option>
+                    <option disabled={preferences.family || !preferences.adult}>
+                      Friends 18+
+                    </option>
+                    <option disabled={preferences.family || !preferences.adult}>
+                      After Dark 18+
+                    </option>
                   </>
                 )}
               </select>
             </label>
+            {partyIntensity(o, preferences) === "Friends 18+" && (
+              <label>
+                Friends 18+ topic
+                <select
+                  value={o.friendsTopic || "All topics"}
+                  onChange={(e) => setOptions({ friendsTopic: e.target.value })}
+                >
+                  <option>All topics</option>
+                  {friendsTopics.map((topic) => (
+                    <option key={topic}>{topic}</option>
+                  ))}
+                </select>
+              </label>
+            )}
           </>
         )}
         <label>

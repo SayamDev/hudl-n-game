@@ -96,7 +96,7 @@ export default function SecretHitler({ session: s }: GameProps) {
         </div>
       )}
       {privateStage ? (
-        <section className="parliament-private">
+        <section className={`parliament-private ${open ? "private-open" : ""}`}>
           {!open ? (
             <>
               {art}
@@ -108,6 +108,7 @@ export default function SecretHitler({ session: s }: GameProps) {
             <>
               {board.phase === "roles" ? (
                 <>
+                  {art}
                   <h2>{board.roles[reader]}</h2>
                   <p>{roleBrief(board, reader, name)}</p>
                   <Button
