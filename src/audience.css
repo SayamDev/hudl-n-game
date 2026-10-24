@@ -522,3 +522,103 @@
     }
   }
 }
+/* Persistent reading in non-Imposter modes: the card, not the finger, scrolls. */
+.persistent-peek .card-swipe-open {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  touch-action: pan-x;
+}
+.persistent-peek.is-peeking .sleeve-motion {
+  display: none;
+}
+.persistent-peek .secret-card .card-copy {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting {
+  color: #f5eccc;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+  border-radius: 14px;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .silent-stage
+  .charades-acting
+  :is(h2, p) {
+  color: #f5eccc;
+}
+.acting-team small {
+  font-size: 0.75rem;
+}
+.silent-stage .text-button {
+  color: var(--ink);
+  min-height: 48px;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .is-playing
+  .silent-stage:has(.charades-acting) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto auto;
+  height: calc(100svh - 100px);
+  min-height: 0;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+:root[data-art-direction="deck"] .silent-stage:has(.charades-acting) > h1 {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  margin: 0;
+}
+:root[data-art-direction="deck"] .silent-stage:has(.charades-acting) .timer {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 0;
+}
+:root[data-art-direction="deck"]
+  .silent-stage:has(.charades-acting)
+  .acting-team {
+  grid-column: 1/-1;
+  grid-row: 2;
+  margin: 0;
+}
+:root[data-art-direction="deck"] .silent-stage .charades-acting {
+  grid-column: 1/-1;
+  grid-row: 3;
+}
+:root[data-art-direction="deck"] .silent-stage .charades-acting .game-scene {
+  height: clamp(90px, 20svh, 180px);
+  margin: 0 auto;
+}
+:root[data-art-direction="deck"] .silent-stage .charades-acting > .avatar {
+  width: 48px;
+  height: 48px;
+  margin: 8px auto;
+}
+:root[data-art-direction="deck"] .silent-stage:has(.charades-acting) .split {
+  grid-column: 1/-1;
+  grid-row: 4;
+}
+:root[data-art-direction="deck"]
+  .silent-stage:has(.charades-acting)
+  .acting-status {
+  grid-column: 1/-1;
+  grid-row: 5;
+}
+:root[data-art-direction="deck"]
+  .silent-stage:has(.charades-acting)
+  > .text-button {
+  grid-column: 1/-1;
+  grid-row: 6;
+  margin: 0;
+}

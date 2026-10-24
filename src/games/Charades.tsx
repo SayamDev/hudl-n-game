@@ -103,17 +103,25 @@ export default function Charades({ session: s }: GameProps) {
     clearTimeout(answerTimer.current);
     setAnswer({ correct, id: performance.now() });
     answerTimer.current = window.setTimeout(() => setAnswer(null), 900);
+    const automaticEnd =
+      current.options.charadesMode === "classic" &&
+      current.options.seconds === 0;
+    const scores = [...current.teamScores];
+    scores[current.team] =
+      (scores[current.team] || 0) + current.correct + (correct ? 1 : 0);
     patch({
       cardIndex: current.cardIndex + 1,
       correct: current.correct + (correct ? 1 : 0),
       skipped: current.skipped + (correct ? 0 : 1),
-      ...(current.options.charadesMode === "classic"
-        ? {
-            phase: "actor-peek",
-            timerRunning: false,
-            actorIndex: (current.actorIndex || 0) + 1,
-          }
-        : {}),
+      ...(automaticEnd
+        ? { phase: "turn-result", timerRunning: false, teamScores: scores }
+        : current.options.charadesMode === "classic"
+          ? {
+              phase: "actor-peek",
+              timerRunning: false,
+              actorIndex: (current.actorIndex || 0) + 1,
+            }
+          : {}),
     });
   };
   useEffect(() => {
@@ -201,8 +209,9 @@ export default function Charades({ session: s }: GameProps) {
   }, [s.phase, s.paused]);
   const end = () => {
     const current = useGame.getState().session!;
+    if (current.phase !== "acting" || current.paused) return;
     const scores = [...current.teamScores];
-    scores[current.team] = current.correct;
+    scores[current.team] = (scores[current.team] || 0) + current.correct;
     patch({ teamScores: scores, phase: "turn-result", timerRunning: false });
   };
   const enable = async () => {
@@ -296,7 +305,9 @@ export default function Charades({ session: s }: GameProps) {
                 <details className="ready-help">
                   <summary>How turns work</summary>
                   <p>
-                    Correct or Skip passes a fresh prompt to the next actor.{" "}
+                    {untimed
+                      ? "One prompt per team each round. Correct or Skip ends this turn."
+                      : "Correct or Skip passes a fresh prompt to the next actor."}{" "}
                     {untimed
                       ? "Finish the turn when your team is ready."
                       : "The clock pauses while the next actor checks their card."}
@@ -398,7 +409,10 @@ export default function Charades({ session: s }: GameProps) {
         title={classic ? `${actor?.name}, act it out!` : "Show your team!"}
       >
         <p className="acting-team">
-          {classic ? "Charades" : "Heads Up!"} <span>{teamName}</span>
+          {classic ? "Charades" : "Heads Up!"} <span>{teamName}</span>{" "}
+          <small>
+            Round {s.round} of {s.options.rounds || 1}
+          </small>
         </p>
         <Timer session={s} onEnd={end} />
         {classic ? (
@@ -477,7 +491,7 @@ export default function Charades({ session: s }: GameProps) {
           </p>
         </div>
         <Button className="text-button" onClick={end}>
-          Finish turn early
+          Finish this turn
         </Button>
       </Screen>
     );
@@ -492,6 +506,13 @@ export default function Charades({ session: s }: GameProps) {
           onClick={() => {
             if (s.team < teams.length - 1)
               patch({ team: s.team + 1, phase: "ready", actorIndex: 0 });
+            else if (s.round < (s.options.rounds || 1))
+              patch({
+                team: 0,
+                round: s.round + 1,
+                phase: "ready",
+                actorIndex: 0,
+              });
             else {
               const high = Math.max(...s.teamScores);
               const winning = teams.filter((_, i) => s.teamScores[i] === high);
@@ -510,7 +531,9 @@ export default function Charades({ session: s }: GameProps) {
         >
           {s.team < teams.length - 1
             ? `Pass to ${teams[s.team + 1].name}`
-            : "See the winners"}
+            : s.round < (s.options.rounds || 1)
+              ? `Start round ${s.round + 1}`
+              : "See the winners"}
         </Button>
       </Screen>
     );

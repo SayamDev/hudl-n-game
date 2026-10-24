@@ -32,6 +32,7 @@ export type Preferences = {
   contrast: boolean;
 };
 export type GameOptions = {
+  rounds?: number;
   teams?: Team[];
   imposters: number;
   randomImposters: boolean;

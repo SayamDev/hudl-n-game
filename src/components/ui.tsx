@@ -181,6 +181,8 @@ export function Peek({
   onDone: () => void;
   actor?: Player;
 }) {
+  const persistent = session.game !== "imposter";
+  const swipeStart = useRef<number | null>(null);
   const players = useGame((s) => s.players),
     patch = useGame((s) => s.patch);
   const [holding, setHolding] = useState(false),
@@ -196,7 +198,7 @@ export function Peek({
       active.current = false;
       clearTimeout(pending.current);
       pending.current = undefined;
-      lift.move(0);
+      lift.move(0, persistent);
       setHolding(false);
     }
   }, [session.paused]);
@@ -212,12 +214,14 @@ export function Peek({
     return () => clearInterval(id);
   }, [session.peekIndex]);
   useEffect(() => {
-    const hide = () => {
+    const hide = (event: Event) => {
+      if (persistent && ["pointerup", "pointercancel"].includes(event.type))
+        return;
       setPreparing(false);
       active.current = false;
       clearTimeout(pending.current);
       pending.current = undefined;
-      lift.move(0);
+      lift.move(0, persistent);
       setHolding(false);
     };
     window.addEventListener("blur", hide);
@@ -264,7 +268,7 @@ export function Peek({
       return;
     instantRead.current = instant;
     active.current = true;
-    lift.move(1, instant);
+    lift.move(1, instant || persistent);
     const show = () => {
       setPreparing(false);
       pending.current = undefined;
@@ -273,7 +277,7 @@ export function Peek({
       setSeen(true);
       feedback();
     };
-    if (!refined || instant || lift.reduced) show();
+    if (persistent || !refined || instant || lift.reduced) show();
     else {
       setPreparing(true);
       pending.current = window.setTimeout(show, 220);
@@ -284,12 +288,12 @@ export function Peek({
     active.current = false;
     clearTimeout(pending.current);
     pending.current = undefined;
-    lift.move(0);
+    lift.move(0, persistent);
     setHolding(false);
   };
   return (
     <Screen
-      className={`peek-stage ${refined ? "branded-peek" : ""} ${holding ? "is-peeking" : ""} ${seen ? "has-peeked" : ""}`}
+      className={`peek-stage ${refined ? "branded-peek" : ""} ${persistent ? "persistent-peek" : ""} ${holding ? "is-peeking" : ""} ${seen ? "has-peeked" : ""}`}
       title={
         <>
           <span className="handoff-label">Pass to </span>
@@ -313,6 +317,30 @@ export function Peek({
         <div
           className={`secret-card stable-secret ${holding ? "revealed" : ""} ${holding && instantRead.current ? "keyboard-read" : ""} ${holding && isImposter ? "imposter-reveal" : ""}`}
         >
+          {persistent && !holding && (
+            <button
+              type="button"
+              className="card-swipe-open"
+              aria-label="Swipe up to read card"
+              disabled={guard > 0}
+              onPointerDown={(e) => {
+                swipeStart.current = e.clientY;
+                e.currentTarget.setPointerCapture(e.pointerId);
+              }}
+              onPointerUp={(e) => {
+                if (
+                  swipeStart.current !== null &&
+                  swipeStart.current - e.clientY > 30
+                )
+                  reveal(true);
+                swipeStart.current = null;
+              }}
+              onPointerCancel={() => {
+                swipeStart.current = null;
+              }}
+              onClick={() => reveal(true)}
+            />
+          )}
           {refined && (
             <motion.div
               className="sleeve-motion"
@@ -418,7 +446,11 @@ export function Peek({
                 <h2>
                   {guard ? `Ready in ${guard}` : "Nobody’s looking… right?"}
                 </h2>
-                <p>Your secret stays hidden until you hold.</p>
+                <p>
+                  {persistent
+                    ? "Swipe up to open. Take your time reading."
+                    : "Your secret stays hidden until you hold."}
+                </p>
               </>
             )}
           </motion.div>
@@ -427,45 +459,74 @@ export function Peek({
       <div className="peek-controls">
         <p className="peek-cue" aria-live="off">
           {holding
-            ? "Lift your finger to hide your secret"
+            ? persistent
+              ? "Read at your pace. Scroll the card if needed."
+              : "Lift your finger to hide your secret"
             : seen
               ? "Secret hidden. Ready to pass."
-              : "Hold below. Lift your finger to hide."}
+              : persistent
+                ? "Swipe up on the card, or tap Reveal card."
+                : "Hold below. Lift your finger to hide."}
         </p>
         <button
-          aria-label="Hold to peek"
+          aria-label={
+            persistent
+              ? holding
+                ? "Hide card"
+                : "Reveal card"
+              : "Hold to peek"
+          }
           aria-describedby="peek-help"
           className="button primary hold-button"
           disabled={guard > 0}
+          onClick={() => {
+            if (persistent) {
+              if (holding) hide();
+              else reveal(true);
+            }
+          }}
           onPointerDown={(e) => {
+            if (persistent) return;
             e.preventDefault();
             e.currentTarget.setPointerCapture(e.pointerId);
             reveal();
           }}
-          onPointerUp={hide}
+          onPointerUp={() => {
+            if (!persistent) hide();
+          }}
           onPointerCancel={hide}
-          onLostPointerCapture={hide}
+          onLostPointerCapture={() => {
+            if (!persistent) hide();
+          }}
           onContextMenu={(e) => e.preventDefault()}
           onKeyDown={(e) => {
+            if (persistent) return;
             if ((e.key === " " || e.key === "Enter") && !e.repeat) {
               e.preventDefault();
               reveal(true);
             }
           }}
           onKeyUp={(e) => {
+            if (persistent) return;
             if (e.key === " " || e.key === "Enter") {
               e.preventDefault();
               hide();
               lift.move(0, true);
             }
           }}
-          onBlur={hide}
+          onBlur={() => {
+            if (!persistent) hide();
+          }}
         >
           <HandPalm size={25} weight="bold" />
-          Hold to peek
+          {persistent
+            ? holding
+              ? "Hide card"
+              : "Reveal card"
+            : "Hold to peek"}
         </button>
         <Button
-          disabled={!seen || holding}
+          disabled={!seen || (!persistent && holding)}
           onClick={() => {
             hide();
             if (actor || session.peekIndex === players.length - 1) onDone();
@@ -484,7 +545,9 @@ export function Peek({
           <ArrowRight size={20} />
         </Button>
         <p className="helper" id="peek-help">
-          Hold Space or Enter on the button. Release to hide.
+          {persistent
+            ? "Only you should read this. Hide or pass when ready."
+            : "Hold Space or Enter on the button. Release to hide."}
         </p>
       </div>
     </Screen>

@@ -271,6 +271,19 @@ export function GameSettings({
         {game === "charades" && (
           <>
             <label>
+              Rounds per team
+              <select
+                value={o.rounds || 1}
+                onChange={(e) => setOptions({ rounds: Number(e.target.value) })}
+              >
+                {[1, 2, 3, 4, 5, 10].map((n) => (
+                  <option key={n} value={n}>
+                    {n} {n === 1 ? "round" : "rounds"}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
               Turn timer
               <select
                 value={o.seconds === 0 ? 0 : 60}
