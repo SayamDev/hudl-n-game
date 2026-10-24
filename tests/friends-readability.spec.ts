@@ -15,7 +15,7 @@ async function start(
   await page
     .locator("article")
     .filter({ has: page.getByRole("heading", { name: game, exact: true }) })
-    .getByRole("button", { name: "Let’s play", exact: true })
+    .getByRole("button", { name: /^Let’s play / })
     .click();
   for (const name of ["Maya", "Noah", "Zara", "Leo", "Ari"].slice(0, n)) {
     await page

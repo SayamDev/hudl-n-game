@@ -85,7 +85,9 @@ export function AfterHoursHome({
                 <button
                   className="night-play"
                   aria-label={
-                    g.charadesMode === "classic" ? "Play Charades" : undefined
+                    g.charadesMode === "classic"
+                      ? "Play Charades"
+                      : `Let’s play ${g.name}`
                   }
                   onClick={() => {
                     if (g.id === "charades")

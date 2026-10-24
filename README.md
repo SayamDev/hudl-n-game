@@ -109,7 +109,7 @@ For local AI generation, copy `.env.example` to `.env.local`, add your own Groq 
 
 The adapter has small in-memory usage caps and no paid fallback. Provider availability and free quotas can change. A public AI service needs separate server hosting and durable abuse controls; see the [setup and deployment notes](docs/pack-studio-setup.md). Never put secrets in a `VITE_` variable or commit `.env.local`.
 
-Secret Hitler is a noncommercial [CC BY-NC-SA 4.0 digital adaptation](docs/secret-hitler-license.md), with original artwork and rewritten interface copy. Spyfall uses original locations and the app’s winner-point scoring. Both have new local noir covers.
+Secret Hitler is a noncommercial [CC BY-NC-SA 4.0 digital adaptation](docs/secret-hitler-license.md), with original artwork and rewritten interface copy. Spyfall uses original locations, selectable match lengths and the publisher-linked 2022 edition’s scoring. Accusations are limited per player, points carry across rounds, and the previous spy starts the next round. Both have new local noir covers.
 
 Most Likely To offers a separate **After Dark 18+** selection: enable adult content in its setup (or Settings), turn Family mode off, then choose the pack under Intensity. **Friends 18+** adds 244 supplied questions across 12 selectable topics, separately from After Dark. Any prompt can be skipped.
 

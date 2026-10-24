@@ -16,7 +16,9 @@ async function initial(page: any) {
     .getByRole("button", { name: "Let’s play" })
     .click();
   for (const name of ["Maya", "Noah", "Zara"]) {
-    await page.getByLabel("Player name", { exact: true }).fill(name);
+    await page
+      .getByRole("textbox", { name: "Player name", exact: true })
+      .fill(name);
     await page.getByRole("button", { name: "Add player", exact: true }).click();
   }
   await page.getByRole("button", { name: "Let’s play, all 3 of us" }).click();
@@ -52,7 +54,9 @@ test("replay and game selection ask for crew; setup edits preserve remaining ide
   await expect(
     page.getByRole("button", { name: "Add 1 more to play" }),
   ).toBeDisabled();
-  await page.getByLabel("Player name", { exact: true }).fill("Leo");
+  await page
+    .getByRole("textbox", { name: "Player name", exact: true })
+    .fill("Leo");
   await page.getByRole("button", { name: "Add player", exact: true }).click();
   await page.screenshot({ path: `${dir}/replay-crew-390.png`, fullPage: true });
   await page.getByRole("button", { name: "Let’s play, all 3 of us" }).click();
@@ -82,7 +86,7 @@ test("replay and game selection ask for crew; setup edits preserve remaining ide
   await page
     .locator("article")
     .filter({
-      has: page.getByRole("heading", { name: "Where Are We?", exact: true }),
+      has: page.getByRole("heading", { name: "Spyfall", exact: true }),
     })
     .getByRole("button", { name: "Let’s play" })
     .click();

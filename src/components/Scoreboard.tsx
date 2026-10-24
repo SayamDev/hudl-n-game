@@ -7,10 +7,14 @@ export function Scoreboard({
   players,
   winners = [],
   points = 0,
+  awards,
+  awardLabel = "this game",
 }: {
   players: Player[];
   winners?: string[];
   points?: number;
+  awards?: Record<string, number>;
+  awardLabel?: string;
 }) {
   const teams = useGame((s) => s.session?.teams || s.options.teams);
   return (
@@ -35,7 +39,11 @@ export function Scoreboard({
                 <Avatar player={player} />
                 <strong className="score-player">
                   {player.name}
-                  {won && <small>+{points} this game</small>}
+                  {(awards ? awards[player.id] > 0 : won) && (
+                    <small>
+                      +{awards ? awards[player.id] : points} {awardLabel}
+                    </small>
+                  )}
                 </strong>
                 <b className="score-points">
                   {player.score}

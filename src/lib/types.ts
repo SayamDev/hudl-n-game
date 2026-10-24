@@ -34,6 +34,7 @@ export type Preferences = {
 };
 export type GameOptions = {
   rounds?: number;
+  spyRounds?: number;
   teams?: Team[];
   imposters: number;
   randomImposters: boolean;
@@ -60,6 +61,7 @@ export type GameOptions = {
 };
 export type Session = {
   id: string;
+  spyMatch?: import("./spy-match").SpyMatch;
   parliament?: import("./parliament").Parliament;
   game: GameId;
   phase: string;

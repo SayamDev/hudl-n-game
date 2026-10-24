@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, HandPalm, LockKey, X } from "@phosphor-icons/react";
+import { lobbyGames } from "../games/registry";
 import { Dialog } from "./Dialog";
 import { Identity } from "./Identity";
 import { avatars } from "../store/useGame";
@@ -81,7 +82,7 @@ export default function Welcome({
         <p>
           {
             [
-              "Add your names, pick a game and pass the phone. Five ways to turn hanging out into game night.",
+              `Add your names, pick a game and pass the phone. ${lobbyGames.length} games for bluffing, acting and getting to know your crew.`,
               "Only the named player looks. In Imposter, swipe up and keep your finger down to read, or hold the reveal button. Lift your finger to hide before passing to the next name. Try holding below.",
               "Give everyone a name and an alibi. Start with Imposter, or explore the other games — each has its own quick rules.",
             ][step]

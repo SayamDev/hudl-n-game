@@ -15,7 +15,7 @@ export default function Results({
   onHome: () => void;
   onPlayers: () => void;
 }) {
-  const { players, preferences } = useGame();
+  const { players, preferences, setOptions, start } = useGame();
   const remix =
     preferences.design !== "classic" && preferences.design !== "club-original";
   const refined = remix && preferences.deckStyle !== false;
@@ -97,8 +97,22 @@ export default function Results({
           </ul>
         </details>
       )}
+      <p className="results-score-note">
+        {session.spyMatch
+          ? "This match’s scores. Points are also added to your all-night total."
+          : "All-night totals, including the game you just finished."}
+      </p>
       <Scoreboard
-        players={players}
+        players={
+          session.spyMatch
+            ? players.map((p) => ({
+                ...p,
+                score: session.spyMatch!.scores[p.id] || 0,
+              }))
+            : players
+        }
+        awards={session.spyMatch?.scores}
+        awardLabel={session.spyMatch ? "this match" : "this game"}
         winners={session.winners}
         points={session.options.points}
       />
@@ -112,10 +126,22 @@ export default function Results({
           </ol>
         </details>
       )}
-      <Button className="primary" onClick={onPlayers}>
-        Play again
+      <Button
+        className="primary"
+        onClick={() => {
+          setOptions(session.options);
+          start(session.game);
+        }}
+      >
+        Rematch with this crew
       </Button>
-      <Button onClick={onHome}>Next game</Button>
+      <Button onClick={onPlayers}>Play again</Button>
+      <p className="helper">
+        Play again lets you edit the crew and change the setup.
+      </p>
+      <Button className="text-button" onClick={onHome}>
+        Choose another game
+      </Button>
     </Screen>
   );
 }

@@ -1,0 +1,62 @@
+.spy-round-answer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 16px;
+  background: #171121;
+  color: #faf0d5;
+}
+.spy-round-answer .world-illustration {
+  width: 100%;
+  height: clamp(140px, 23svh, 240px);
+  object-fit: cover;
+  object-position: 50% 60%;
+}
+.spy-round-answer > div {
+  padding: 16px 20px;
+}
+.spy-round-answer h2 {
+  margin: 0;
+  color: #e0f991;
+  font-size: clamp(2rem, 6vw, 3rem);
+}
+.spy-round-answer p {
+  margin: 6px 0 0;
+  color: #faf0d5;
+}
+html[data-design] main[data-game="spy"] .spy-round-stage {
+  min-height: 0;
+  gap: 14px;
+}
+.spy-round-stage > h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.spy-round-stage .score-list {
+  margin: 0;
+}
+.spy-round-answer .world-illustration {
+  height: clamp(120px, 18svh, 180px);
+}
+.spy-standings {
+  max-height: 32svh;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+html[data-design]
+  main[data-game="spy"]
+  .spy-round-stage
+  .score-list
+  .score-entry {
+  min-height: 64px;
+  padding: 10px 12px;
+  gap: 10px;
+}
+html[data-design] main[data-game="spy"] .spy-round-stage .score-entry .avatar {
+  width: 36px;
+  height: 36px;
+}
+html[data-design] main[data-game="spy"] .spy-round-stage .score-points {
+  font-size: 1.5rem;
+}

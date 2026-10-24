@@ -12,7 +12,7 @@ async function crew(
   await page
     .locator("article")
     .filter({ has: page.getByRole("heading", { name: game, exact: true }) })
-    .getByRole("button", { name: "Let’s play", exact: true })
+    .getByRole("button", { name: /^Let’s play / })
     .click();
   for (const name of [
     "Maya",
@@ -103,6 +103,9 @@ test("Spyfall uses eight minutes, persistent private cards, and unanimous accusa
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await crew(page, "Spyfall", 3);
+  await page
+    .getByRole("combobox", { name: "Match length", exact: true })
+    .selectOption("1");
   await page.getByRole("button", { name: "Quick start", exact: true }).click();
   for (let i = 0; i < 3; i++) {
     await page
@@ -118,10 +121,13 @@ test("Spyfall uses eight minutes, persistent private cards, and unanimous accusa
   await expect(page.locator(".timer")).toContainText(/(8:00|7:)/);
   await page.getByRole("button", { name: "Make an accusation" }).click();
   await page.locator(".player-options .button").first().click();
+  await page.locator(".player-options .button").first().click();
   await expect(
     page.getByRole("heading", { name: "Does everyone else agree?" }),
   ).toBeVisible();
   await page.getByRole("button", { name: /Everyone else agrees/ }).click();
+  await expect(page.locator(".spy-round-stage")).toBeVisible();
+  await page.getByRole("button", { name: "See match results" }).click();
   await expect(page.locator(".results-stage")).toBeVisible();
 });
 test("adult pack is opt-in and both new covers load in light and dark presentations", async ({

@@ -57,6 +57,15 @@
         ],
         "createdAt": "2026-10-24T09:54:07.231Z",
         "reason": "Agent: legacy Social Club fallback is intentionally preserved per DESIGN.md line 133; the current approved illustrated acting card explicitly resets border to 0 in src/card-faces.css. Static legacy declaration is not the rendered After Hours design."
+      },
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "files": [
+          "src/after-hours.css"
+        ],
+        "createdAt": "2026-10-24T22:02:14.447Z",
+        "reason": "Agent: approved noir brand explicitly retains Space Grotesk body and controls in DESIGN.md; this is the same existing font sanctioned in club.css and card-faces.css, not a new typography choice."
       }
     ]
   }

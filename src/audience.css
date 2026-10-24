@@ -766,8 +766,54 @@
   position: static;
   margin: 0;
 }
-@media (orientation:landscape) and (max-height:600px) {
- :root[data-art-direction="deck"] .acting-status {gap:4px;}
- :root[data-art-direction="deck"] .acting-status .button {padding:4px;font-size:.6rem;}
- :root[data-art-direction="deck"] .acting-status .helper {font-size:.6rem;}
+@media (orientation: landscape) and (max-height: 600px) {
+  :root[data-art-direction="deck"] .acting-status {
+    gap: 4px;
+  }
+  :root[data-art-direction="deck"] .acting-status .button {
+    padding: 4px;
+    font-size: 0.6rem;
+  }
+  :root[data-art-direction="deck"] .acting-status .helper {
+    font-size: 0.6rem;
+  }
+}
+
+/* Shared completion and settings refinements. */
+.results-score-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+.empty-scores {
+  display: grid;
+  gap: 12px;
+  text-align: center;
+  align-content: start;
+}
+.empty-scores .world-illustration {
+  width: 100%;
+  height: clamp(150px, 25svh, 240px);
+  object-fit: cover;
+  border-radius: 14px;
+}
+.empty-scores h2,
+.empty-scores p {
+  margin: 0;
+}
+.appearance-options > fieldset {
+  margin-top: 16px;
+}
+@media (max-width: 520px) {
+  html[data-design] .update-notice {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .update-actions {
+    justify-content: flex-end;
+  }
+  .update-notice p {
+    font-size: 0.9rem;
+  }
 }

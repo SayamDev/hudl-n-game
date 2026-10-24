@@ -92,6 +92,7 @@ export default function ClubHome({
               <div className="club-game-actions">
                 <button
                   className="club-play"
+                  aria-label={`Let’s play ${g.name}`}
                   onClick={() => {
                     if (g.charadesMode)
                       useGame

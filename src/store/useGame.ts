@@ -1,3 +1,4 @@
+import { createSpyMatch, nextSpyMatch } from "../lib/spy-match";
 import { partyIntensity, partyPool, partyPoolKey } from "../lib/party-pool";
 import { createParliament } from "../lib/parliament";
 import { create } from "zustand";
@@ -97,7 +98,12 @@ type State = {
   setOptions: (o: Partial<GameOptions>) => void;
   start: (game: GameId) => void;
   patch: (s: Partial<Session>) => void;
-  finish: (result: string, winners: string[]) => void;
+  finish: (
+    result: string,
+    winners: string[],
+    awards?: Record<string, number>,
+  ) => void;
+  nextSpyRound: () => void;
   quit: () => void;
   addPack: (p: Pack) => void;
   removePack: (id: string) => void;
@@ -219,6 +225,14 @@ export const useGame = create<State>()(
             id: crypto.randomUUID(),
             game,
             parliament,
+            spyMatch:
+              game === "spy"
+                ? createSpyMatch(
+                    players.map((p) => p.id),
+                    startingPlayer,
+                    options.spyRounds || 5,
+                  )
+                : undefined,
             phase:
               game === "charades"
                 ? "ready"
@@ -295,7 +309,47 @@ export const useGame = create<State>()(
           }
           return { session, variety };
         }),
-      finish: (result, winners) =>
+      nextSpyRound: () => {
+        const { session: s, players, variety } = get();
+        if (
+          !s ||
+          s.game !== "spy" ||
+          !s.spyMatch?.settled ||
+          s.round >= s.spyMatch.rounds
+        )
+          return;
+        const secret = freshOrder(
+          locations.map((l) => l.name),
+          variety.spy,
+        )[0];
+        const location = locations.find((l) => l.name === secret)!;
+        const roles = assignRoles(players, "spy", s.options);
+        players.forEach((p, i) => {
+          if (roles[p.id] !== "Spy")
+            roles[p.id] = location.roles[i % location.roles.length];
+        });
+        set({
+          variety: { ...variety, spy: remember(variety.spy, [secret]) },
+          session: {
+            ...s,
+            spyMatch: nextSpyMatch(s.spyMatch),
+            round: s.round + 1,
+            roles,
+            secret,
+            peekIndex: 0,
+            phase: "peek",
+            startingPlayer: s.spyMatch.lastSpy,
+            night: {},
+            accused: null,
+            votes: {},
+            voterIndex: 0,
+            timerRemaining: s.options.seconds || 480,
+            timerRunning: false,
+            paused: false,
+          },
+        });
+      },
+      finish: (result, winners, awards) =>
         set((state) => {
           if (!state.session || state.session.awarded) return {};
           return {
@@ -311,7 +365,11 @@ export const useGame = create<State>()(
               ...p,
               score:
                 p.score +
-                (winners.includes(p.id) ? state.session!.options.points : 0),
+                (awards
+                  ? Math.max(0, awards[p.id] || 0)
+                  : winners.includes(p.id)
+                    ? state.session!.options.points
+                    : 0),
             })),
           };
         }),

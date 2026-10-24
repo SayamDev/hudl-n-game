@@ -22,51 +22,54 @@ export default function Preferences() {
       title="Your party, your rules."
       subtitle="These settings stay on this device."
     >
-      <fieldset className="design-picker">
-        <legend>Design</legend>
-        <p>
-          Try Social Club, or switch back to the original look anytime. Your
-          crew and scores stay saved.
-        </p>
-        <div className="split">
-          <Button
-            aria-pressed={
-              p.design !== "classic" && p.design !== "club-original"
-            }
-            className={
-              p.design !== "classic" && p.design !== "club-original"
-                ? "primary"
-                : ""
-            }
-            onClick={() => setPreferences({ design: "club" })}
-          >
-            Social Club
-          </Button>
-          <Button
-            aria-pressed={p.design === "club-original"}
-            className={p.design === "club-original" ? "primary" : ""}
-            onClick={() => setPreferences({ design: "club-original" })}
-          >
-            Social Club original
-          </Button>
-          <Button
-            aria-pressed={p.design === "classic"}
-            className={p.design === "classic" ? "primary" : ""}
-            onClick={() => setPreferences({ design: "classic" })}
-          >
-            Classic
-          </Button>
-        </div>
-      </fieldset>
-      <Toggle
-        label="After Hours art & motion"
-        description="Illustrated decks, character alibis and connected motion. Switch off to restore the previous Social Club look."
-        checked={p.deckStyle !== false}
-        onChange={(deckStyle) => setPreferences({ deckStyle })}
-      />
+      <details className="appearance-options">
+        <summary>Appearance and legacy themes</summary>
+        <fieldset className="design-picker">
+          <legend>Design</legend>
+          <p>
+            Try Social Club, or switch back to the original look anytime. Your
+            crew and scores stay saved.
+          </p>
+          <div className="split">
+            <Button
+              aria-pressed={
+                p.design !== "classic" && p.design !== "club-original"
+              }
+              className={
+                p.design !== "classic" && p.design !== "club-original"
+                  ? "primary"
+                  : ""
+              }
+              onClick={() => setPreferences({ design: "club" })}
+            >
+              Social Club
+            </Button>
+            <Button
+              aria-pressed={p.design === "club-original"}
+              className={p.design === "club-original" ? "primary" : ""}
+              onClick={() => setPreferences({ design: "club-original" })}
+            >
+              Social Club original
+            </Button>
+            <Button
+              aria-pressed={p.design === "classic"}
+              className={p.design === "classic" ? "primary" : ""}
+              onClick={() => setPreferences({ design: "classic" })}
+            >
+              Classic
+            </Button>
+          </div>
+        </fieldset>
+        <Toggle
+          label="After Hours art & motion"
+          description="Illustrated decks, character alibis and connected motion. Switch off to restore the previous Social Club look."
+          checked={p.deckStyle !== false}
+          onChange={(deckStyle) => setPreferences({ deckStyle })}
+        />
+      </details>
       <Toggle
         label="Swipe to reveal"
-        description="Swipe up and hold to read; release to hide. Switch off for the earlier button-first hold controls."
+        description="In Imposter, swipe up and hold to read; release to hide. Other private cards stay open until you hide or pass them. Switch off for Imposter’s button-first hold controls."
         checked={p.swipeReveal !== false}
         onChange={(swipeReveal) => setPreferences({ swipeReveal })}
       />

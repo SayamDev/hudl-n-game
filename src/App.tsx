@@ -1,3 +1,5 @@
+import { UpdateNotice } from "./components/UpdateNotice";
+import { WorldArt } from "./components/IllustratedCast";
 import { SceneTransition } from "./components/SceneTransition";
 import { motion } from "motion/react";
 import { RoundRail } from "./components/AfterHours";
@@ -300,6 +302,9 @@ export default function App() {
             )}
           </div>
         </header>
+        {needRefresh && !active && (
+          <UpdateNotice onUpdate={() => updateServiceWorker(true)} />
+        )}
         {!session && page !== "home" && (
           <div className="back-row">
             <button
@@ -406,6 +411,7 @@ export default function App() {
                             <div className="card-actions">
                               <button
                                 className="play-game"
+                                aria-label={`Let’s play ${g.name}`}
                                 onClick={() => {
                                   if (g.charadesMode)
                                     useGame.getState().setOptions({
@@ -538,7 +544,14 @@ export default function App() {
                 {players.length ? (
                   <Scoreboard players={players} />
                 ) : (
-                  <p>No scores yet. Your first game starts the story.</p>
+                  <section className="empty-scores">
+                    <WorldArt world="party" />
+                    <h2>Your first win starts here.</h2>
+                    <p>
+                      Choose a game and add your crew. Real scores appear after
+                      you finish playing.
+                    </p>
+                  </section>
                 )}
                 <Button className="primary" onClick={() => setPage("home")}>
                   Pick a game
@@ -659,14 +672,7 @@ export default function App() {
             </span>
           </footer>
         )}
-        {needRefresh && !active && (
-          <div className="update-notice">
-            <span>A fresh version is ready.</span>
-            <Button onClick={() => void updateServiceWorker(true)}>
-              Update now
-            </Button>
-          </div>
-        )}
+
         {welcome && !active && (
           <Welcome
             onClose={closeWelcome}

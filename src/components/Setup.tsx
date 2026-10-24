@@ -279,6 +279,39 @@ export function GameSettings({
           </p>
         )}
       <details className="settings-details" open>
+        {game === "spy" && (
+          <>
+            <label>
+              Match length
+              <select
+                value={o.spyRounds || 5}
+                onChange={(e) =>
+                  setOptions({ spyRounds: Number(e.target.value) })
+                }
+              >
+                {[1, 3, 5, 7, 10].map((n) => (
+                  <option key={n} value={n}>
+                    {n} {n === 1 ? "round" : "rounds"}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p>
+              Eight minutes per round. Everyone gets a fresh card each round;
+              the previous spy asks the first question. Scores follow the
+              Spyfall rules.
+            </p>
+            <details>
+              <summary>How scoring works</summary>
+              <p>
+                Spy: 2 points for surviving the final vote; 4 for a correct
+                location guess or an innocent player being accused. Locals: 1
+                point each for a win, plus 1 for the player who catches the spy
+                before time runs out.
+              </p>
+            </details>
+          </>
+        )}
         {game === "charades" && (
           <>
             <label>
@@ -544,17 +577,19 @@ export function GameSettings({
             )}
           </>
         )}
-        <label>
-          Winner points per game
-          <select
-            value={o.points}
-            onChange={(e) => setOptions({ points: Number(e.target.value) })}
-          >
-            {[1, 2, 3, 5].map((n) => (
-              <option key={n}>{n}</option>
-            ))}
-          </select>
-        </label>
+        {game !== "spy" && (
+          <label>
+            Winner points per game
+            <select
+              value={o.points}
+              onChange={(e) => setOptions({ points: Number(e.target.value) })}
+            >
+              {[1, 2, 3, 5].map((n) => (
+                <option key={n}>{n}</option>
+              ))}
+            </select>
+          </label>
+        )}
       </details>
       <details>
         <summary>How to play</summary>
