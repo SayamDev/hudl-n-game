@@ -15,7 +15,7 @@ import {
 import { useGame, avatars, colors } from "../store/useGame";
 import { shuffle } from "../lib/logic";
 import { Avatar, Button, Screen, Toggle } from "./ui";
-import { gameById } from "../games/registry";
+import { gameById, gamePresentation } from "../games/registry";
 import builtInPacks from "../content/packs.json";
 import type { GameId, Player } from "../lib/types";
 function CrewItem({
@@ -267,20 +267,6 @@ export function GameSettings({
         {game === "charades" && (
           <>
             <label>
-              Play style
-              <select
-                value={o.charadesMode || "heads-up"}
-                onChange={(e) =>
-                  setOptions({
-                    charadesMode: e.target.value as "heads-up" | "classic",
-                  })
-                }
-              >
-                <option value="heads-up">Heads Up — team gives clues</option>
-                <option value="classic">Charades — actor acts silently</option>
-              </select>
-            </label>
-            <label>
               Turn timer
               <select
                 value={o.seconds === 0 ? 0 : 60}
@@ -500,7 +486,7 @@ export function GameSettings({
       <details>
         <summary>How to play</summary>
         <ol>
-          {meta.rules.map((r) => (
+          {gamePresentation(game, o.charadesMode).rules.map((r) => (
             <li key={r}>{r}</li>
           ))}
         </ol>

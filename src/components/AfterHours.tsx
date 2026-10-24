@@ -8,7 +8,7 @@ import {
   Clock,
 } from "@phosphor-icons/react";
 import { useGame } from "../store/useGame";
-import { games } from "../games/registry";
+import { lobbyGames } from "../games/registry";
 import type { GameId } from "../lib/types";
 
 export function AfterHoursHome({
@@ -38,10 +38,10 @@ export function AfterHoursHome({
         </div>
       </section>
       <section className="night-games" aria-label="Choose a party game">
-        {games.map((g, i) => (
+        {lobbyGames.map((g, i) => (
           <motion.article
-            key={g.id}
-            className={`night-game night-${g.id} ${i === 0 ? "night-featured" : ""}`}
+            key={g.lobbyKey}
+            className={`night-game night-${g.id} ${g.charadesMode === "classic" ? "night-silent-charades" : ""} ${i === 0 ? "night-featured" : ""}`}
             initial={false}
             whileInView={reduce ? {} : { transform: "translateY(0px)" }}
             viewport={{ once: true, amount: 0.2 }}
@@ -66,11 +66,7 @@ export function AfterHoursHome({
             </motion.div>
             <div className="night-game-copy">
               <h2>{g.name}</h2>
-              <p>
-                {g.id === "charades"
-                  ? "Show it. Guess it. Steal the spotlight."
-                  : g.subtitle}
-              </p>
+              <p>{g.subtitle}</p>
               <div className="night-meta">
                 <span>
                   <UsersThree size={14} />
@@ -84,35 +80,36 @@ export function AfterHoursHome({
               <div className="night-actions">
                 <button
                   className="night-play"
+                  aria-label={
+                    g.charadesMode === "classic" ? "Play Charades" : undefined
+                  }
                   onClick={() => {
                     if (g.id === "charades")
                       useGame
                         .getState()
-                        .setOptions({ charadesMode: "heads-up" });
+                        .setOptions({ charadesMode: g.charadesMode });
                     choose(g.id);
                   }}
                 >
-                  Let’s play <ArrowUpRight size={21} />
+                  {g.charadesMode === "classic"
+                    ? "Play Charades"
+                    : "Let’s play"}{" "}
+                  <ArrowUpRight size={21} />
                 </button>
                 <button
                   className="night-rules"
                   aria-label={`How to play ${g.name}`}
-                  onClick={() => rules(g.id)}
+                  onClick={() => {
+                    if (g.charadesMode)
+                      useGame
+                        .getState()
+                        .setOptions({ charadesMode: g.charadesMode });
+                    rules(g.id);
+                  }}
                 >
                   How to play
                 </button>
               </div>
-              {g.id === "charades" && (
-                <button
-                  className="night-charades-launch"
-                  onClick={() => {
-                    useGame.getState().setOptions({ charadesMode: "classic" });
-                    choose("charades");
-                  }}
-                >
-                  Play Charades <ArrowRight size={17} />
-                </button>
-              )}
             </div>
           </motion.article>
         ))}

@@ -230,20 +230,6 @@
   text-align: left;
   padding: 7px 0;
 }
-.night-charades-launch {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  background: #30213e;
-  color: #eddefe;
-  border: 1px solid #8c6ba9;
-  min-height: 44px;
-  border-radius: 6px;
-  padding: 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
 .night-featured {
   grid-column: 1/-1;
   display: grid;
@@ -933,4 +919,9 @@
 :root[data-art-direction="deck"][data-design="club"][data-edition="remix"].high-contrast
   .app-shell {
   --muted: var(--ink);
+}
+
+.night-game.night-silent-charades {
+  background: #30213e;
+  border-color: #9c7acb;
 }

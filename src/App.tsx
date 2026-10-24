@@ -23,7 +23,12 @@ import {
 } from "@phosphor-icons/react";
 import { useRegisterSW } from "virtual:pwa-register/react";
 import { useGame } from "./store/useGame";
-import { games, gameById } from "./games/registry";
+import {
+  games,
+  lobbyGames,
+  gameById,
+  gamePresentation,
+} from "./games/registry";
 import { Avatar, Button, Mascot, Screen } from "./components/ui";
 import { Dialog } from "./components/Dialog";
 const Players = lazy(() =>
@@ -381,9 +386,9 @@ export default function App() {
                       <span>5 games. Zero awkward small talk.</span>
                     </div>
                     <div className="games-grid">
-                      {games.map((g, i) => (
+                      {lobbyGames.map((g, i) => (
                         <article
-                          key={g.id}
+                          key={g.lobbyKey}
                           className={`game-card ${g.color} ${i === 0 ? "featured" : ""}`}
                         >
                           <div className="game-card-copy">
@@ -402,14 +407,26 @@ export default function App() {
                             <div className="card-actions">
                               <button
                                 className="play-game"
-                                onClick={() => choose(g.id)}
+                                onClick={() => {
+                                  if (g.charadesMode)
+                                    useGame.getState().setOptions({
+                                      charadesMode: g.charadesMode,
+                                    });
+                                  choose(g.id);
+                                }}
                               >
                                 {t("play")}
                                 <ArrowUpRight size={21} weight="bold" />
                               </button>
                               <button
                                 className="rules-link"
-                                onClick={() => setRules(g.id)}
+                                onClick={() => {
+                                  if (g.charadesMode)
+                                    useGame.getState().setOptions({
+                                      charadesMode: g.charadesMode,
+                                    });
+                                  setRules(g.id);
+                                }}
                                 aria-label={`How to play ${g.name}`}
                               >
                                 How to play
@@ -662,9 +679,20 @@ export default function App() {
         {rules && (
           <div className="modal-backdrop">
             <Dialog label="rules-title" onClose={() => setRules(null)}>
-              <h2 id="rules-title">How to play {gameById(rules).name}</h2>
+              <h2 id="rules-title">
+                How to play{" "}
+                {
+                  gamePresentation(
+                    rules,
+                    useGame.getState().options.charadesMode,
+                  ).name
+                }
+              </h2>
               <ol>
-                {gameById(rules).rules.map((r) => (
+                {gamePresentation(
+                  rules,
+                  useGame.getState().options.charadesMode,
+                ).rules.map((r) => (
                   <li key={r}>{r}</li>
                 ))}
               </ol>
@@ -696,7 +724,10 @@ export default function App() {
               <details>
                 <summary>Rules reminder</summary>
                 <ol>
-                  {gameById(session.game).rules.map((r) => (
+                  {gamePresentation(
+                    session.game,
+                    session.options.charadesMode,
+                  ).rules.map((r) => (
                     <li key={r}>{r}</li>
                   ))}
                 </ol>

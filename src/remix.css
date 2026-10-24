@@ -2362,22 +2362,6 @@
   width: 108px;
   height: 108px;
 }
-.charades-launch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 48px;
-}
-[data-edition="remix"] .club-game-actions:has(.charades-launch) {
-  flex-wrap: wrap;
-}
-[data-edition="remix"] .club-game-actions .charades-launch {
-  flex-basis: 100%;
-  text-decoration: none;
-  border: 1px solid currentColor;
-  border-radius: 10px;
-}
 @media (max-width: 370px) {
   .time-options {
     gap: 4px;
@@ -2429,4 +2413,8 @@
 .charades-acting {
   grid-column: 1 / -1;
   min-height: min(320px, 36dvh);
+}
+
+[data-design="club"][data-edition="remix"] .club-silent-charades {
+  background: #dacdeb;
 }

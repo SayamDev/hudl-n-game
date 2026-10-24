@@ -59,7 +59,7 @@ export const games: GameDefinition[] = [
     ...sharedScreens,
     id: "charades",
     name: "Heads Up!",
-    subtitle: "Heads Up or classic Charades. Big gestures, no words.",
+    subtitle: "Hold the screen up. Your team gives the clues.",
     color: "yellow",
     emoji: "🎭",
     min: 3,
@@ -67,7 +67,7 @@ export const games: GameDefinition[] = [
     rules: [
       "Split into two teams, alternating players in your crew list.",
       "One player holds the phone facing their teammates.",
-      "Heads Up: teammates give clues. Classic Charades: the actor privately checks the prompt, hides it, then acts silently. Tap correct or skip.",
+      "Your teammates describe the word without saying it. Guess as many as you can.",
       "Enable and practise tilt before starting: screen toward the floor for correct, toward the ceiling to skip. Return upright between gestures. Or use buttons / the right and left arrow keys. Two turns decide the winner.",
     ],
     load: () => import("./Charades"),
@@ -91,3 +91,33 @@ export const games: GameDefinition[] = [
   },
 ];
 export const gameById = (id: string) => games.find((g) => g.id === id)!;
+
+// Two distinct lobby choices share the team-round engine, not a combined card.
+export const charadesGame = {
+  ...gameById("charades"),
+  name: "Charades",
+  subtitle: "Your team guesses. You act. Not a word.",
+  min: 4,
+  rules: [
+    "Split into two teams with at least two players each.",
+    "The actor privately checks the prompt, then hides it before acting.",
+    "Act silently while your teammates guess. No words or sounds.",
+    "Tap Correct or Skip, then pass to the next actor. Play timed or without a timer.",
+  ],
+};
+export const lobbyGames = games.flatMap<
+  GameDefinition & { lobbyKey: string; charadesMode?: "heads-up" | "classic" }
+>((game) =>
+  game.id === "charades"
+    ? [
+        { ...game, lobbyKey: "heads-up", charadesMode: "heads-up" as const },
+        {
+          ...charadesGame,
+          lobbyKey: "silent-charades",
+          charadesMode: "classic" as const,
+        },
+      ]
+    : [{ ...game, lobbyKey: game.id, charadesMode: undefined }],
+);
+export const gamePresentation = (id: string, mode?: string) =>
+  id === "charades" && mode === "classic" ? charadesGame : gameById(id);

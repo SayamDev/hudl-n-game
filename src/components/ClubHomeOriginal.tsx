@@ -9,7 +9,7 @@ import {
   HandWaving,
   ChatCircleDots,
 } from "@phosphor-icons/react";
-import { games } from "../games/registry";
+import { lobbyGames } from "../games/registry";
 import { useGame } from "../store/useGame";
 import type { GameId } from "../lib/types";
 const icons = {
@@ -53,11 +53,11 @@ export default function ClubHome({
         <p>One phone. A room full of suspects.</p>
       </section>
       <section className="club-games" aria-label="Choose a party game">
-        {games.map((g, i) => {
+        {lobbyGames.map((g, i) => {
           const Icon = icons[g.id];
           return (
             <article
-              key={g.id}
+              key={g.lobbyKey}
               className={`club-game club-${g.id} ${i === 0 ? "club-featured" : ""}`}
             >
               <div className="club-game-title">
@@ -89,14 +89,29 @@ export default function ClubHome({
                 </div>
               )}
               <div className="club-game-actions">
-                <button className="club-play" onClick={() => choose(g.id)}>
+                <button
+                  className="club-play"
+                  onClick={() => {
+                    if (g.charadesMode)
+                      useGame
+                        .getState()
+                        .setOptions({ charadesMode: g.charadesMode });
+                    choose(g.id);
+                  }}
+                >
                   Let’s play
                   <ArrowUpRight size={22} />
                 </button>
                 <button
                   className="club-rules"
                   aria-label={`How to play ${g.name}`}
-                  onClick={() => rules(g.id)}
+                  onClick={() => {
+                    if (g.charadesMode)
+                      useGame
+                        .getState()
+                        .setOptions({ charadesMode: g.charadesMode });
+                    rules(g.id);
+                  }}
                 >
                   How to play
                 </button>

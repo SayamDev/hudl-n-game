@@ -161,7 +161,10 @@ test("classic Charades is discoverable, private, untimed and advances to another
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await setup(page, true);
-  await expect(page.getByLabel("Play style")).toHaveValue("classic");
+  await expect(
+    page.getByRole("heading", { name: "Let’s play Charades." }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Play style")).toHaveCount(0);
   await page.getByLabel("Turn timer").selectOption("0");
   await page.getByRole("button", { name: "Quick start" }).click();
   await page.getByRole("button", { name: "Draw your prompt" }).click();

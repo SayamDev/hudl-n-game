@@ -232,3 +232,7 @@ The verdict is public. An upward swipe beyond (45px) or the native Reveal identi
 Source scope: `src/after-hours.css`, inherited `src/club.css`, `src/remix.css`, `src/style.css`, and the current AfterHours, NoirArt, Identity, SecretSleeve, Verdict, WinnerArtwork, ui, Preferences, Setup and App components. The refreshed browser evidence lives in `.impeccable/review/after-hours/`; it covers phone/desktop home, crew, setup, sealed/held private play, verdict, results and acting. Treat `checks.json` as the authoritative recorded check list, not a full accessibility audit or physical-device test. This documentation pass did not run browsers or builds.
 
 Not canonized: no unverified finish verdict, approved-comp fidelity, seed or quality-card claim is promoted to a system rule. Inherited visual differences remain recorded as implementation facts; this documentation pass did not repair source or tests.
+
+### Separate acting games
+
+Heads Up and Charades each occupy one lobby card with one primary launch and one rules action. Heads Up describes teammate clues; Charades describes silent acting with at least four players. No extra stretched secondary launch panel or setup mode dropdown. Charades uses a violet surface alongside the coral Heads Up card. Earlier lobby variants also expose both choices separately.

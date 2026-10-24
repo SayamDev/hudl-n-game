@@ -8,7 +8,7 @@ import {
 import OriginalHome, { ClubLogo as OriginalLogo } from "./ClubHomeOriginal";
 import { GameArt, Identity } from "./Identity";
 import { motion, useReducedMotion } from "motion/react";
-import { games } from "../games/registry";
+import { lobbyGames } from "../games/registry";
 import { useGame } from "../store/useGame";
 import type { GameId } from "../lib/types";
 export function ClubLogo() {
@@ -60,7 +60,7 @@ export default function ClubHome({
         </div>
       </section>
       <section className="club-games" aria-label="Choose a party game">
-        {games.map((g, i) => {
+        {lobbyGames.map((g, i) => {
           return (
             <motion.article
               initial={reduce ? false : { y: 18, rotate: i % 2 ? 1 : -1 }}
@@ -71,18 +71,14 @@ export default function ClubHome({
                 delay: 0,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              key={g.id}
-              className={`club-game club-${g.id} ${i === 0 ? "club-featured" : ""}`}
+              key={g.lobbyKey}
+              className={`club-game club-${g.id} ${g.charadesMode === "classic" ? "club-silent-charades" : ""} ${i === 0 ? "club-featured" : ""}`}
             >
               <div className="club-game-title">
                 {i !== 0 && <GameArt game={g.id} onScroll />}
                 <h2>{g.name}</h2>
               </div>
-              <p>
-                {g.id === "charades"
-                  ? "Heads Up or classic Charades. Pick your stage."
-                  : g.subtitle}
-              </p>
+              <p>{g.subtitle}</p>
               <div className="club-meta">
                 <span>
                   <UsersThree size={15} />
@@ -97,37 +93,35 @@ export default function ClubHome({
               <div className="club-game-actions">
                 <button
                   className="club-play"
+                  aria-label={
+                    g.charadesMode === "classic" ? "Play Charades" : undefined
+                  }
                   onClick={() => {
                     if (g.id === "charades")
                       useGame
                         .getState()
-                        .setOptions({ charadesMode: "heads-up" });
+                        .setOptions({ charadesMode: g.charadesMode });
                     choose(g.id);
                   }}
                 >
-                  Let’s play
+                  {g.charadesMode === "classic"
+                    ? "Play Charades"
+                    : "Let’s play"}
                   <ArrowUpRight size={22} />
                 </button>
                 <button
                   className="club-rules"
                   aria-label={`How to play ${g.name}`}
-                  onClick={() => rules(g.id)}
+                  onClick={() => {
+                    if (g.charadesMode)
+                      useGame
+                        .getState()
+                        .setOptions({ charadesMode: g.charadesMode });
+                    rules(g.id);
+                  }}
                 >
                   How to play
                 </button>
-                {g.id === "charades" && (
-                  <button
-                    className="club-rules charades-launch"
-                    onClick={() => {
-                      useGame
-                        .getState()
-                        .setOptions({ charadesMode: "classic" });
-                      choose("charades");
-                    }}
-                  >
-                    Play Charades <ArrowRight size={18} />
-                  </button>
-                )}
               </div>
             </motion.article>
           );

@@ -4,7 +4,7 @@
 
 ### Good company. Bad alibis.
 
-**One phone. Five games. Everyone in.**
+**One phone. Six game choices. Everyone in.**
 
 [Play now](https://sayamdev.github.io/hudl-n-game/) · [How it works](#one-phone-a-whole-party) · [Run locally](#make-it-yours) · [AI setup](docs/pack-studio-setup.md)
 
@@ -12,7 +12,7 @@ Free to play · No accounts · No ads · Phone-first
 
 </div>
 
-![Hudl N Game — five colourful game worlds and a cast of distinctive alibis](.github/assets/home.png)
+![Hudl N Game — illustrated game worlds and a cast of distinctive alibis](.github/assets/home.png)
 
 ## One phone. A whole party.
 
@@ -23,8 +23,10 @@ Add your crew, choose a game and pass the phone. A short interactive welcome let
 | A word everyone knows. Almost everyone. | **Imposter** — secret words, clues, accusations and a last-chance guess.                   | 3–20 |
 | Trust nobody after dark.                | **Mafia** — narrated nights, secret roles and village votes.                               | 5–20 |
 | Same place. One very lost spy.          | **Where Are We?** — location clues, questioning and a hidden outsider.                     | 3–20 |
-| Big gestures. Absolutely no words.      | **Heads Up! / Charades** — choose team clues or silent acting, with private actor prompts. | 3–20 |
+| Big gestures. Absolutely no words.      | **Heads Up!** — hold the screen up while your team gives clues. | 3–20 |
 | You know exactly who it is.             | **Most Likely To / Hot Takes** — point votes or private agreement ratings.                 | 3–20 |
+
+Heads Up and **Charades** have separate game cards. Choose Charades for silent acting with private actor prompts and at least four players.
 
 ## A little character. A lot of replay.
 
