@@ -1,3 +1,4 @@
+import { GameWorld } from "../components/GameWorld";
 import { useState } from "react";
 import { useGame } from "../store/useGame";
 import { likely, takes } from "../content/prompts";
@@ -39,10 +40,12 @@ export default function Party({ session: s }: GameProps) {
   if (s.phase === "prompt")
     return (
       <Screen
+        className="party-spotlight-stage"
         title={hot ? "Hot take incoming." : "Who’s most likely to…"}
         subtitle={`Prompt ${s.promptIndex + 1} of 5 · ${s.options.intensity}`}
       >
-        <div className="prompt-card">
+        <GameWorld session={s} />
+        <div className="prompt-card" key={s.promptIndex}>
           <h2>
             {prompt}
             {hot ? "" : "?"}

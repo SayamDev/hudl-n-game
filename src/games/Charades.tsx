@@ -1,3 +1,4 @@
+import { GameWorld } from "../components/GameWorld";
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../store/useGame";
 import { feedback } from "../lib/feedback";
@@ -195,6 +196,7 @@ export default function Charades({ session: s }: GameProps) {
   if (s.phase === "ready")
     return (
       <Screen
+        className={classic ? "silent-stage" : "heads-up-stage"}
         title={`Team ${s.team + 1}, you’re up!`}
         subtitle={
           classic
@@ -202,6 +204,7 @@ export default function Charades({ session: s }: GameProps) {
             : "One teammate holds the phone facing the others. No saying the word."
         }
       >
+        <GameWorld session={s} />
         <div className="charades-ready-grid">
           <section className="ready-cast" aria-label="This turn’s team">
             <h2>Your team. Your moment.</h2>
@@ -289,7 +292,11 @@ export default function Charades({ session: s }: GameProps) {
           </section>
         </div>
         <div className="ready-launch">
-          <span>Ready? Show the screen to your team.</span>
+          <span>
+            {classic
+              ? "Actor ready? Check your prompt in private."
+              : "Ready? Show the screen to your team."}
+          </span>
           <Button
             className="primary"
             onClick={() => {
@@ -317,6 +324,7 @@ export default function Charades({ session: s }: GameProps) {
   if (s.phase === "acting")
     return (
       <Screen
+        className={classic ? "silent-stage" : "heads-up-stage"}
         title={classic ? `${actor?.name}, act it out!` : "Show your team!"}
       >
         <p className="acting-team">
@@ -325,6 +333,7 @@ export default function Charades({ session: s }: GameProps) {
         <Timer session={s} onEnd={end} />
         {classic ? (
           <div className="charades-acting">
+            <GameWorld session={s} />
             <Avatar player={actor} big />
             <h2>All eyes on {actor?.name}.</h2>
             <p>Gestures only. Guess what they’re acting.</p>

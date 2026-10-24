@@ -240,3 +240,13 @@ Heads Up and Charades each occupy one lobby card with one primary launch and one
 ### Illustrated private handoff
 
 After Hours Imposter has a role-independent portrait cover across the private screen. Current player's name and stable alibi emblem stay visible; the next recipient is named above and within the pass action. Swipe up at least 65px or activate Reveal my secret. Revealed text stays until explicitly hidden/passed or interrupted by pause/blur/visibility/cancel. Both roles use the same dark ground and subdued cream/lavender text; no lime/coral role flash. There is no private exit animation. Settings → Swipe to reveal restores the hold interaction without changing the artwork theme. Individual alibi badges remain the existing twenty emblems; the shared portrait is not a new unique portrait for each player.
+
+### Illustrated anthology and cast
+
+The twenty alibis are now distinct etched-print character portraits rather than game-icon emblems in the refined design. Persistent avatar identifiers select fixed atlas cells; roles never select artwork. Use the same portrait across crew, private screen and public result. The original generated sheet and prior design variants remain available; current portraits/scenes come from two new local atlas JPEGs.
+
+Six game scenes: masked Imposter; oxblood/gold Mafia council under a red moon; petrol/seafoam map-and-passport investigation; cobalt/apricot Heads Up team; aubergine/rose silent theatre; ochre/violet social crown. Heads Up and Charades must not share the same scene.
+
+Mafia frames a public night/dawn/vote council cycle. Spy frames its current question and next investigator as a map dossier with a dashed seam. Heads Up foregrounds the visible word and tilt/button input; Charades foregrounds a silent actor and hidden prompt with a stage arch. Party uses an awards scene and ticket-shaped prompt. Shared type/navigation unite the app without forcing all game stages into the same composition.
+
+Council arrival: 650ms; investigation sheet: 450ms; theatre arrival: 600ms; party prompt: 300ms. These are one-shot arrivals and disabled under reduced motion. Imposter swipe-down conceals immediately at 48px and never animates private text away. Both roles retain the identical dark private ground.

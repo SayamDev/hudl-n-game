@@ -468,7 +468,7 @@ test("branded identities, round controls, visible motion and original design fal
   await page.getByRole("button", { name: "Your crew", exact: true }).click();
   const identities = await page
     .locator(".identity-avatar svg")
-    .evaluateAll((nodes) => nodes.map((n) => n.innerHTML));
+    .evaluateAll((nodes) => nodes.map((n) => n.outerHTML));
   expect(new Set(identities).size).toBe(5);
   await page.getByRole("button", { name: "Settings", exact: true }).click();
   await page

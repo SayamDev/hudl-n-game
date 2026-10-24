@@ -1,3 +1,4 @@
+import { IllustratedPortrait } from "./IllustratedCast";
 import { NoirIllustration } from "./NoirArt";
 import { motion, useReducedMotion } from "motion/react";
 import {
@@ -38,52 +39,14 @@ export function Identity({
       s.preferences.deckStyle !== false &&
       !["classic", "club-original"].includes(s.preferences.design),
   );
-  const emblems = [
-    "spy",
-    "carnival-mask",
-    "bandit",
-    "cyborg-face",
-    "invisible-face",
-    "jester-hat",
-    "mustache",
-    "pirate-captain",
-    "robot-helmet",
-    "vr-headset",
-    "wizard-face",
-    "woman-elf-face",
-    "fox-head",
-    "owl",
-    "rogue",
-    "domino-mask",
-    "architect-mask",
-    "bird-mask",
-    "ninja-head",
-    "raccoon-head",
-  ];
   if (noir)
     return (
-      <svg
+      <span
         className={`identity identity-noir ${large ? "identity-large" : ""}`}
-        viewBox="0 0 80 80"
-        aria-hidden="true"
         data-identity={hash}
       >
-        <path
-          d="M12 2H68L78 12V68L68 78H12L2 68V12Z"
-          fill="#111016"
-          stroke={palette[hash % 6]}
-          strokeWidth="2"
-        />
-        <image
-          href={`${import.meta.env.BASE_URL}art/after-hours/alibis/${emblems[hash % 20]}.svg`}
-          x="12"
-          y="10"
-          width="56"
-          height="56"
-          style={{ mixBlendMode: "screen" }}
-        />
-        <path d="M24 72h32" stroke={palette[hash % 6]} strokeWidth="2" />
-      </svg>
+        <IllustratedPortrait seed={seed} />
+      </span>
     );
   const color = palette[hash % 6],
     shape = hash % 10,

@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArrowUp, EyeSlash } from "@phosphor-icons/react";
 import { useGame } from "../store/useGame";
 import { hintFor } from "../lib/hints";
-import { NoirIllustration } from "./NoirArt";
+import { IllustratedPortrait } from "./IllustratedCast";
 import { Identity } from "./Identity";
 import { Screen } from "./ui";
 import type { Session } from "../lib/types";
@@ -53,6 +53,7 @@ export function PrivateReveal({
     if (next) patch({ peekIndex: session.peekIndex + 1 });
     else onDone();
   };
+  const visible = open && !session.paused;
   const imposter = session.roles[player.id] === "Imposter";
   const hint =
     session.options.hintStyle === "category"
@@ -70,18 +71,24 @@ export function PrivateReveal({
       subtitle={`Secret ${session.peekIndex + 1} of ${players.length} · Everyone else, look away.`}
     >
       <div className="private-portrait" aria-hidden="true">
-        <NoirIllustration hero />
+        <IllustratedPortrait seed={player.avatar} />
         <div className="portrait-shade" />
       </div>
       <div className="private-badge" aria-hidden="true">
         <Identity seed={player.avatar} />
       </div>
       <section
-        className={`private-window ${open ? "is-open" : ""}`}
+        className={`private-window ${visible ? "is-open" : ""}`}
         aria-label="Private role card"
       >
-        {open ? (
-          <div className="private-secret" aria-live="off">
+        {visible ? (
+          <motion.div
+            className="private-secret"
+            aria-live="off"
+            onPan={(_, info) => {
+              if (info.offset.y > 48) setOpen(false);
+            }}
+          >
             <span className="private-turn-label">
               {imposter ? "Your role" : "Your secret word"}
             </span>
@@ -106,7 +113,8 @@ export function PrivateReveal({
               <EyeSlash size={21} />
               Hide my secret
             </button>
-          </div>
+            <small className="swipe-hide-cue">Swipe down to hide</small>
+          </motion.div>
         ) : (
           <motion.div
             className="private-swipe"

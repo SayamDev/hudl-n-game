@@ -42,3 +42,14 @@ Bebas Neue by Ryoichi Tsunekawa is self-hosted, with its SIL Open Font License i
 ## References
 
 [Rive game UI](https://rive.app/game-ui) informed state-driven motion. [ustwo's Monument Valley launch notes](https://ustwo.com/blog/monument-valley-out-now/) informed the coherence of art and interaction. The user's Fakeit reference informed the party-game context. These products' artwork was not copied or bundled. Rive is a reference, not an installed runtime.
+
+## Illustrated cast and anthology worlds — 24 October 2026
+
+Two new atlas images were generated with the built-in OpenAI image tool for this project, using text briefs rather than exported player data:
+
+- `character-atlas.jpg`: a 5×4 sheet of twenty distinct fictional adult portraits. Different silhouettes, facial features, hair, masks, hats and poses share a midnight/plum/ivory etched-print treatment. Source generation: `exec-06ec6e5f-3b6c-45c4-966c-5600293248dc.png`.
+- `world-atlas.jpg`: a 3×2 sheet containing separate Imposter, Mafia council, location investigation, Heads Up, silent Charades and Most Likely To scenes. Source generation: `exec-ddcb72e3-ffc9-433f-8dca-84300e72c18c.png`.
+
+The original PNGs remain in the generator's local output directory. Shipping JPEGs were converted locally at quality 85; runtime SVG view boxes select cells without modifying the source illustration. Each JPEG embeds a clearly labelled summary of its generation brief and original output identifier, not a claimed verbatim prompt transcript. A scan found three shipping rasters and zero missing provenance records, including the earlier 12ui sheet. These generated illustrations are distinct from the credited Game-icons SVG collection, which is retained as prior asset provenance.
+
+The atlas mapping is stable: each of the twenty existing avatar identifiers has its own portrait index. Portrait selection never reads the player's role. New crew members receive an unused avatar when available; existing identifiers and scores are preserved. There is no runtime image generation or external image request.

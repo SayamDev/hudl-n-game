@@ -748,6 +748,29 @@
       "Don't turn a generated critique reference into an approved-comp or pixel-match claim.",
       "Don't use a whole generated UI image as a screen.",
       "Don't infer complete accessibility or device validation from scoped browser captures."
-    ]
+    ],
+    "illustratedWorlds": {
+      "cast": "20 stable avatar identifiers select distinct portrait cells; roles never choose artwork",
+      "assets": [
+        "character-atlas.jpg",
+        "world-atlas.jpg"
+      ],
+      "gameScenes": [
+        "masked imposter",
+        "oxblood council",
+        "teal investigation desk",
+        "cobalt team guessing",
+        "aubergine silent theatre",
+        "ochre social crown"
+      ],
+      "privateSwipeDown": "Conceal immediately at 48px downward pan; native hide control retained",
+      "motionMs": {
+        "council": 650,
+        "investigation": 450,
+        "theatre": 600,
+        "partyPrompt": 300
+      },
+      "reducedMotion": "No scene entrance animations"
+    }
   }
 }

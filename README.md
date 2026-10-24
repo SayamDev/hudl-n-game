@@ -12,7 +12,7 @@ Free to play · No accounts · No ads · Phone-first
 
 </div>
 
-![Hudl N Game — illustrated game worlds and a cast of distinctive alibis](.github/assets/home.png)
+![Six distinct illustrated game worlds — from the Mafia council to the Charades stage](public/art/after-hours/world-atlas.jpg)
 
 ## One phone. A whole party.
 
@@ -32,12 +32,20 @@ Heads Up and **Charades** have separate game cards. Choose Charades for silent a
 
 <table>
 <tr>
-<td width="33%"><img src=".github/assets/crew.png" alt="Illustrated alibi crew, saved player names and reorder controls"></td>
-<td width="33%"><img src=".github/assets/private-deck.png" alt="A sealed private deck with a reachable hold control"></td>
-<td width="33%"><img src=".github/assets/verdict.png" alt="An illustrated public verdict card ready to reveal"></td>
+<td width="33%"><img src=".github/assets/council.png" alt="Mafia's red moon village council and night progression"></td>
+<td width="33%"><img src=".github/assets/investigation.png" alt="Where Are We map desk with the current and next investigator"></td>
+<td width="33%"><img src=".github/assets/silent-stage.png" alt="Charades theatre artwork and private actor handoff"></td>
 </tr>
-<tr><td><b>Your cast.</b> Twenty alibi identities and a crew check before each new game.</td><td><b>Keep the secret.</b> Hold to reveal; release to conceal immediately.</td><td><b>Reveal together.</b> Talk and accuse out loud, then open the verdict.</td></tr>
+<tr><td><b>The council.</b> Narrated nights, dawn reports and village votes.</td><td><b>The investigation.</b> A map desk and named question turns.</td><td><b>The stage.</b> Private prompts and silent acting.</td></tr>
 </table>
+
+<details><summary>Meet the twenty illustrated alibis</summary>
+
+![Twenty distinct portraits sharing an etched midnight, ivory and violet style](public/art/after-hours/character-atlas.jpg)
+
+Each saved alibi keeps its character across the crew list, private handoff and results. Portraits never depend on secret roles.
+
+</details>
 
 - **Five visual worlds:** acid-green suspicion, midnight Mafia, a green spy world, coral charades and a yellow-and-purple voting party.
 - **Private reveals:** swipe up in Imposter, then hide before passing to the named player. Hold-to-peek remains available in Settings and other games. Switching away hides secrets; returning games resume paused.
@@ -119,8 +127,10 @@ No accounts, analytics or tracking cookies are built into the app. Browser stora
 
 Created by **[Sayam](https://github.com/SayamDev)**. Source code is [MIT licensed](LICENSE); fonts and icon assets retain their own licences. © 2026 Sayam.
 
-**After Hours** brings an illustrated midnight deck, condensed display type and twenty distinct alibi emblems. Private cards fan into place, public verdicts lift away, and the winning crew lands together. The hold control stays stationary and releasing it removes secret text immediately. Switch back under **Settings → After Hours art & motion** without changing party data.
+**After Hours** brings an illustrated midnight deck, condensed display type and twenty distinct illustrated characters. Private cards fan into place, public verdicts lift away, and the winning crew lands together. The hold control stays stationary and releasing it removes secret text immediately. Switch back under **Settings → After Hours art & motion** without changing party data.
 
-The illustrated deck was generated for this project; alibi emblems use credited CC BY artwork. All artwork and fonts are served locally. [Art sources and licences](docs/art-after-hours.md) · [Design and verification notes](docs/verification/after-hours-review.md)
+The illustrated deck, character cast and game-world scenes were generated for this project; earlier alibi emblems retain their CC BY credits. All artwork and fonts are served locally. [Art sources and licences](docs/art-after-hours.md) · [Design and verification notes](docs/verification/after-hours-review.md)
 
 Every new game and replay checks who is in the crew, and game setup includes **Edit crew**. For face-to-face accusations, choose **Out loud — tap the accused**, or use **We voted out loud** during Imposter discussion/private voting. One person selects the accused; no individual phone ballots are required. Secret voting remains available.
+
+Imposter supports swipe up to reveal and swipe down to conceal, with native button controls as alternatives. Each saved alibi now has a distinct portrait. Game-specific scenes and interaction framing distinguish the Mafia council, location investigation, team guessing board and silent stage. [Artwork provenance](docs/art-after-hours.md).

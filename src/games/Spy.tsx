@@ -1,3 +1,4 @@
+import { GameWorld } from "../components/GameWorld";
 import { useGame } from "../store/useGame";
 import { Button, Peek, Screen, Timer } from "../components/ui";
 import { Vote } from "../components/Vote";
@@ -19,11 +20,13 @@ export default function Spy({ session: s }: GameProps) {
   if (s.phase === "discuss")
     return (
       <Screen
+        className="spy-investigation-stage"
         title="You look a little lost."
         subtitle="Ask each other questions. Locals: don’t give the place away."
       >
+        <GameWorld session={s} />
         <Timer session={s} />
-        <p>
+        <p className="legacy-spy-start">
           <strong>
             {players.find((p) => p.id === s.startingPlayer)?.name}
           </strong>{" "}

@@ -1,4 +1,4 @@
-import { NoirIllustration } from "./NoirArt";
+import { WorldArt } from "./IllustratedCast";
 import { useGame } from "../store/useGame";
 /** Original geometric deck artwork. No secret or role data enters this graphic. */
 export function SecretSleeve({
@@ -13,6 +13,13 @@ export function SecretSleeve({
       s.preferences.deckStyle !== false &&
       !["classic", "club-original"].includes(s.preferences.design),
   );
+  const session = useGame((s) => s.session);
+  const world =
+    session?.game === "charades"
+      ? session.options.charadesMode === "classic"
+        ? "charades"
+        : "heads-up"
+      : session?.game || "imposter";
   if (noir)
     return (
       <div
@@ -22,7 +29,7 @@ export function SecretSleeve({
         <span className="private-card-back" />
         <span className="private-card-back second" />
         <div className="private-card-face">
-          <NoirIllustration hero />
+          <WorldArt world={world} />
           <span className="private-n">n</span>
         </div>
       </div>

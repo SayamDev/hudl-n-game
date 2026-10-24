@@ -1,3 +1,4 @@
+import { GameWorld } from "../components/GameWorld";
 import narration from "../content/narration.json";
 import { useState } from "react";
 import { useGame } from "../store/useGame";
@@ -75,7 +76,8 @@ export default function Mafia({ session: s }: GameProps) {
     );
   if (s.phase === "night")
     return (
-      <Screen title={`Night ${s.round}`}>
+      <Screen className="mafia-council-stage" title={`Night ${s.round}`}>
+        <GameWorld session={s} />
         <Narration
           manual={s.options.manual}
           text="Everyone, close your eyes. Keep the phone in the middle. Only the role called may look at the screen."
@@ -92,7 +94,8 @@ export default function Mafia({ session: s }: GameProps) {
   if (s.phase.startsWith("night-cover:")) {
     const role = s.phase.split(":")[1];
     return (
-      <Screen title="Eyes closed, village.">
+      <Screen className="mafia-night-call" title="Eyes closed, village.">
+        <GameWorld session={s} />
         <Narration
           manual={s.options.manual}
           text={`${role}, open your eyes. Take the phone and choose your action. Everyone else, keep your eyes closed.`}
@@ -179,7 +182,8 @@ export default function Mafia({ session: s }: GameProps) {
   }
   if (s.phase === "dawn")
     return (
-      <Screen title="Good morning…">
+      <Screen className="mafia-council-stage" title="Good morning…">
+        <GameWorld session={s} />
         <Narration manual={s.options.manual} text={narration.dawn} />
         <p className="night-report">
           {s.history.filter((h) => h.startsWith("Night")).at(-1) ||
@@ -213,9 +217,11 @@ export default function Mafia({ session: s }: GameProps) {
   if (s.phase === "discuss")
     return (
       <Screen
+        className="mafia-council-stage"
         title="Someone knows something."
         subtitle={`${living.length} villagers remain. Discuss, accuse, defend.`}
       >
+        <GameWorld session={s} />
         <Timer session={s} />
         <Button
           className="primary"

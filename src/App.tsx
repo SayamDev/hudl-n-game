@@ -324,6 +324,10 @@ export default function App() {
             session?.game || (page === "game-settings" ? selected : undefined)
           }
           data-phase={session?.phase}
+          data-play-style={
+            session?.options.charadesMode ||
+            useGame.getState().options.charadesMode
+          }
           data-page={page}
         >
           {session &&
@@ -590,9 +594,11 @@ export default function App() {
                   >
                     CC BY 3.0
                   </a>
-                  , with original framing. The illustrated deck was generated
-                  for Hudl n game using 12ui. Bebas Neue by Ryoichi Tsunekawa is
-                  licensed under the SIL Open Font License.
+                  , with original framing. The original illustrated deck was
+                  generated for Hudl n game using 12ui; the character cast and
+                  game-world scenes were generated for this project using OpenAI
+                  image generation. Bebas Neue by Ryoichi Tsunekawa is licensed
+                  under the SIL Open Font License.
                 </p>
                 <p>
                   The hosting provider receives ordinary website requests. Once

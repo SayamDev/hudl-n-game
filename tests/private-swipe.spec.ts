@@ -53,6 +53,15 @@ test("swipe reveal is dark for both roles, conceals before named handoff, and tr
   await expect(
     page.getByRole("heading", { name: "IMPOSTER", exact: true }),
   ).toBeVisible();
+  const revealBox = await page.locator(".private-secret").boundingBox();
+  await page.mouse.move(revealBox!.x + 30, revealBox!.y + 30);
+  await page.mouse.down();
+  await page.mouse.move(revealBox!.x + 30, revealBox!.y + 120, { steps: 10 });
+  await page.mouse.up();
+  await expect(
+    page.getByRole("heading", { name: "IMPOSTER", exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Reveal my secret" }).click();
   const ground = await page
     .locator(".private-secret")
     .evaluate((el) => getComputedStyle(el).backgroundColor);
@@ -88,8 +97,12 @@ test("swipe reveal is dark for both roles, conceals before named handoff, and tr
         () => document.documentElement.scrollWidth > innerWidth,
       ),
     ).toBe(false);
-    const passBox=await page.getByRole("button",{name:"Hide & pass to Zara"}).boundingBox();
-    expect(passBox!.y + passBox!.height).toBeLessThanOrEqual(width>700?1000:844);
+    const passBox = await page
+      .getByRole("button", { name: "Hide & pass to Zara" })
+      .boundingBox();
+    expect(passBox!.y + passBox!.height).toBeLessThanOrEqual(
+      width > 700 ? 1000 : 844,
+    );
     fs.mkdirSync(".impeccable/review/private-swipe", { recursive: true });
     await page.screenshot({
       path: `.impeccable/review/private-swipe/${width}.png`,
