@@ -1,3 +1,4 @@
+import { RevealSeal } from "./RevealSeal";
 import { NoirIllustration } from "./NoirArt";
 import { useGame } from "../store/useGame";
 import { useEffect, useRef, useState } from "react";
@@ -26,6 +27,7 @@ export function Verdict({
   const [suspense, setSuspense] = useState(false);
   const [open, setOpen] = useState(false),
     [lift, setLift] = useState(0);
+  const suppressClick = useRef(false);
   const pointer = useRef<{ id: number; y: number } | null>(null);
   const show = () => {
     setSuspense(false);
@@ -39,9 +41,22 @@ export function Verdict({
       setSuspense(false);
       return;
     }
-    const id = setTimeout(show, 850);
+    const id = setTimeout(show, 1450);
     return () => clearTimeout(id);
   }, [suspense, paused]);
+  useEffect(() => {
+    const cancel = () => {
+      setSuspense(false);
+      pointer.current = null;
+      setLift(0);
+    };
+    window.addEventListener("blur", cancel);
+    document.addEventListener("visibilitychange", cancel);
+    return () => {
+      window.removeEventListener("blur", cancel);
+      document.removeEventListener("visibilitychange", cancel);
+    };
+  }, []);
   const reveal = (instant = false) => {
     if (open || paused) return;
     if (instant || reduce || !noir || suspense) show();
@@ -58,9 +73,25 @@ export function Verdict({
         <div className="verdict-identity">
           <Avatar player={player} big />
         </div>
-        <div
+        <button
+          type="button"
           className="verdict-envelope"
-          aria-hidden="true"
+          aria-label="Open sealed alibi"
+          tabIndex={open ? -1 : 0}
+          disabled={open || paused}
+          onClick={() => {
+            if (suppressClick.current) {
+              suppressClick.current = false;
+              return;
+            }
+            reveal();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === " " || e.key === "Enter") {
+              e.preventDefault();
+              if (!e.repeat) reveal(true);
+            }
+          }}
           style={{
             transform: open || suspense ? undefined : `translateY(${lift}px)`,
           }}
@@ -79,8 +110,10 @@ export function Verdict({
             if (
               pointer.current?.id === e.pointerId &&
               e.clientY - pointer.current.y < -45
-            )
+            ) {
+              suppressClick.current = true;
               reveal();
+            }
             pointer.current = null;
             setLift(0);
           }}
@@ -122,7 +155,12 @@ export function Verdict({
             </svg>
           )}
           <Fingerprint size={32} weight="bold" />
-        </div>
+        </button>
+        {noir && !reduce && (
+          <div className="verdict-loader" hidden={!suspense}>
+            <RevealSeal playing={suspense} />
+          </div>
+        )}
       </div>
       <div className="verdict-message">
         {open ? (
@@ -153,7 +191,13 @@ export function Verdict({
       ) : (
         <Button
           className="primary"
-          onClick={(event) => reveal(event.detail === 0)}
+          onClick={() => reveal()}
+          onKeyDown={(event) => {
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+              if (!event.repeat) reveal(true);
+            }
+          }}
         >
           <ArrowUp size={22} />
           {suspense ? "Reveal now" : "Reveal identity"}

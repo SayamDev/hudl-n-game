@@ -25,13 +25,15 @@ export function PrivateReveal({
   const [open, setOpen] = useState(false),
     [preparing, setPreparing] = useState(false),
     [seen, setSeen] = useState(false),
-    [ready, setReady] = useState(false);
+    [ready] = useState(true);
   const reduce = useReducedMotion();
   const active = useRef(false);
   const lift = useCoverLift();
   const pending = useRef<number | undefined>(undefined);
   const instantRead = useRef(false);
-  const origin = useRef<{ y: number; revealedAt?: number } | null>(null);
+  const origin = useRef<{ id: number; y: number; revealedAt?: number } | null>(
+    null,
+  );
   const hide = () => {
     setPreparing(false);
     active.current = false;
@@ -41,10 +43,6 @@ export function PrivateReveal({
     lift.move(0);
     setOpen(false);
   };
-  useEffect(() => {
-    const id = setTimeout(() => setReady(true), 900);
-    return () => clearTimeout(id);
-  }, []);
   useEffect(() => {
     const hide = () => {
       setPreparing(false);
@@ -130,22 +128,30 @@ export function PrivateReveal({
           aria-description="Swipe up and keep holding, or hold Space or Enter. Release to hide."
           disabled={!ready || session.paused}
           onPointerDown={(event) => {
-            if (!ready || session.paused || event.button !== 0) return;
+            if (
+              !ready ||
+              session.paused ||
+              (event.pointerType === "mouse" && event.button !== 0)
+            )
+              return;
             event.preventDefault();
             active.current = true;
-            origin.current = { y: event.clientY };
+            origin.current = { id: event.pointerId, y: event.clientY };
             event.currentTarget.focus({ preventScroll: true });
             event.currentTarget.setPointerCapture(event.pointerId);
           }}
           onPointerMove={(event) => {
             const start = origin.current;
-            if (!active.current || !start) return;
+            if (!active.current || !start || start.id !== event.pointerId)
+              return;
+            if (start.revealedAt !== undefined)
+              start.revealedAt = Math.min(start.revealedAt, event.clientY);
             if (
               start.revealedAt !== undefined &&
               event.clientY - start.revealedAt > 48
             )
               hide();
-            else if (start.y - event.clientY > 65) {
+            else if (start.y - event.clientY > 40) {
               start.revealedAt ??= event.clientY;
               reveal();
             } else if (!open && pending.current === undefined)

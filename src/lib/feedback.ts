@@ -4,15 +4,50 @@ import { countdownCue } from "./countdown";
 let countdownNodes: OscillatorNode[] = [];
 let audio: AudioContext | undefined;
 export function feedback(
-  kind: "tap" | "success" | "skip" | "wrong" | "tick" = "tap",
+  kind: "tap" | "success" | "correct" | "skip" | "wrong" | "tick" = "tap",
 ) {
   const p = useGame.getState().preferences;
   if (p.haptics && navigator.vibrate)
-    navigator.vibrate(kind === "success" ? [35, 40, 60] : 15);
+    navigator.vibrate(
+      kind === "success" || kind === "correct"
+        ? [35, 40, 60]
+        : kind === "skip"
+          ? [12, 40, 12]
+          : 15,
+    );
   if (!p.sound || p.volume <= 0) return;
   try {
     audio ??= new AudioContext();
     void audio.resume();
+    if (kind === "correct" || kind === "skip") {
+      const bright = kind === "correct";
+      const notes = bright ? [523, 784, 1046] : [220, 147];
+      notes.forEach((hz, index) => {
+        const osc = audio!.createOscillator(),
+          gain = audio!.createGain();
+        osc.type = bright ? "sine" : "triangle";
+        const at = audio!.currentTime + index * (bright ? 0.075 : 0.14);
+        osc.frequency.setValueAtTime(hz, at);
+        osc.frequency.exponentialRampToValueAtTime(
+          bright ? hz : hz * 0.7,
+          at + 0.1,
+        );
+        osc.connect(gain);
+        gain.connect(audio!.destination);
+        gain.gain.setValueAtTime(p.volume * (bright ? 0.16 : 0.12), at);
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          at + (bright ? 0.2 : 0.09),
+        );
+        osc.start(at);
+        osc.stop(at + (bright ? 0.22 : 0.11));
+        osc.onended = () => {
+          osc.disconnect();
+          gain.disconnect();
+        };
+      });
+      return;
+    }
     const osc = audio.createOscillator(),
       gain = audio.createGain();
     osc.connect(gain);
@@ -21,23 +56,15 @@ export function feedback(
     osc.frequency.setValueAtTime(
       kind === "success"
         ? 523
-        : kind === "skip"
-          ? 660
-          : kind === "wrong"
-            ? 180
-            : kind === "tick"
-              ? 750
-              : 420,
+        : kind === "wrong"
+          ? 180
+          : kind === "tick"
+            ? 750
+            : 420,
       t,
     );
     osc.frequency.exponentialRampToValueAtTime(
-      kind === "success"
-        ? 1046
-        : kind === "skip"
-          ? 330
-          : kind === "wrong"
-            ? 90
-            : 600,
+      kind === "success" ? 1046 : kind === "wrong" ? 90 : 600,
       t + 0.1,
     );
     gain.gain.setValueAtTime(p.volume * 0.13, t);

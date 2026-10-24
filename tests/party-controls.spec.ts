@@ -168,7 +168,7 @@ test("swipe anticipation follows the cover and cancels without leaking or markin
   await page.waitForTimeout(300);
   await expect(page.locator(".private-secret")).toHaveCount(0);
 });
-test("orientation turns only the word, correct and skip have separate single sounds", async ({
+test("word stays upright and correct and skip have distinct melodic and percussive sounds", async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -222,9 +222,9 @@ test("orientation turns only the word, correct and skip have separate single sou
       new DeviceOrientationEvent("deviceorientation", { beta: 0, gamma: 90 }),
     ),
   );
-  await expect(page.locator(".charades-word h2")).toHaveAttribute(
-    "style",
-    /rotate\(-90deg\)/,
+  await expect(page.locator(".charades-word h2")).toHaveCSS(
+    "transform",
+    "none",
   );
   const fits = await page.locator(".charades-word h2").evaluate((el) => {
     const a = el.getBoundingClientRect(),
@@ -248,16 +248,19 @@ test("orientation turns only the word, correct and skip have separate single sou
       new DeviceOrientationEvent("deviceorientation", { beta: 0, gamma: 90 }),
     );
   });
-  await expect(page.locator(".charades-word .word-turned")).toHaveCount(0);
+  await expect(page.locator(".charades-word h2")).toHaveCSS(
+    "transform",
+    "none",
+  );
   await page.evaluate(() => ((window as any).partyTones = []));
   await page.getByRole("button", { name: "Correct", exact: true }).click();
   expect(await page.evaluate(() => (window as any).partyTones)).toEqual([
-    523, 1046,
+    523, 523, 784, 784, 1046, 1046,
   ]);
   await page.evaluate(() => ((window as any).partyTones = []));
   await page.getByRole("button", { name: "Skip", exact: true }).click();
   expect(await page.evaluate(() => (window as any).partyTones)).toEqual([
-    660, 330,
+    220, 154, 147, 102.89999999999999,
   ]);
   await expect(
     page.getByText("1 correct · 1 skipped", { exact: true }),

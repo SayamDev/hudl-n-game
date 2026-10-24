@@ -87,10 +87,11 @@ export function Vote({
     );
   return (
     <Screen
+      className="accusation-stage"
       title={point ? "Who did you choose?" : `${voter?.name}, who is it?`}
       subtitle={
         point
-          ? "Vote out loud, then tap the person your group accused. Only one person needs to use the phone."
+          ? "Agree out loud. Tap the person you suspect, then reveal their identity."
           : "Choose one player, then confirm your secret vote."
       }
     >

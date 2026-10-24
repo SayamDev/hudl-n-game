@@ -59,7 +59,7 @@ Each saved alibi keeps its character across the crew list, private handoff and r
 
 ## Play with touch, tilt or keyboard
 
-In **Heads Up!**, choose **Enable tilt controls** before starting and allow motion access if your browser asks. Practise on the ready screen: hold upright, tip the screen toward the floor for Correct, or toward the ceiling to Skip. Return upright between gestures. Practice does not add points; touch controls remain available if sensors are unsupported or permission is denied. Words follow native screen orientation; enabling motion also lets the word turn with a rotation-locked phone. Correct has a rising tone and Skip a separate soft falling tone, both controlled by Sound effects and Volume.
+On supported phones, tilt starts selected in **Heads Up!** and **Charades**. Allow motion access when starting if your browser asks, or choose **Turn off tilt** before or during play. Hold upright, tip the screen toward the floor for Correct, or toward the ceiling to Skip. Return upright between gestures. Practice and private actor cards add no points; buttons and keyboard work when sensors are unavailable. The word stays facing one way: tilting never spins the text. Heads Up shows a large lime Correct stamp or violet Skip card, with a bright three-note chime or low double cue. Sound effects and Volume control both.
 
 - **Tab / Shift+Tab:** move between controls; **Enter / Space:** activate a button.
 - **Hold Space or Enter on Hold to peek:** reveal your secret; release to hide it immediately.
@@ -70,7 +70,7 @@ Motion support depends on the device and browser. Sensor behaviour is covered by
 
 ## Keep the party moving
 
-Imposter defaults to a quick group vote: point together, then tap the accused. Secret pass-and-vote is available in setup. The sealed verdict opens with a swipe or a button, with no forced countdown. Easier hint words give imposters a familiar association—Pizza → Cheese—alongside the category; category-only hints remain available for a harder round.
+Imposter defaults to a quick group vote: point together, then tap the accused. Secret pass-and-vote is available in setup. The sealed verdict opens with a swipe or a button, using an original animated card seal to build tension. Skip the suspense with **Reveal now**; keyboard and reduced-motion activation are immediate. Easier hint words give imposters a familiar association—Pizza → Cheese—alongside the category; category-only hints remain available for a harder round.
 
 Choose **No timer** to play at your own pace. **Play Charades** starts classic silent acting with at least four people and an actor plus guesser in every chosen team: privately check the prompt, hide it, then act. Correct/Skip passes the next prompt to another actor; timed games pause for these handoffs. Heads Up remains available as the other play style.
 

@@ -1,4 +1,5 @@
 import { GameWorld } from "../components/GameWorld";
+import { AnswerSignal } from "../components/AnswerSignal";
 import { CardFace } from "../components/CardFace";
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../store/useGame";
@@ -12,7 +13,7 @@ import {
   ArrowDown,
   ArrowUp,
 } from "@phosphor-icons/react";
-import { createTiltGesture, tiltPose, wordRotation } from "../lib/tilt";
+import { createTiltGesture, tiltPose } from "../lib/tilt";
 import type { TiltPose } from "../lib/tilt";
 import type { GameProps } from "../lib/types";
 export default function Charades({ session: s }: GameProps) {
@@ -28,21 +29,36 @@ export default function Charades({ session: s }: GameProps) {
     teams[s.team]?.playerIds.includes(p.id),
   );
   const actor = teamPlayers[(s.actorIndex || 0) % teamPlayers.length];
-  const [tilt, setTilt] = useState(false);
+  const autoTilt =
+    window.isSecureContext &&
+    typeof DeviceOrientationEvent !== "undefined" &&
+    navigator.maxTouchPoints > 0;
+  const requiresPermission =
+    typeof DeviceOrientationEvent !== "undefined" &&
+    "requestPermission" in DeviceOrientationEvent;
+  const [tilt, setTilt] = useState(autoTilt);
   const [sensor, setSensor] = useState<
     "off" | "requesting" | "listening" | "connected" | "unavailable"
-  >("off");
+  >(autoTilt && !requiresPermission ? "listening" : "off");
   const [pose, setPose] = useState<TiltPose | null>(null);
   const [message, setMessage] = useState("");
   const [practice, setPractice] = useState("");
-  const [wordAngle, setWordAngle] = useState(0);
+  const [answer, setAnswer] = useState<{ correct: boolean; id: number } | null>(
+    null,
+  );
+  const answerTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => clearTimeout(answerTimer.current), []);
+  useEffect(() => {
+    if (s.paused || s.phase !== "acting") {
+      clearTimeout(answerTimer.current);
+      setAnswer(null);
+    }
+  }, [s.paused, s.phase]);
   const wordArea = useRef<HTMLDivElement>(null);
   const [wordSize, setWordSize] = useState({ width: 0, height: 0 });
   const word = s.deck[s.cardIndex % s.deck.length] || "";
-  const readingWidth =
-    Math.abs(wordAngle) === 90 ? wordSize.height : wordSize.width;
-  const readingHeight =
-    Math.abs(wordAngle) === 90 ? wordSize.width : wordSize.height;
+  const readingWidth = wordSize.width;
+  const readingHeight = wordSize.height;
   const wordFont =
     readingWidth && readingHeight
       ? Math.max(
@@ -69,11 +85,6 @@ export default function Charades({ session: s }: GameProps) {
     observer.observe(area);
     return () => observer.disconnect();
   }, [s.phase, classic, s.cardIndex]);
-  useEffect(() => {
-    const reset = () => setWordAngle(0);
-    screen.orientation?.addEventListener("change", reset);
-    return () => screen.orientation?.removeEventListener("change", reset);
-  }, []);
   const gesture = useRef(createTiltGesture());
   const latest = useRef(s);
   latest.current = s;
@@ -88,7 +99,10 @@ export default function Charades({ session: s }: GameProps) {
     )
       return;
     gesture.current.reset();
-    feedback(correct ? "success" : "skip");
+    feedback(correct ? "correct" : "skip");
+    clearTimeout(answerTimer.current);
+    setAnswer({ correct, id: performance.now() });
+    answerTimer.current = window.setTimeout(() => setAnswer(null), 900);
     patch({
       cardIndex: current.cardIndex + 1,
       correct: current.correct + (correct ? 1 : 0),
@@ -106,8 +120,9 @@ export default function Charades({ session: s }: GameProps) {
     gesture.current.reset();
     setPractice("");
   }, [s.phase, s.paused]);
+  const listening = tilt && (sensor === "listening" || sensor === "connected");
   useEffect(() => {
-    if (!tilt || classic) return;
+    if (!listening) return;
     let received = false;
     const timeout = setTimeout(() => {
       if (!received) {
@@ -121,7 +136,6 @@ export default function Charades({ session: s }: GameProps) {
     const reset = () => {
       gesture.current.reset();
       setPose(null);
-      setWordAngle(0);
     };
     const handler = (e: DeviceOrientationEvent) => {
       const current = latest.current;
@@ -140,9 +154,6 @@ export default function Charades({ session: s }: GameProps) {
         return;
       }
       setPose(next);
-      setWordAngle((previous) =>
-        wordRotation(e.beta, e.gamma, screen.orientation?.angle || 0, previous),
-      );
       const action = gesture.current.sample(next, performance.now());
       if (!action) return;
       if (current.phase === "acting") mark(action === "correct");
@@ -164,7 +175,7 @@ export default function Charades({ session: s }: GameProps) {
       window.removeEventListener("blur", reset);
       document.removeEventListener("visibilitychange", reset);
     };
-  }, [tilt, classic]);
+  }, [listening]);
   useEffect(() => {
     if (s.phase !== "acting" || s.paused) return;
     const onKey = (e: KeyboardEvent) => {
@@ -230,12 +241,14 @@ export default function Charades({ session: s }: GameProps) {
     }
   };
   const motionStatus =
-    sensor === "listening"
-      ? "Waiting for the phone’s motion sensor…"
-      : practice ||
-        (pose === "upright"
-          ? "Upright. Now tilt to practise, then return upright."
-          : "Hold the screen upright to get ready.");
+    sensor === "off" && tilt
+      ? "Your browser will ask for motion access when you start."
+      : sensor === "listening"
+        ? "Waiting for the phone’s motion sensor…"
+        : practice ||
+          (pose === "upright"
+            ? "Upright. Now tilt to practise, then return upright."
+            : "Hold the screen upright to get ready.");
   if (s.phase === "actor-peek")
     return (
       <Peek
@@ -310,37 +323,36 @@ export default function Charades({ session: s }: GameProps) {
                 </div>
                 <p>Return upright between tilts. Practice adds no points.</p>
                 <p>
-                  Words follow screen orientation. With tilt enabled, they also
-                  turn when phone rotation is locked.
+                  The word stays facing your team. Tilt only marks the answer.
                 </p>
-                <Button
-                  className="tilt-enable"
-                  disabled={sensor === "requesting"}
-                  onClick={() => {
-                    if (tilt) {
-                      setTilt(false);
-                      setSensor("off");
-                      setMessage("");
-                    } else void enable();
-                  }}
-                >
-                  <DeviceMobile size={22} />
-                  {tilt
-                    ? "Turn off tilt"
-                    : sensor === "requesting"
-                      ? "Requesting permission…"
-                      : "Enable tilt controls"}
-                </Button>
-                {(tilt || message) && (
-                  <p className="tilt-status" role="status">
-                    {tilt ? motionStatus : message}
-                  </p>
-                )}
                 <p className="keyboard-guide">
                   Keyboard: <kbd>→</kbd> correct · <kbd>←</kbd> skip ·{" "}
                   <kbd>Esc</kbd> pause.
                 </p>
               </>
+            )}
+            <Button
+              className="tilt-enable"
+              disabled={sensor === "requesting"}
+              onClick={() => {
+                if (tilt) {
+                  setTilt(false);
+                  setSensor("off");
+                  setMessage("");
+                } else void enable();
+              }}
+            >
+              <DeviceMobile size={22} />
+              {tilt
+                ? "Turn off tilt"
+                : sensor === "requesting"
+                  ? "Requesting permission…"
+                  : "Enable tilt controls"}
+            </Button>
+            {(tilt || message) && (
+              <p className="tilt-status" role="status">
+                {tilt ? motionStatus : message}
+              </p>
             )}
           </section>
         </div>
@@ -352,7 +364,8 @@ export default function Charades({ session: s }: GameProps) {
           </span>
           <Button
             className="primary"
-            onClick={() => {
+            onClick={async () => {
+              if (tilt && sensor === "off") await enable();
               gesture.current.reset();
               setPractice("");
               patch({
@@ -400,36 +413,12 @@ export default function Charades({ session: s }: GameProps) {
             {refined ? (
               <>
                 <CardFace world="heads-up" />
-                <div
-                  className={`card-copy ${wordAngle ? "word-turned" : ""}`}
-                  ref={wordArea}
-                >
-                  <h2
-                    style={{
-                      fontSize: wordFont,
-                      ...(wordAngle
-                        ? {
-                            position: "absolute",
-                            left: "50%",
-                            top: "50%",
-                            width:
-                              Math.abs(wordAngle) === 90
-                                ? wordSize.height
-                                : wordSize.width,
-                            maxWidth: "none",
-                            maxHeight:
-                              Math.abs(wordAngle) === 90
-                                ? wordSize.width
-                                : wordSize.height,
-                            overflow: "auto",
-                            transform: `translate(-50%, -50%) rotate(${wordAngle}deg)`,
-                          }
-                        : {}),
-                    }}
-                  >
-                    {word}
-                  </h2>
+                <div className="card-copy" ref={wordArea}>
+                  <h2 style={{ fontSize: wordFont }}>{word}</h2>
                 </div>
+                {answer && (
+                  <AnswerSignal key={answer.id} correct={answer.correct} />
+                )}
               </>
             ) : (
               s.deck[s.cardIndex % s.deck.length]
@@ -455,19 +444,38 @@ export default function Charades({ session: s }: GameProps) {
             Skip
           </Button>
         </div>
-        <p className="helper">
-          {s.correct} correct · {s.skipped} skipped
-        </p>
-        {tilt && (
-          <p className="tilt-live" role="status">
-            {pose === "upright"
-              ? "Tilt ready · floor = correct · ceiling = skip"
-              : "Return upright before your next tilt"}
+        <div className="acting-status">
+          <p className="helper">
+            {s.correct} correct · {s.skipped} skipped
           </p>
-        )}
-        <p className="keyboard-guide acting-keys">
-          <kbd>→</kbd> correct · <kbd>←</kbd> skip · <kbd>Esc</kbd> pause
-        </p>
+          <Button
+            className="tilt-live-toggle"
+            disabled={sensor === "requesting"}
+            onClick={() => {
+              if (tilt) {
+                setTilt(false);
+                setSensor("off");
+                gesture.current.reset();
+              } else void enable();
+            }}
+          >
+            <DeviceMobile size={18} />
+            {tilt ? "Turn off tilt" : "Enable tilt controls"}
+          </Button>
+          {tilt && (
+            <p className="tilt-live" role="status">
+              {pose === "upright" ? "Tilt ready" : "Return upright to rearm"}
+            </p>
+          )}
+          {!tilt && message && (
+            <p className="tilt-live" role="status">
+              {message}
+            </p>
+          )}
+          <p className="keyboard-guide acting-keys">
+            <kbd>→</kbd> correct · <kbd>←</kbd> skip · <kbd>Esc</kbd> pause
+          </p>
+        </div>
         <Button className="text-button" onClick={end}>
           Finish turn early
         </Button>

@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { cleanTeams, defaultTeams, roundTeams, teamError } from "./teams";
-import { wordRotation } from "./tilt";
 import { assignRoles } from "./logic";
 import { defaultOptions, useGame } from "../store/useGame";
 import type { Player, Session } from "./types";
@@ -91,18 +90,5 @@ describe("chosen groups", () => {
   });
   it("preserves alternating groups for old saved Charades sessions", () => {
     expect(roundTeams({} as Session, players)).toEqual(defaultTeams(players));
-  });
-});
-describe("word orientation", () => {
-  it("turns a locked portrait word and avoids double rotation in landscape", () => {
-    expect(wordRotation(90, 0, 0)).toBe(0);
-    expect(wordRotation(0, 90, 0)).toBe(-90);
-    expect(wordRotation(0, -90, 0)).toBe(90);
-    expect(wordRotation(0, 90, 90)).toBe(0);
-    expect(wordRotation(-90, 0, 180)).toBe(0);
-  });
-  it("holds the readable angle during answer tilts or missing sensor data", () => {
-    expect(wordRotation(180, 0, 0, -90)).toBe(-90);
-    expect(wordRotation(null, null, 0, 90)).toBe(90);
   });
 });
