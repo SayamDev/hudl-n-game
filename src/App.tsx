@@ -1,3 +1,4 @@
+import { SceneLoader } from "./components/SceneLoader";
 import { motion } from "motion/react";
 import { RoundRail } from "./components/AfterHours";
 import Welcome from "./components/Welcome";
@@ -335,15 +336,7 @@ export default function App() {
             session.phase !== "results" &&
             p.design === "club" &&
             p.deckStyle !== false && <RoundRail phase={session.phase} />}
-          <Suspense
-            fallback={
-              <div className="loading" role="status">
-                <div />
-                <div />
-                <p>Getting the party ready…</p>
-              </div>
-            }
-          >
+          <Suspense fallback={<SceneLoader />}>
             {session ? (
               session.phase === "results" ? (
                 <Results
