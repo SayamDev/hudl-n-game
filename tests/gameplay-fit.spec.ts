@@ -39,13 +39,13 @@ test("branded gameplay artwork and main controls fit phones, tablets, desktop an
       phase: "ready",
       action: "Draw your prompt",
     },
-    { game: "spy", mode: "heads-up", phase: "peek", action: "Hide & pass" },
-    { game: "mafia", mode: "heads-up", phase: "peek", action: "Hide & pass" },
+    { game: "spy", mode: "heads-up", phase: "peek", action: "Pass to Noah" },
+    { game: "mafia", mode: "heads-up", phase: "peek", action: "Pass to Noah" },
     {
       game: "imposter",
       mode: "heads-up",
       phase: "peek",
-      action: "Hide & pass",
+      action: "Pass to Noah",
     },
     {
       game: "party",

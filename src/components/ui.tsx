@@ -2,6 +2,7 @@ import { hintFor } from "../lib/hints";
 import { Identity } from "./Identity";
 import { SecretSleeve } from "./SecretSleeve";
 import { CardFace } from "./CardFace";
+import { useCoverLift } from "../lib/useCoverLift";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, ButtonHTMLAttributes } from "react";
 import { motion, useReducedMotion } from "motion/react";
@@ -26,14 +27,15 @@ export function Button({
   children,
   className = "",
   onClick,
+  silent = false,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) {
+}: ButtonHTMLAttributes<HTMLButtonElement> & { silent?: boolean }) {
   return (
     <button
       {...props}
       className={`button ${className}`}
       onClick={(e) => {
-        feedback();
+        if (!silent) feedback();
         onClick?.(e);
       }}
     >
@@ -182,23 +184,40 @@ export function Peek({
   const players = useGame((s) => s.players),
     patch = useGame((s) => s.patch);
   const [holding, setHolding] = useState(false),
+    [preparing, setPreparing] = useState(false),
     [seen, setSeen] = useState(false),
     [guard, setGuard] = useState(3);
+  const lift = useCoverLift();
+  const pending = useRef<number | undefined>(undefined);
+  const instantRead = useRef(false);
   useEffect(() => {
-    if (session.paused) setHolding(false);
+    if (session.paused) {
+      setPreparing(false);
+      active.current = false;
+      clearTimeout(pending.current);
+      pending.current = undefined;
+      lift.move(0);
+      setHolding(false);
+    }
   }, [session.paused]);
   const player = actor || players[session.peekIndex];
   const active = useRef(false);
   useEffect(() => {
     setHolding(false);
+    setPreparing(false);
     setSeen(false);
     setGuard(3);
+    lift.move(0, true);
     const id = setInterval(() => setGuard((n) => Math.max(0, n - 1)), 1000);
     return () => clearInterval(id);
   }, [session.peekIndex]);
   useEffect(() => {
     const hide = () => {
+      setPreparing(false);
       active.current = false;
+      clearTimeout(pending.current);
+      pending.current = undefined;
+      lift.move(0);
       setHolding(false);
     };
     window.addEventListener("blur", hide);
@@ -206,6 +225,7 @@ export function Peek({
     window.addEventListener("pointerup", hide);
     window.addEventListener("pointercancel", hide);
     return () => {
+      clearTimeout(pending.current);
       window.removeEventListener("blur", hide);
       document.removeEventListener("visibilitychange", hide);
       window.removeEventListener("pointerup", hide);
@@ -239,15 +259,32 @@ export function Peek({
         ? "charades"
         : "heads-up"
       : session.game;
-  const reveal = () => {
-    if (guard || session.paused) return;
+  const reveal = (instant = false) => {
+    if (guard || session.paused || holding || pending.current !== undefined)
+      return;
+    instantRead.current = instant;
     active.current = true;
-    setHolding(true);
-    setSeen(true);
-    feedback();
+    lift.move(1, instant);
+    const show = () => {
+      setPreparing(false);
+      pending.current = undefined;
+      if (!active.current) return;
+      setHolding(true);
+      setSeen(true);
+      feedback();
+    };
+    if (!refined || instant || lift.reduced) show();
+    else {
+      setPreparing(true);
+      pending.current = window.setTimeout(show, 220);
+    }
   };
   const hide = () => {
+    setPreparing(false);
     active.current = false;
+    clearTimeout(pending.current);
+    pending.current = undefined;
+    lift.move(0);
     setHolding(false);
   };
   return (
@@ -274,16 +311,27 @@ export function Peek({
       <div className="peek-face">
         {!refined && <Avatar player={player} big />}
         <div
-          className={`secret-card stable-secret ${holding ? "revealed" : ""} ${holding && isImposter ? "imposter-reveal" : ""}`}
+          className={`secret-card stable-secret ${holding ? "revealed" : ""} ${holding && instantRead.current ? "keyboard-read" : ""} ${holding && isImposter ? "imposter-reveal" : ""}`}
         >
           {refined && (
-            <div className="sleeve-motion" aria-hidden="true">
+            <motion.div
+              className="sleeve-motion"
+              style={lift.style}
+              aria-hidden="true"
+            >
               <SecretSleeve ready={guard === 0} seen={seen} />
+            </motion.div>
+          )}
+          {refined && <CardFace world={world} />}
+          {preparing && (
+            <div className="card-wait" aria-hidden="true">
+              <LockKey size={34} weight="light" />
+              <span>Hold steady.</span>
             </div>
           )}
-          {refined && holding && <CardFace world={world} />}
-          <div
+          <motion.div
             className={`secret-content ${refined && holding ? "card-copy" : ""}`}
+            style={refined && !holding ? lift.style : undefined}
             aria-live="off"
           >
             {holding ? (
@@ -373,7 +421,7 @@ export function Peek({
                 <p>Your secret stays hidden until you hold.</p>
               </>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
       <div className="peek-controls">
@@ -401,13 +449,14 @@ export function Peek({
           onKeyDown={(e) => {
             if ((e.key === " " || e.key === "Enter") && !e.repeat) {
               e.preventDefault();
-              reveal();
+              reveal(true);
             }
           }}
           onKeyUp={(e) => {
             if (e.key === " " || e.key === "Enter") {
               e.preventDefault();
               hide();
+              lift.move(0, true);
             }
           }}
           onBlur={hide}
@@ -431,7 +480,7 @@ export function Peek({
             ? "Hide & start acting"
             : session.peekIndex === players.length - 1
               ? "Everyone’s ready"
-              : "Hide & pass"}
+              : `Pass to ${players[session.peekIndex + 1]?.name}`}
           <ArrowRight size={20} />
         </Button>
         <p className="helper" id="peek-help">

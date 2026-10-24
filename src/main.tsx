@@ -19,3 +19,4 @@ import "./deck.css";
 import "./after-hours.css";
 import "./gameplay.css";
 import "./card-faces.css";
+import "./party-controls.css";

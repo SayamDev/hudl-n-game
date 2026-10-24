@@ -49,16 +49,17 @@ Each saved alibi keeps its character across the crew list, private handoff and r
 
 </details>
 
-- **Five visual worlds:** acid-green suspicion, midnight Mafia, a green spy world, coral charades and a yellow-and-purple voting party.
-- **Private reveals:** swipe up and hold in Imposter; lift your finger to hide before passing to the named player. Hold-to-peek remains available in Settings and other games. Switching away hides secrets; returning games resume paused.
-- **Less repetition:** local play history helps rotate words, prompts and secret roles. Small pools can still repeat; this is not a promise of endless unique content.
+- **Six illustrated card faces:** masks, moonlit councils, maps, phone rays, theatre curtains and crowns share the app’s violet, lime and ivory print style. Charades has its own lavender launch colour.
+- **Private reveals:** Imposter’s cover follows your swipe, then lifts with a short anticipation beat; release removes the secret immediately while the cover settles back. Pass buttons name the actual next player. Hold-to-peek remains available in Settings and other games. Switching away hides secrets; returning games resume paused.
+- **Less repetition:** local play history helps rotate words, prompts and starting players; secret roles remain random. Small pools can still repeat; this is not a promise of endless unique content.
 - **Make your own night:** mix curated words offline, write an original pack, or import one with a link or QR code. Review shared content before playing.
 - **Browser comfort:** large touch controls, keyboard paths, reduced motion, light/dark modes, optional sound and installable PWA support. Once cached, the core games work offline.
+- **Choose your groups:** name pairs or teams and assign the crew in setup. Heads Up and Charades take turns with those teams. In Imposter and other hidden-role games, the rules and individual awards stay the same; group totals add the members’ points.
 - **Choose your look:** the earlier designs remain available in Settings.
 
 ## Play with touch, tilt or keyboard
 
-In **Heads Up!**, choose **Enable tilt controls** before starting and allow motion access if your browser asks. Practise on the ready screen: hold upright, tip the screen toward the floor for Correct, or toward the ceiling to Skip. Return upright between gestures. Practice does not add points; touch controls remain available if sensors are unsupported or permission is denied.
+In **Heads Up!**, choose **Enable tilt controls** before starting and allow motion access if your browser asks. Practise on the ready screen: hold upright, tip the screen toward the floor for Correct, or toward the ceiling to Skip. Return upright between gestures. Practice does not add points; touch controls remain available if sensors are unsupported or permission is denied. Words follow native screen orientation; enabling motion also lets the word turn with a rotation-locked phone. Correct has a rising tone and Skip a separate soft falling tone, both controlled by Sound effects and Volume.
 
 - **Tab / Shift+Tab:** move between controls; **Enter / Space:** activate a button.
 - **Hold Space or Enter on Hold to peek:** reveal your secret; release to hide it immediately.
@@ -71,7 +72,7 @@ Motion support depends on the device and browser. Sensor behaviour is covered by
 
 Imposter defaults to a quick group vote: point together, then tap the accused. Secret pass-and-vote is available in setup. The sealed verdict opens with a swipe or a button, with no forced countdown. Easier hint words give imposters a familiar association—Pizza → Cheese—alongside the category; category-only hints remain available for a harder round.
 
-Choose **No timer** to play at your own pace. **Play Charades** starts classic silent acting for two teams of at least four people: privately check the prompt, hide it, then act. Correct/Skip passes the next prompt to another actor; timed games pause for these handoffs. Heads Up remains available as the other play style.
+Choose **No timer** to play at your own pace. **Play Charades** starts classic silent acting with at least four people and an actor plus guesser in every chosen team: privately check the prompt, hide it, then act. Correct/Skip passes the next prompt to another actor; timed games pause for these handoffs. Heads Up remains available as the other play style.
 
 ## Voices, tension and fresh words
 
@@ -106,6 +107,10 @@ The **public GitHub Pages demo uses the offline mixer and manual packs**. It doe
 For local AI generation, copy `.env.example` to `.env.local`, add your own Groq key and confirm the account's free-tier configuration. Restart Vite. The server adapter requests a themed draft, validates it and returns it for you to edit before saving. Your crew names and scores are not included in the request.
 
 The adapter has small in-memory usage caps and no paid fallback. Provider availability and free quotas can change. A public AI service needs separate server hosting and durable abuse controls; see the [setup and deployment notes](docs/pack-studio-setup.md). Never put secrets in a `VITE_` variable or commit `.env.local`.
+
+## Possible next games
+
+A team spectrum game, majority-answer guessing and team word association are promising additions. These are research directions, not playable modes yet. [References and implementation tradeoffs](docs/party-game-research.md).
 
 ## Under the hood
 

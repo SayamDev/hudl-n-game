@@ -37,7 +37,7 @@ async function peekAll(page: any) {
     ).toBeVisible();
     await page
       .getByRole("button", {
-        name: i === 4 ? "Everyone’s ready" : "Hide & pass",
+        name: i === 4 ? "Everyone’s ready" : `Pass to ${crew[i + 1]}`,
         exact: true,
       })
       .click();
@@ -284,12 +284,14 @@ test("Spy final guess resolves a full round", async ({ page }) => {
     await hold.focus();
     await page.keyboard.down("Space");
     await expect(
-      page.getByText("YOUR LOCATION", { exact: true }),
+      page
+        .getByText("YOUR LOCATION", { exact: true })
+        .or(page.getByText("YOUR ROLE", { exact: true })),
     ).toBeVisible();
     await page.keyboard.up("Space");
     await page
       .getByRole("button", {
-        name: i === 4 ? "Everyone’s ready" : "Hide & pass",
+        name: i === 4 ? "Everyone’s ready" : `Pass to ${crew[i + 1]}`,
         exact: true,
       })
       .click();

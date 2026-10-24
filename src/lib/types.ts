@@ -7,6 +7,7 @@ export type Player = {
   color: string;
   score: number;
 };
+export type Team = { id: string; name: string; playerIds: string[] };
 export type Pack = {
   id: string;
   name: string;
@@ -31,6 +32,7 @@ export type Preferences = {
   contrast: boolean;
 };
 export type GameOptions = {
+  teams?: Team[];
   imposters: number;
   randomImposters: boolean;
   hint: boolean;
@@ -78,7 +80,8 @@ export type Session = {
   cardIndex: number;
   correct: number;
   skipped: number;
-  teamScores: [number, number];
+  teamScores: number[];
+  teams?: Team[];
   team: number;
   timerRemaining: number;
   timerRunning: boolean;

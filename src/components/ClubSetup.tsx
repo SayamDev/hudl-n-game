@@ -12,6 +12,8 @@ import { useGame } from "../store/useGame";
 import { Button, Screen, Toggle } from "./ui";
 import { GameArt } from "./Identity";
 import builtInPacks from "../content/packs.json";
+import { TeamSetup } from "./TeamSetup";
+import { teamError } from "../lib/teams";
 import { gameById } from "../games/registry";
 export default function ClubSetup({
   onStart,
@@ -55,6 +57,7 @@ export default function ClubSetup({
           Edit crew · {players.length} players
         </Button>
       )}
+      <TeamSetup game="imposter" />
       <section className="setup-section" aria-labelledby="roles-heading">
         <div className="setup-section-title">
           <Fingerprint size={25} />
@@ -250,7 +253,11 @@ export default function ClubSetup({
             {o.seconds === 0 ? "No timer" : `${o.seconds / 60} min discussion`}
           </small>
         </div>
-        <Button className="primary" onClick={onStart}>
+        <Button
+          className="primary"
+          disabled={!!teamError(players, "imposter", o)}
+          onClick={onStart}
+        >
           Quick start
           <ArrowRight size={22} />
         </Button>

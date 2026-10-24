@@ -1,4 +1,6 @@
 import ClubSetup from "./ClubSetup";
+import { TeamSetup } from "./TeamSetup";
+import { teamError } from "../lib/teams";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Reorder, useDragControls } from "motion/react";
@@ -243,12 +245,14 @@ export function GameSettings({
           Edit crew · {players.length} players
         </Button>
       )}
+      <TeamSetup game={game} />
       <Button
         className="primary"
         disabled={
-          game === "charades" &&
-          o.charadesMode === "classic" &&
-          players.length < 4
+          !!teamError(players, game, o) ||
+          (game === "charades" &&
+            o.charadesMode === "classic" &&
+            players.length < 4)
         }
         onClick={onStart}
       >

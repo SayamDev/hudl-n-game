@@ -12,6 +12,7 @@ import { assignRoles, shuffle } from "../lib/logic";
 import { freshOrder, remember } from "../lib/variety";
 import { likely, takes } from "../content/prompts";
 import { safeStorage } from "../lib/storage";
+import { cleanTeams, defaultTeams, teamError } from "../lib/teams";
 import builtInPacks from "../content/packs.json";
 import locations from "../content/locations.json";
 export const avatars = [
@@ -110,12 +111,27 @@ export const useGame = create<State>()(
       session: null,
       customPacks: [],
       variety: {},
-      setPlayers: (players) => set({ players }),
+      setPlayers: (players) =>
+        set((state) => ({
+          players,
+          options: {
+            ...state.options,
+            teams: state.options.teams?.length
+              ? cleanTeams(state.options.teams, players)
+              : undefined,
+          },
+        })),
       setPreferences: (p) =>
         set((s) => ({ preferences: { ...s.preferences, ...p } })),
       setOptions: (o) => set((s) => ({ options: { ...s.options, ...o } })),
       start: (game) => {
         const { players, options, preferences, customPacks, variety } = get();
+        if (teamError(players, game, options)) return;
+        const teams = options.teams?.length
+          ? cleanTeams(options.teams, players)
+          : game === "charades"
+            ? defaultTeams(players)
+            : undefined;
         if (
           players.length <
           (game === "mafia"
@@ -217,7 +233,8 @@ export const useGame = create<State>()(
             cardIndex: 0,
             correct: 0,
             skipped: 0,
-            teamScores: [0, 0],
+            teamScores: teams?.map(() => 0) || [0, 0],
+            teams,
             team: 0,
             timerRemaining: seconds,
             timerRunning: false,

@@ -3,6 +3,7 @@ import { CardFace } from "../components/CardFace";
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../store/useGame";
 import { feedback } from "../lib/feedback";
+import { roundTeams } from "../lib/teams";
 import { Avatar, Button, Screen, Timer, Peek } from "../components/ui";
 import {
   Check,
@@ -11,7 +12,7 @@ import {
   ArrowDown,
   ArrowUp,
 } from "@phosphor-icons/react";
-import { createTiltGesture, tiltPose } from "../lib/tilt";
+import { createTiltGesture, tiltPose, wordRotation } from "../lib/tilt";
 import type { TiltPose } from "../lib/tilt";
 import type { GameProps } from "../lib/types";
 export default function Charades({ session: s }: GameProps) {
@@ -21,7 +22,11 @@ export default function Charades({ session: s }: GameProps) {
     !["classic", "club-original"].includes(preferences.design);
   const classic = s.options.charadesMode === "classic";
   const untimed = s.options.seconds === 0;
-  const teamPlayers = players.filter((_, i) => i % 2 === s.team);
+  const teams = roundTeams(s, players);
+  const teamName = teams[s.team]?.name || `Team ${s.team + 1}`;
+  const teamPlayers = players.filter((p) =>
+    teams[s.team]?.playerIds.includes(p.id),
+  );
   const actor = teamPlayers[(s.actorIndex || 0) % teamPlayers.length];
   const [tilt, setTilt] = useState(false);
   const [sensor, setSensor] = useState<
@@ -30,6 +35,45 @@ export default function Charades({ session: s }: GameProps) {
   const [pose, setPose] = useState<TiltPose | null>(null);
   const [message, setMessage] = useState("");
   const [practice, setPractice] = useState("");
+  const [wordAngle, setWordAngle] = useState(0);
+  const wordArea = useRef<HTMLDivElement>(null);
+  const [wordSize, setWordSize] = useState({ width: 0, height: 0 });
+  const word = s.deck[s.cardIndex % s.deck.length] || "";
+  const readingWidth =
+    Math.abs(wordAngle) === 90 ? wordSize.height : wordSize.width;
+  const readingHeight =
+    Math.abs(wordAngle) === 90 ? wordSize.width : wordSize.height;
+  const wordFont =
+    readingWidth && readingHeight
+      ? Math.max(
+          18,
+          Math.min(
+            64,
+            Math.sqrt(
+              (readingWidth * readingHeight) /
+                (Math.max(1, word.length) * 0.85),
+            ),
+            readingHeight / 1.1,
+          ),
+        )
+      : undefined;
+  useEffect(() => {
+    const area = wordArea.current;
+    if (!area) return;
+    const observer = new ResizeObserver(([entry]) =>
+      setWordSize({
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+      }),
+    );
+    observer.observe(area);
+    return () => observer.disconnect();
+  }, [s.phase, classic, s.cardIndex]);
+  useEffect(() => {
+    const reset = () => setWordAngle(0);
+    screen.orientation?.addEventListener("change", reset);
+    return () => screen.orientation?.removeEventListener("change", reset);
+  }, []);
   const gesture = useRef(createTiltGesture());
   const latest = useRef(s);
   latest.current = s;
@@ -44,7 +88,7 @@ export default function Charades({ session: s }: GameProps) {
     )
       return;
     gesture.current.reset();
-    feedback(correct ? "success" : "tap");
+    feedback(correct ? "success" : "skip");
     patch({
       cardIndex: current.cardIndex + 1,
       correct: current.correct + (correct ? 1 : 0),
@@ -77,6 +121,7 @@ export default function Charades({ session: s }: GameProps) {
     const reset = () => {
       gesture.current.reset();
       setPose(null);
+      setWordAngle(0);
     };
     const handler = (e: DeviceOrientationEvent) => {
       const current = latest.current;
@@ -95,6 +140,9 @@ export default function Charades({ session: s }: GameProps) {
         return;
       }
       setPose(next);
+      setWordAngle((previous) =>
+        wordRotation(e.beta, e.gamma, screen.orientation?.angle || 0, previous),
+      );
       const action = gesture.current.sample(next, performance.now());
       if (!action) return;
       if (current.phase === "acting") mark(action === "correct");
@@ -142,7 +190,7 @@ export default function Charades({ session: s }: GameProps) {
   }, [s.phase, s.paused]);
   const end = () => {
     const current = useGame.getState().session!;
-    const scores: [number, number] = [...current.teamScores];
+    const scores = [...current.teamScores];
     scores[current.team] = current.correct;
     patch({ teamScores: scores, phase: "turn-result", timerRunning: false });
   };
@@ -201,7 +249,7 @@ export default function Charades({ session: s }: GameProps) {
     return (
       <Screen
         className={`${classic ? "silent-stage" : "heads-up-stage"} ${refined ? "branded-ready" : ""}`}
-        title={`Team ${s.team + 1}, you’re up!`}
+        title={`${teamName}, you’re up!`}
         subtitle={
           classic
             ? "One actor. No words or sounds. Your team guesses."
@@ -213,13 +261,11 @@ export default function Charades({ session: s }: GameProps) {
             <GameWorld session={s} />
             <h2>Your team</h2>
             <div className="team-list">
-              {players
-                .filter((_, i) => i % 2 === s.team)
-                .map((p) => (
-                  <span key={p.id}>
-                    <Avatar player={p} /> <strong>{p.name}</strong>
-                  </span>
-                ))}
+              {teamPlayers.map((p) => (
+                <span key={p.id}>
+                  <Avatar player={p} /> <strong>{p.name}</strong>
+                </span>
+              ))}
             </div>
             <p>
               <strong>{untimed ? "No timer." : "60 seconds."}</strong> One point
@@ -263,6 +309,10 @@ export default function Charades({ session: s }: GameProps) {
                   </div>
                 </div>
                 <p>Return upright between tilts. Practice adds no points.</p>
+                <p>
+                  Words follow screen orientation. With tilt enabled, they also
+                  turn when phone rotation is locked.
+                </p>
                 <Button
                   className="tilt-enable"
                   disabled={sensor === "requesting"}
@@ -335,7 +385,7 @@ export default function Charades({ session: s }: GameProps) {
         title={classic ? `${actor?.name}, act it out!` : "Show your team!"}
       >
         <p className="acting-team">
-          {classic ? "Charades" : "Heads Up!"} <span>Team {s.team + 1}</span>
+          {classic ? "Charades" : "Heads Up!"} <span>{teamName}</span>
         </p>
         <Timer session={s} onEnd={end} />
         {classic ? (
@@ -350,8 +400,35 @@ export default function Charades({ session: s }: GameProps) {
             {refined ? (
               <>
                 <CardFace world="heads-up" />
-                <div className="card-copy">
-                  <h2>{s.deck[s.cardIndex % s.deck.length]}</h2>
+                <div
+                  className={`card-copy ${wordAngle ? "word-turned" : ""}`}
+                  ref={wordArea}
+                >
+                  <h2
+                    style={{
+                      fontSize: wordFont,
+                      ...(wordAngle
+                        ? {
+                            position: "absolute",
+                            left: "50%",
+                            top: "50%",
+                            width:
+                              Math.abs(wordAngle) === 90
+                                ? wordSize.height
+                                : wordSize.width,
+                            maxWidth: "none",
+                            maxHeight:
+                              Math.abs(wordAngle) === 90
+                                ? wordSize.width
+                                : wordSize.height,
+                            overflow: "auto",
+                            transform: `translate(-50%, -50%) rotate(${wordAngle}deg)`,
+                          }
+                        : {}),
+                    }}
+                  >
+                    {word}
+                  </h2>
                 </div>
               </>
             ) : (
@@ -361,6 +438,7 @@ export default function Charades({ session: s }: GameProps) {
         )}
         <div className="split">
           <Button
+            silent
             className="mint"
             aria-keyshortcuts="ArrowRight"
             onClick={() => mark(true)}
@@ -368,7 +446,11 @@ export default function Charades({ session: s }: GameProps) {
             <Check size={26} weight="bold" />
             Correct
           </Button>
-          <Button aria-keyshortcuts="ArrowLeft" onClick={() => mark(false)}>
+          <Button
+            silent
+            aria-keyshortcuts="ArrowLeft"
+            onClick={() => mark(false)}
+          >
             <ArrowBendUpRight size={26} />
             Skip
           </Button>
@@ -394,32 +476,33 @@ export default function Charades({ session: s }: GameProps) {
   if (s.phase === "turn-result")
     return (
       <Screen
-        title={`Team ${s.team + 1}: ${s.correct} points!`}
+        title={`${teamName}: ${s.correct} points!`}
         subtitle={`${s.skipped} skipped. Every wild gesture counted.`}
       >
         <Button
           className="primary"
           onClick={() => {
-            if (s.team === 0) patch({ team: 1, phase: "ready", actorIndex: 0 });
+            if (s.team < teams.length - 1)
+              patch({ team: s.team + 1, phase: "ready", actorIndex: 0 });
             else {
-              const winning =
-                s.teamScores[0] === s.teamScores[1]
-                  ? -1
-                  : s.teamScores[0] > s.teamScores[1]
-                    ? 0
-                    : 1;
+              const high = Math.max(...s.teamScores);
+              const winning = teams.filter((_, i) => s.teamScores[i] === high);
               finish(
-                winning === -1
+                winning.length === teams.length
                   ? "A glorious draw!"
-                  : `Team ${winning + 1} wins!`,
+                  : `${winning.map((t) => t.name).join(" & ")} win${winning.length === 1 ? "s" : ""}!`,
                 players
-                  .filter((_, i) => winning === -1 || i % 2 === winning)
+                  .filter((p) =>
+                    winning.some((t) => t.playerIds.includes(p.id)),
+                  )
                   .map((p) => p.id),
               );
             }
           }}
         >
-          {s.team === 0 ? "Pass to Team 2" : "See the winners"}
+          {s.team < teams.length - 1
+            ? `Pass to ${teams[s.team + 1].name}`
+            : "See the winners"}
         </Button>
       </Screen>
     );

@@ -3,11 +3,13 @@ import narration from "../content/narration.json";
 import { countdownCue } from "./countdown";
 let countdownNodes: OscillatorNode[] = [];
 let audio: AudioContext | undefined;
-export function feedback(kind: "tap" | "success" | "wrong" | "tick" = "tap") {
+export function feedback(
+  kind: "tap" | "success" | "skip" | "wrong" | "tick" = "tap",
+) {
   const p = useGame.getState().preferences;
   if (p.haptics && navigator.vibrate)
     navigator.vibrate(kind === "success" ? [35, 40, 60] : 15);
-  if (!p.sound) return;
+  if (!p.sound || p.volume <= 0) return;
   try {
     audio ??= new AudioContext();
     void audio.resume();
@@ -19,21 +21,33 @@ export function feedback(kind: "tap" | "success" | "wrong" | "tick" = "tap") {
     osc.frequency.setValueAtTime(
       kind === "success"
         ? 523
-        : kind === "wrong"
-          ? 180
-          : kind === "tick"
-            ? 750
-            : 420,
+        : kind === "skip"
+          ? 660
+          : kind === "wrong"
+            ? 180
+            : kind === "tick"
+              ? 750
+              : 420,
       t,
     );
     osc.frequency.exponentialRampToValueAtTime(
-      kind === "success" ? 1046 : kind === "wrong" ? 90 : 600,
+      kind === "success"
+        ? 1046
+        : kind === "skip"
+          ? 330
+          : kind === "wrong"
+            ? 90
+            : 600,
       t + 0.1,
     );
     gain.gain.setValueAtTime(p.volume * 0.13, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
     osc.start();
     osc.stop(t + 0.17);
+    osc.onended = () => {
+      osc.disconnect();
+      gain.disconnect();
+    };
   } catch {
     /* Sound is optional. */
   }

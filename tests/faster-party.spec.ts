@@ -75,12 +75,12 @@ test("familiar word hint, no timer, quick vote and swipe verdict protect secrets
   await page.screenshot({ path: `${dir}/word-hint.png`, fullPage: true });
   await page.keyboard.up("Space");
   await expect(page.locator(".imposter-hint")).toHaveCount(0);
-  await page.getByRole("button", { name: "Hide & pass" }).click();
+  await page.getByRole("button", { name: "Pass to Noah" }).click();
   for (let i = 1; i < 3; i++) {
     await peek(page);
     await page
       .getByRole("button", {
-        name: i === 2 ? "Everyone’s ready" : "Hide & pass",
+        name: i === 2 ? "Everyone’s ready" : "Pass to Zara",
         exact: true,
       })
       .click();

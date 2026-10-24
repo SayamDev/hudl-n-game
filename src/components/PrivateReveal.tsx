@@ -8,6 +8,7 @@ import { CardFace } from "./CardFace";
 import { Identity } from "./Identity";
 import { Screen } from "./ui";
 import type { Session } from "../lib/types";
+import { useCoverLift } from "../lib/useCoverLift";
 
 /** A public, role-independent cover. Private text is never animated on exit. */
 export function PrivateReveal({
@@ -22,14 +23,22 @@ export function PrivateReveal({
   const player = players[session.peekIndex],
     next = players[session.peekIndex + 1];
   const [open, setOpen] = useState(false),
+    [preparing, setPreparing] = useState(false),
     [seen, setSeen] = useState(false),
     [ready, setReady] = useState(false);
   const reduce = useReducedMotion();
   const active = useRef(false);
+  const lift = useCoverLift();
+  const pending = useRef<number | undefined>(undefined);
+  const instantRead = useRef(false);
   const origin = useRef<{ y: number; revealedAt?: number } | null>(null);
   const hide = () => {
+    setPreparing(false);
     active.current = false;
     origin.current = null;
+    clearTimeout(pending.current);
+    pending.current = undefined;
+    lift.move(0);
     setOpen(false);
   };
   useEffect(() => {
@@ -38,7 +47,12 @@ export function PrivateReveal({
   }, []);
   useEffect(() => {
     const hide = () => {
+      setPreparing(false);
       active.current = false;
+      origin.current = null;
+      clearTimeout(pending.current);
+      pending.current = undefined;
+      lift.move(0);
       setOpen(false);
     };
     window.addEventListener("blur", hide);
@@ -47,6 +61,7 @@ export function PrivateReveal({
     window.addEventListener("pointerup", hide);
     window.addEventListener("keyup", hide);
     return () => {
+      clearTimeout(pending.current);
       window.removeEventListener("blur", hide);
       document.removeEventListener("visibilitychange", hide);
       window.removeEventListener("pointercancel", hide);
@@ -58,10 +73,29 @@ export function PrivateReveal({
     if (session.paused) hide();
   }, [session.paused]);
   if (!player) return null;
-  const reveal = () => {
-    if (!ready || session.paused || !active.current) return;
-    setOpen(true);
-    setSeen(true);
+  const reveal = (instant = false) => {
+    if (
+      !ready ||
+      session.paused ||
+      !active.current ||
+      open ||
+      pending.current !== undefined
+    )
+      return;
+    instantRead.current = instant;
+    lift.move(1, instant);
+    const show = () => {
+      setPreparing(false);
+      pending.current = undefined;
+      if (!active.current) return;
+      setOpen(true);
+      setSeen(true);
+    };
+    if (instant || lift.reduced) show();
+    else {
+      setPreparing(true);
+      pending.current = window.setTimeout(show, 220);
+    }
   };
   const pass = () => {
     setOpen(false);
@@ -114,7 +148,8 @@ export function PrivateReveal({
             else if (start.y - event.clientY > 65) {
               start.revealedAt ??= event.clientY;
               reveal();
-            }
+            } else if (!open && pending.current === undefined)
+              lift.pull(start.y - event.clientY);
           }}
           onPointerUp={hide}
           onPointerCancel={hide}
@@ -126,7 +161,7 @@ export function PrivateReveal({
               event.preventDefault();
               if (!event.repeat) {
                 active.current = true;
-                reveal();
+                reveal(true);
               }
             }
           }}
@@ -134,19 +169,28 @@ export function PrivateReveal({
             if (event.key === " " || event.key === "Enter") {
               event.preventDefault();
               hide();
+              lift.move(0, true);
             }
           }}
           onClick={(event) => event.preventDefault()}
         />
-        <div className="private-portrait" aria-hidden="true">
-          <IllustratedPortrait seed={player.avatar} />
-          <div className="portrait-shade" />
-        </div>
-        <div
+        <CardFace world="imposter" />
+        {preparing && !session.paused && (
+          <div className="card-wait" aria-hidden="true">
+            <Fingerprint size={38} weight="light" />
+            <span>Hold steady.</span>
+          </div>
+        )}
+        <motion.div
           className={`private-reveal-cover ${visible ? "is-lifted" : ""}`}
+          style={lift.style}
           aria-hidden={visible}
           inert={visible}
         >
+          <div className="private-portrait" aria-hidden="true">
+            <IllustratedPortrait seed={player.avatar} />
+            <div className="portrait-shade" />
+          </div>
           <motion.div
             className="private-swipe"
             animate={{ y: 0 }}
@@ -168,10 +212,12 @@ export function PrivateReveal({
               to hide.
             </p>
           </motion.div>
-        </div>
+        </motion.div>
         {visible && (
-          <div className="private-secret" aria-live="off">
-            <CardFace world="imposter" />
+          <div
+            className={`private-secret ${instantRead.current ? "is-instant" : ""}`}
+            aria-live="off"
+          >
             <div className="card-copy">
               <span className="private-turn-label">
                 {imposter ? "Your role" : "Your secret word"}

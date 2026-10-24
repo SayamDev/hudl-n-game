@@ -12,6 +12,24 @@ export function screenFacing(beta: number | null, gamma: number | null) {
   return Math.cos((beta * Math.PI) / 180) * Math.cos((gamma * Math.PI) / 180);
 }
 export type TiltPose = "upright" | "floor" | "ceiling" | "moving";
+/** Compensate only for rotation the browser has not already applied. */
+export function wordRotation(
+  beta: number | null,
+  gamma: number | null,
+  screenAngle: number,
+  previous = 0,
+) {
+  const normal = screenFacing(beta, gamma);
+  if (normal === null || Math.abs(normal) > 0.55) return previous;
+  const b = (beta! * Math.PI) / 180,
+    g = (gamma! * Math.PI) / 180;
+  const roll =
+    (Math.atan2(Math.sin(g) * Math.cos(b), Math.sin(b)) * 180) / Math.PI;
+  const nearest = Math.round(roll / 90) * 90;
+  if (Math.abs(roll - nearest) > 30) return previous;
+  const angle = (((screenAngle - nearest) % 360) + 360) % 360;
+  return angle > 180 ? angle - 360 : angle;
+}
 export function tiltPose(
   beta: number | null,
   gamma: number | null,
