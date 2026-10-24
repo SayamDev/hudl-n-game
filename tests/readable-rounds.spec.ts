@@ -19,7 +19,9 @@ test("Charades cards stay readable after release, scroll without hiding and a ch
     .getByRole("button", { name: "Play Charades", exact: true })
     .click();
   for (const name of ["Maya", "Noah", "Zara", "Leo"]) {
-    await page.getByLabel("Player name", { exact: true }).fill(name);
+    await page
+      .getByRole("textbox", { name: "Player name", exact: true })
+      .fill(name);
     await page.getByRole("button", { name: "Add player", exact: true }).click();
   }
   await page.getByRole("button", { name: "Let’s play, all 4 of us" }).click();
@@ -45,9 +47,9 @@ test("Charades cards stay readable after release, scroll without hiding and a ch
     await expect(page.locator(".secret-word")).toBeVisible();
     await page.getByRole("button", { name: "Hide & start acting" }).click();
     await expect(page.locator(".secret-word")).toHaveCount(0);
-    const heading=await page.locator(".silent-stage > h1").boundingBox();
-    const team=await page.locator(".acting-team").boundingBox();
-    expect(heading!.y+heading!.height).toBeLessThanOrEqual(team!.y);
+    const heading = await page.locator(".silent-stage > h1").boundingBox();
+    const team = await page.locator(".acting-team").boundingBox();
+    expect(heading!.y + heading!.height).toBeLessThanOrEqual(team!.y);
     const panel = await page.locator(".charades-acting").boundingBox();
     const artwork = await page
       .locator(".charades-acting .game-scene")

@@ -1,10 +1,10 @@
-import { SceneLoader } from "./components/SceneLoader";
+import { SceneTransition } from "./components/SceneTransition";
 import { motion } from "motion/react";
 import { RoundRail } from "./components/AfterHours";
 import Welcome from "./components/Welcome";
 import { Scoreboard } from "./components/Scoreboard";
 import ClubHome, { ClubLogo } from "./components/ClubHome";
-import { Component, lazy, Suspense, useEffect, useState } from "react";
+import { Component, lazy, useEffect, useState } from "react";
 import type { ErrorInfo, ReactNode } from "react";
 import {
   GearSix,
@@ -336,7 +336,7 @@ export default function App() {
             session.phase !== "results" &&
             p.design === "club" &&
             p.deckStyle !== false && <RoundRail phase={session.phase} />}
-          <Suspense fallback={<SceneLoader />}>
+          <SceneTransition>
             {session ? (
               session.phase === "results" ? (
                 <Results
@@ -603,7 +603,7 @@ export default function App() {
                 </Button>
               </Screen>
             )}
-          </Suspense>
+          </SceneTransition>
         </main>
         {!session && p.design !== "classic" && (
           <nav className="club-nav" aria-label="Main navigation">
