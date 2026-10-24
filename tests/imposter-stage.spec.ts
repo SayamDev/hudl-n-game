@@ -51,7 +51,7 @@ test("private words, hints and decoys fit without clipping or moving the hold ta
     for (const role of ["Crew", "Imposter"]) {
       session.roles[saved.state.players[0].id] = role;
       await restore(page, saved);
-      const hold = page.getByRole("button", { name: "Hold to reveal" });
+      const hold = page.getByRole("button", { name: "Read private card" });
       await expect(hold).toBeEnabled();
       await hold.focus();
       const before = await hold.boundingBox();
@@ -88,7 +88,7 @@ test("private words, hints and decoys fit without clipping or moving the hold ta
         ),
       ).toBe(true);
       const pass = await page
-        .getByRole("button", { name: "Hide & pass to Noah" })
+        .getByRole("button", { name: "Pass to Noah" })
         .boundingBox();
       expect(pass!.y + pass!.height).toBeLessThanOrEqual(height);
     }
@@ -97,7 +97,7 @@ test("private words, hints and decoys fit without clipping or moving the hold ta
   session.options.chaos = true;
   session.decoy = "An unexpectedly elaborate birthday party";
   await restore(page, saved);
-  const hold = page.getByRole("button", { name: "Hold to reveal" });
+  const hold = page.getByRole("button", { name: "Read private card" });
   await expect(hold).toBeEnabled();
   await hold.focus();
   await page.keyboard.down("Space");

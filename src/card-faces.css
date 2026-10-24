@@ -1,0 +1,591 @@
+/* Approved After Hours faces. The middle 54% is a protected reading area. */
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .card-face-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.56;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .card-copy {
+  position: absolute;
+  inset: 17% 23%;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-anchor: none;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .card-copy
+  > * {
+  max-width: 100%;
+  flex: none;
+}
+/* One stable focusable surface replaces the visible reveal button. */
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .is-playing
+  .private-stage.illustrated-private {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px;
+  grid-template-areas: "name badge" "intro intro" "card card" "pass pass";
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  flex: none;
+  width: min(100%, 760px);
+  max-width: 760px;
+  height: calc(100svh - 165px - env(safe-area-inset-top));
+  min-height: 0;
+  margin: 0 auto;
+  padding: 0 0 max(12px, env(safe-area-inset-bottom));
+  gap: 10px;
+  overflow: visible;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  > h1 {
+  grid-area: name;
+  padding: 0;
+  margin: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-player-name {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  > .lede {
+  grid-area: intro;
+  max-width: none;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-badge {
+  grid-area: badge;
+  position: static;
+  align-self: center;
+  width: 46px;
+  height: 46px;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-window {
+  grid-area: card;
+  container-type: inline-size;
+  isolation: isolate;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #111019;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: ns-resize;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-window:has(.private-gesture:focus-visible) {
+  outline: 3px solid #d4fa77;
+  outline-offset: 4px;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-gesture {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  opacity: 1;
+  transform: none;
+  cursor: ns-resize;
+  touch-action: none;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-portrait {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform: none;
+  opacity: 1;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private.is-reading
+  .private-portrait {
+  transform: translateY(-8px) scale(1.015);
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-reveal-cover {
+  z-index: 1;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-swipe {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  touch-action: none;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-window
+  .private-swipe
+  h2 {
+  font-size: clamp(1.7rem, 7cqw, 3rem);
+  margin: 12px 0;
+  line-height: 1.05;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-swipe
+  p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-secret {
+  z-index: 2;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: #111019;
+  color: #f5eccc;
+  border: 0;
+  border-radius: inherit;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-secret
+  .private-word {
+  font-size: clamp(1.7rem, 12cqw, 4.8rem);
+  line-height: 1.04;
+  margin: 0;
+  color: #f5eccc;
+  overflow-wrap: anywhere;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-secret
+  .private-role {
+  font-size: clamp(1.8rem, 14cqw, 5.3rem);
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-secret
+  .private-word.is-long {
+  font-size: clamp(1.1rem, 7cqw, 2.6rem);
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-hint {
+  padding: 0;
+  border: 0;
+  margin: 8px 0 0;
+  gap: 6px;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-hint
+  span,
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-turn-label {
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-hint
+  strong {
+  font:
+    600 clamp(1rem, 5cqw, 1.55rem)/1.2 "Space Grotesk",
+    sans-serif;
+  overflow-wrap: anywhere;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-hint.is-long
+  strong {
+  font-size: clamp(0.95rem, 4.5cqw, 1.25rem);
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .swipe-hide-cue {
+  margin: 4px 0 0;
+  font-size: 0.65rem;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-pass-zone {
+  grid-area: pass;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-pass {
+  min-height: 50px;
+  margin: 0;
+  font-size: 1rem;
+  padding: 10px 16px;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-private
+  .private-pass-zone
+  small {
+  font-size: 0.65rem;
+  margin-top: 6px;
+}
+/* Mafia, location and actor covers now fill the held card. */
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .sleeve-motion:has(.noir-private-deck) {
+  inset: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .noir-private-deck {
+  width: 100%;
+  height: 100%;
+  perspective: none;
+  opacity: 0.62;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .noir-private-deck
+  .world-illustration {
+  width: 100%;
+  height: 100%;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .secret-card.stable-secret {
+  container-type: inline-size;
+  padding: 0;
+  border: 0;
+  background: #111019;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .secret-card:not(.revealed)
+  .secret-content {
+  inset: 0;
+  padding: 20px;
+  justify-content: end;
+  height: auto;
+  background: linear-gradient(
+    180deg,
+    transparent 30%,
+    #111019c9 65%,
+    #111019 100%
+  );
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .secret-card.revealed
+  .secret-content.card-copy {
+  inset: 17% 23%;
+  width: auto;
+  height: auto;
+  padding: 0;
+  gap: 8px;
+  justify-content: safe center;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .secret-content
+  .secret-word {
+  font-size: clamp(1.7rem, 10cqw, 3.5rem);
+  margin: 0;
+  line-height: 1.08;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .secret-content
+  .secret-word-long {
+  font-size: clamp(1.15rem, 7cqw, 2.5rem);
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .branded-peek
+  .secret-content
+  .imposter-hint
+  strong {
+  font-size: clamp(1rem, 5cqw, 1.5rem);
+}
+/* Public cards keep the same safe middle without a separate scene above it. */
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .party-spotlight-stage
+  .prompt-card:has(.card-face-art),
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .charades-word {
+  position: relative;
+  container-type: inline-size;
+  background: #111019;
+  color: #f5eccc;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  isolation: isolate;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .party-spotlight-stage
+  .prompt-card
+  .card-copy
+  h2,
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .card-copy
+  h2 {
+  margin: 0;
+  padding: 0;
+  color: #f5eccc;
+  font-size: clamp(1.4rem, 8cqw, 3.8rem);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .is-playing
+  .illustrated-acting {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  height: calc(100svh - 108px - env(safe-area-inset-top));
+  min-height: 0;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 8px;
+  padding: 0 0 max(12px, env(safe-area-inset-bottom));
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  > h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 5vw, 3rem);
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .charades-word {
+  flex: 1;
+  min-height: 100px;
+  width: 100%;
+  margin: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  :is(.acting-team, .helper, .acting-keys, .tilt-live) {
+  margin: 0;
+  font-size: 0.7rem;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .timer {
+  font-size: 2.8rem;
+  margin: 0;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .button {
+  min-height: 44px;
+  padding: 8px 12px;
+}
+@media (max-height: 650px) {
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .private-swipe {
+    padding: 14px;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .private-seal {
+    display: none;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .card-copy {
+    gap: 5px;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .private-secret
+    .private-role {
+    font-size: clamp(1.6rem, 12cqw, 3.2rem);
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .private-hint {
+    margin: 0;
+    gap: 3px;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .swipe-hide-cue {
+    display: none;
+  }
+}
+@media (max-height: 500px) and (min-width: 700px) {
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .is-playing
+    .private-stage.illustrated-private {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: "name card" "intro card" "pass card";
+    gap: 8px 24px;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .private-badge {
+    display: none;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private
+    .private-window
+    .private-swipe
+    h2 {
+    font-size: 1.5rem;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    .acting-keys {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-private.is-reading
+    .private-portrait {
+    transform: none;
+  }
+}
+/* Keep the live Heads Up card prominent, including short landscape screens. */
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .acting-team {
+  padding: 0;
+  background: transparent;
+  color: #cfc0dc;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .acting-team
+  span {
+  border-color: #6f5d81;
+}
+:root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+  .illustrated-acting
+  .untimed-label {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+@media (max-height: 500px) and (min-width: 700px) {
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .is-playing
+    .illustrated-acting {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    gap: 8px 24px;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    > h1 {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    .acting-team {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    :is(.timer, .untimed-label) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    .charades-word {
+    grid-column: 1;
+    grid-row: 2 / -1;
+    min-height: 0;
+    height: 100%;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    .split {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: center;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    :is(.helper, .tilt-live) {
+    grid-column: 2;
+    grid-row: 4;
+  }
+  :root[data-art-direction="deck"][data-design="club"][data-edition="remix"]
+    .illustrated-acting
+    .text-button {
+    grid-column: 2;
+    grid-row: 5;
+  }
+}
+/* Text enlargement may scroll instead of shrinking content or clipping words. */
+:root.large-text[data-art-direction="deck"][data-edition="remix"]
+  .is-playing
+  .illustrated-private,
+:root.large-text[data-art-direction="deck"][data-edition="remix"]
+  .is-playing
+  .illustrated-acting {
+  height: auto;
+  min-height: calc(100svh - 165px);
+}
+:root.large-text[data-art-direction="deck"][data-edition="remix"]
+  .illustrated-private
+  .private-window {
+  min-height: 420px;
+}

@@ -37,11 +37,14 @@ test("private swipe and hold conceal on release, including keyboard and named ha
   await page.reload();
   await page.getByRole("button", { name: "Resume game" }).click();
   await expect(
-    page.getByRole("button", { name: "Hold to reveal" }),
+    page.getByRole("button", { name: "Read private card" }),
   ).toBeEnabled();
   await expect(
-    page.getByRole("button", { name: "Hide & pass to Noah" }),
+    page.getByRole("button", { name: "Pass to Noah" }),
   ).toBeDisabled();
+  await expect(page.getByText("Hold to reveal", { exact: true })).toHaveCount(
+    0,
+  );
   const gesture = await page.locator(".private-swipe p").boundingBox();
   const gestureX = gesture!.x + 20;
   const gestureY = gesture!.y + gesture!.height / 2;
@@ -60,7 +63,7 @@ test("private swipe and hold conceal on release, including keyboard and named ha
   const firstPortrait = await page
     .locator(".private-portrait [data-portrait]")
     .getAttribute("data-portrait");
-  await page.getByRole("button", { name: "Hide & pass to Noah" }).click();
+  await page.getByRole("button", { name: "Pass to Noah" }).click();
   await expect(
     page.getByRole("heading", { name: "Your turn Noah" }),
   ).toBeVisible();
@@ -69,7 +72,7 @@ test("private swipe and hold conceal on release, including keyboard and named ha
       .locator(".private-portrait [data-portrait]")
       .getAttribute("data-portrait"),
   ).not.toBe(firstPortrait);
-  const hold = page.getByRole("button", { name: "Hold to reveal" });
+  const hold = page.getByRole("button", { name: "Read private card" });
   await expect(hold).toBeEnabled();
   await hold.focus();
   const before = await hold.boundingBox();
@@ -104,7 +107,7 @@ test("private swipe and hold conceal on release, including keyboard and named ha
       ),
     ).toBe(false);
     const box = await page
-      .getByRole("button", { name: "Hide & pass to Zara" })
+      .getByRole("button", { name: "Pass to Zara" })
       .boundingBox();
     expect(box!.y + box!.height).toBeLessThanOrEqual(width > 700 ? 1000 : 844);
     fs.mkdirSync(".impeccable/review/private-swipe", { recursive: true });
@@ -113,13 +116,13 @@ test("private swipe and hold conceal on release, including keyboard and named ha
       fullPage: true,
     });
   }
-  await page.getByRole("button", { name: "Hide & pass to Zara" }).click();
-  const last = page.getByRole("button", { name: "Hold to reveal" });
+  await page.getByRole("button", { name: "Pass to Zara" }).click();
+  const last = page.getByRole("button", { name: "Read private card" });
   await expect(last).toBeEnabled();
   await last.focus();
   await page.keyboard.down("Space");
   await page.keyboard.up("Space");
-  await page.getByRole("button", { name: "Hide & start clues" }).click();
+  await page.getByRole("button", { name: "Start the clues" }).click();
   const turn = await page.locator(".start-player strong").textContent();
   await page.getByRole("button", { name: /Next clue/ }).click();
   expect(await page.locator(".start-player strong").textContent()).not.toBe(

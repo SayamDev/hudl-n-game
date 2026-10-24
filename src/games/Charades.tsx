@@ -1,4 +1,5 @@
 import { GameWorld } from "../components/GameWorld";
+import { CardFace } from "../components/CardFace";
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../store/useGame";
 import { feedback } from "../lib/feedback";
@@ -326,7 +327,11 @@ export default function Charades({ session: s }: GameProps) {
   if (s.phase === "acting")
     return (
       <Screen
-        className={classic ? "silent-stage" : "heads-up-stage"}
+        className={
+          classic
+            ? "silent-stage"
+            : `heads-up-stage ${refined ? "illustrated-acting" : ""}`
+        }
         title={classic ? `${actor?.name}, act it out!` : "Show your team!"}
       >
         <p className="acting-team">
@@ -342,7 +347,16 @@ export default function Charades({ session: s }: GameProps) {
           </div>
         ) : (
           <div className="charades-word" key={s.cardIndex}>
-            {s.deck[s.cardIndex % s.deck.length]}
+            {refined ? (
+              <>
+                <CardFace world="heads-up" />
+                <div className="card-copy">
+                  <h2>{s.deck[s.cardIndex % s.deck.length]}</h2>
+                </div>
+              </>
+            ) : (
+              s.deck[s.cardIndex % s.deck.length]
+            )}
           </div>
         )}
         <div className="split">

@@ -1,1 +1,45 @@
-{"buildPath":"code"}
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "files": [
+          ".scratch/reveal-design/index.html"
+        ],
+        "createdAt": "2026-10-24T08:24:58.445Z",
+        "reason": "Agent: review-only prototype preserves the existing app typography explicitly documented in DESIGN.md lines 131 and 167; not a new font choice."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "fredoka variable",
+        "files": [
+          "src/style.css"
+        ],
+        "createdAt": "2026-10-24T08:31:04.632Z",
+        "reason": "Agent: unchanged classic presentation retains Fredoka per DESIGN.md line 167; card-face integration is limited to After Hours."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "nunito variable",
+        "files": [
+          "src/style.css"
+        ],
+        "createdAt": "2026-10-24T08:31:04.653Z",
+        "reason": "Agent: unchanged classic presentation retains Nunito per DESIGN.md line 167; card-face integration is limited to After Hours."
+      },
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "files": [
+          "src/card-faces.css"
+        ],
+        "createdAt": "2026-10-24T08:43:55.552Z",
+        "reason": "Agent: this approved After Hours integration intentionally retains the existing body font documented in DESIGN.md; only the illustrated card faces and safe text area change."
+      }
+    ]
+  }
+}

@@ -4,6 +4,7 @@ import { ArrowUp, Fingerprint } from "@phosphor-icons/react";
 import { useGame } from "../store/useGame";
 import { hintFor } from "../lib/hints";
 import { IllustratedPortrait } from "./IllustratedCast";
+import { CardFace } from "./CardFace";
 import { Identity } from "./Identity";
 import { Screen } from "./ui";
 import type { Session } from "../lib/types";
@@ -25,6 +26,12 @@ export function PrivateReveal({
     [ready, setReady] = useState(false);
   const reduce = useReducedMotion();
   const active = useRef(false);
+  const origin = useRef<{ y: number; revealedAt?: number } | null>(null);
+  const hide = () => {
+    active.current = false;
+    origin.current = null;
+    setOpen(false);
+  };
   useEffect(() => {
     const id = setTimeout(() => setReady(true), 900);
     return () => clearTimeout(id);
@@ -48,7 +55,7 @@ export function PrivateReveal({
     };
   }, []);
   useEffect(() => {
-    if (session.paused) setOpen(false);
+    if (session.paused) hide();
   }, [session.paused]);
   if (!player) return null;
   const reveal = () => {
@@ -69,7 +76,7 @@ export function PrivateReveal({
       : hintFor(session.secret) || session.category;
   return (
     <Screen
-      className={`private-stage ${visible ? "is-reading" : ""}`}
+      className={`private-stage illustrated-private ${visible ? "is-reading" : ""}`}
       title={
         <>
           <span className="private-turn-label">Your turn</span>
@@ -78,34 +85,70 @@ export function PrivateReveal({
       }
       subtitle={`Card ${session.peekIndex + 1} of ${players.length} · Everyone else, look away.`}
     >
-      <div className="private-portrait" aria-hidden="true">
-        <IllustratedPortrait seed={player.avatar} />
-        <div className="portrait-shade" />
-      </div>
       <div className="private-badge" aria-hidden="true">
         <Identity seed={player.avatar} />
       </div>
-      <section
-        className={`private-window ${visible ? "is-open" : ""}`}
-        aria-label="Private role card"
-      >
+      <div className={`private-window ${visible ? "is-open" : ""}`}>
+        <button
+          className="private-gesture"
+          type="button"
+          aria-label="Read private card"
+          aria-description="Swipe up and keep holding, or hold Space or Enter. Release to hide."
+          disabled={!ready || session.paused}
+          onPointerDown={(event) => {
+            if (!ready || session.paused || event.button !== 0) return;
+            event.preventDefault();
+            active.current = true;
+            origin.current = { y: event.clientY };
+            event.currentTarget.focus({ preventScroll: true });
+            event.currentTarget.setPointerCapture(event.pointerId);
+          }}
+          onPointerMove={(event) => {
+            const start = origin.current;
+            if (!active.current || !start) return;
+            if (
+              start.revealedAt !== undefined &&
+              event.clientY - start.revealedAt > 48
+            )
+              hide();
+            else if (start.y - event.clientY > 65) {
+              start.revealedAt ??= event.clientY;
+              reveal();
+            }
+          }}
+          onPointerUp={hide}
+          onPointerCancel={hide}
+          onLostPointerCapture={hide}
+          onBlur={hide}
+          onContextMenu={(event) => event.preventDefault()}
+          onKeyDown={(event) => {
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+              if (!event.repeat) {
+                active.current = true;
+                reveal();
+              }
+            }
+          }}
+          onKeyUp={(event) => {
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+              hide();
+            }
+          }}
+          onClick={(event) => event.preventDefault()}
+        />
+        <div className="private-portrait" aria-hidden="true">
+          <IllustratedPortrait seed={player.avatar} />
+          <div className="portrait-shade" />
+        </div>
         <div
           className={`private-reveal-cover ${visible ? "is-lifted" : ""}`}
           aria-hidden={visible}
           inert={visible}
-          onPointerDownCapture={() => {
-            active.current = true;
-          }}
         >
           <motion.div
             className="private-swipe"
-            drag={ready ? "y" : false}
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={0.18}
-            dragMomentum={false}
-            onDrag={(_, info) => {
-              if (info.offset.y < -65) reveal();
-            }}
             animate={{ y: 0 }}
             transition={{ duration: reduce ? 0 : 0.22 }}
           >
@@ -113,93 +156,68 @@ export function PrivateReveal({
               <Fingerprint size={30} weight="light" />
               <span>FOR YOUR EYES ONLY</span>
             </div>
-            <h2>{seen ? "Back under cover." : "Keep your cover."}</h2>
+            <h2>
+              {!ready
+                ? "Passing the phone…"
+                : seen
+                  ? "Back under cover."
+                  : "Keep your cover."}
+            </h2>
             <p>
               <ArrowUp size={17} aria-hidden="true" /> Swipe up & hold. Release
               to hide.
             </p>
-            <button
-              className="private-action"
-              disabled={!ready}
-              tabIndex={visible ? -1 : 0}
-              onPointerDown={(event) => {
-                event.preventDefault();
-                active.current = true;
-                reveal();
-              }}
-              onKeyDown={(event) => {
-                if (event.code === "Space" || event.code === "Enter") {
-                  event.preventDefault();
-                  if (!event.repeat) {
-                    active.current = true;
-                    reveal();
-                  }
-                }
-              }}
-            >
-              {ready ? "Hold to reveal" : "Ready in a moment…"}
-            </button>
           </motion.div>
         </div>
         {visible && (
-          <motion.div
-            className="private-secret"
-            aria-live="off"
-            onPan={(_, info) => {
-              if (info.offset.y > 48) setOpen(false);
-            }}
-          >
-            <span className="private-turn-label">
-              {imposter ? "Keep this to yourself" : "Your secret word"}
-            </span>
-            <h2
-              className={`private-word ${!imposter && session.secret.length > 24 ? "is-long" : ""}`}
-            >
-              {imposter ? "IMPOSTER" : session.secret}
-            </h2>
-            {imposter && session.options.chaos ? (
-              <div
-                className={`private-hint ${session.decoy.length > 18 ? "is-long" : ""}`}
+          <div className="private-secret" aria-live="off">
+            <CardFace world="imposter" />
+            <div className="card-copy">
+              <span className="private-turn-label">
+                {imposter ? "Your role" : "Your secret word"}
+              </span>
+              <h2
+                className={`private-word ${imposter ? "private-role" : session.secret.length > 24 ? "is-long" : ""}`}
               >
-                <span>Your decoy word</span>
-                <strong>{session.decoy}</strong>
-              </div>
-            ) : imposter && session.options.hint ? (
-              <div
-                className={`private-hint ${hint.length > 18 ? "is-long" : ""}`}
-              >
-                <span>Your hint · blend in with this</span>
-                <strong>{hint}</strong>
-              </div>
-            ) : !imposter && session.secret.length > 24 ? null : (
-              <p>
-                {imposter
-                  ? "Listen. Blend in. Keep your cover."
-                  : "Clue them in. Don’t say the word."}
-              </p>
-            )}
-            <small className="swipe-hide-cue">Release to hide</small>
-          </motion.div>
+                {imposter ? "IMPOSTER" : session.secret}
+              </h2>
+              {imposter && session.options.chaos ? (
+                <div
+                  className={`private-hint ${session.decoy.length > 18 ? "is-long" : ""}`}
+                >
+                  <span>Your decoy word</span>
+                  <strong>{session.decoy}</strong>
+                </div>
+              ) : imposter && session.options.hint ? (
+                <div
+                  className={`private-hint ${hint.length > 18 ? "is-long" : ""}`}
+                >
+                  <span>A hint to help you blend in</span>
+                  <strong>{hint}</strong>
+                </div>
+              ) : !imposter && session.secret.length > 24 ? null : (
+                <p>
+                  {imposter
+                    ? "Listen. Blend in. Keep your cover."
+                    : "Clue them in. Don’t say the word."}
+                </p>
+              )}
+              <small className="swipe-hide-cue">Release to hide</small>
+            </div>
+          </div>
         )}
-      </section>
+      </div>
       <div className="private-pass-zone">
-        <p>
-          {next ? (
-            <>
-              Next phone handoff: <strong>{next.name}</strong>
-            </>
-          ) : (
-            "Last card. The clues are up next."
-          )}
-        </p>
         <button
           className="private-action private-pass"
-          disabled={!seen}
+          disabled={!seen || visible}
           onClick={pass}
         >
-          {next ? `Hide & pass to ${next.name}` : "Hide & start clues"}
+          {next ? `Pass to ${next.name}` : "Start the clues"}
         </button>
-        <small>Hold Space / Enter to read · Esc to pause</small>
+        <small>
+          Hold Space / Enter on the artwork to read · Release to hide
+        </small>
       </div>
     </Screen>
   );

@@ -1,11 +1,15 @@
 import { GameWorld } from "../components/GameWorld";
+import { CardFace } from "../components/CardFace";
 import { useState } from "react";
 import { useGame } from "../store/useGame";
 import { likely, takes } from "../content/prompts";
 import { Avatar, Button, Screen } from "../components/ui";
 import type { GameProps } from "../lib/types";
 export default function Party({ session: s }: GameProps) {
-  const { players, patch, finish } = useGame();
+  const { players, patch, finish, preferences } = useGame();
+  const refined =
+    preferences.deckStyle !== false &&
+    !["classic", "club-original"].includes(preferences.design);
   const [value, setValue] = useState(50),
     [ready, setReady] = useState(false);
   const hot = s.options.partyMode === "takes";
@@ -45,11 +49,25 @@ export default function Party({ session: s }: GameProps) {
         subtitle={`Prompt ${s.promptIndex + 1} of 5 · ${s.options.intensity}`}
       >
         <div className="prompt-card" key={s.promptIndex}>
-          <GameWorld session={s} />
-          <h2>
-            {prompt}
-            {hot ? "" : "?"}
-          </h2>
+          {refined ? (
+            <>
+              <CardFace world="party" />
+              <div className="card-copy">
+                <h2>
+                  {prompt}
+                  {hot ? "" : "?"}
+                </h2>
+              </div>
+            </>
+          ) : (
+            <>
+              <GameWorld session={s} />
+              <h2>
+                {prompt}
+                {hot ? "" : "?"}
+              </h2>
+            </>
+          )}
         </div>
         <Button
           className="primary"

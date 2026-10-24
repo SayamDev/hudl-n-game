@@ -1,6 +1,7 @@
 import { hintFor } from "../lib/hints";
 import { Identity } from "./Identity";
 import { SecretSleeve } from "./SecretSleeve";
+import { CardFace } from "./CardFace";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, ButtonHTMLAttributes } from "react";
 import { motion, useReducedMotion } from "motion/react";
@@ -232,6 +233,12 @@ export function Peek({
             : "You’re the imposter!"
           : session.secret;
   const isImposter = session.game === "imposter" && role === "Imposter";
+  const world =
+    session.game === "charades"
+      ? session.options.charadesMode === "classic"
+        ? "charades"
+        : "heads-up"
+      : session.game;
   const reveal = () => {
     if (guard || session.paused) return;
     active.current = true;
@@ -274,7 +281,11 @@ export function Peek({
               <SecretSleeve ready={guard === 0} seen={seen} />
             </div>
           )}
-          <div className="secret-content" aria-live="off">
+          {refined && holding && <CardFace world={world} />}
+          <div
+            className={`secret-content ${refined && holding ? "card-copy" : ""}`}
+            aria-live="off"
+          >
             {holding ? (
               <>
                 {isImposter ? (
@@ -297,7 +308,9 @@ export function Peek({
                         : session.game === "mafia"
                           ? "YOUR ROLE"
                           : session.game === "spy"
-                            ? "YOUR LOCATION"
+                            ? role === "Spy"
+                              ? "YOUR ROLE"
+                              : "YOUR LOCATION"
                             : "YOUR SECRET"}
                     </span>
                     <h2

@@ -26,12 +26,7 @@ export function SecretSleeve({
         className={`secret-sleeve noir-private-deck ${ready ? "is-ready" : ""}`}
         aria-hidden="true"
       >
-        <span className="private-card-back" />
-        <span className="private-card-back second" />
-        <div className="private-card-face">
-          <WorldArt world={world} />
-          <span className="private-n">n</span>
-        </div>
+        <WorldArt world={world} />
       </div>
     );
   return (
