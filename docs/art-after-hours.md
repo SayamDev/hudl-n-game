@@ -73,3 +73,9 @@ The source references were the project's existing artwork and character sheet, n
 ## Distinct Charades cover — 24 October 2026
 
 The user explicitly requested changing the duplicated Charades lobby artwork. This is a narrow exception to the earlier pinned-cover instruction: only Charades changes. NoirIllustration now receives charadesMode, selecting the existing hand-gesture illustration at viewBox `620 842 170 150` for classic Charades. Heads Up retains `430 842 170 150`, and every other cover is unchanged. Both use the original club-illustrations.jpg bytes; no new image generation, image request or asset download was needed. Provenance and licensing remain those of the original sheet.
+
+## Cohesive gameplay atlas — 24 October 2026
+
+The user rejected the painted gameplay scenes as inconsistent with the app's established artwork. The current `public/art/after-hours/world-atlas.jpg` now replaces that first version with six graphic-noir scenes matched to the original lobby illustration: masked cardsharp, Mafia council, folded mystery map, forehead-phone guessing, silent mime and friends pointing to a crowned player. The original lobby covers and twenty player portrait selections are unchanged.
+
+Generated with the built-in OpenAI image tool, using `club-illustrations.jpg` as a style reference only. Source output: `exec-6244dc14-0b70-494b-a49f-e58b4f37b580.png`, 1536×1024; six 512×512 cells. Shipping JPEG: quality 90, 720,759 bytes, smaller than the previous 994,182-byte atlas. The exact prompt is in [gameplay-noir-prompt.txt](art/gameplay-noir-prompt.txt) and embedded in the JPEG comment. No runtime generation, external asset request or dependency was added. The original generated PNG remains in the generator output folder, and the previous atlas is recoverable from Git history.

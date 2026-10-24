@@ -245,7 +245,7 @@ export function Peek({
   };
   return (
     <Screen
-      className={`peek-stage ${holding ? "is-peeking" : ""} ${seen ? "has-peeked" : ""}`}
+      className={`peek-stage ${refined ? "branded-peek" : ""} ${holding ? "is-peeking" : ""} ${seen ? "has-peeked" : ""}`}
       title={
         <>
           <span className="handoff-label">Pass to </span>

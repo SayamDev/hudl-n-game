@@ -44,8 +44,8 @@ export default function Party({ session: s }: GameProps) {
         title={hot ? "Hot take incoming." : "Who’s most likely to…"}
         subtitle={`Prompt ${s.promptIndex + 1} of 5 · ${s.options.intensity}`}
       >
-        <GameWorld session={s} />
         <div className="prompt-card" key={s.promptIndex}>
+          <GameWorld session={s} />
           <h2>
             {prompt}
             {hot ? "" : "?"}

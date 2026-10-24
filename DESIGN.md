@@ -268,3 +268,11 @@ The refined clue screen is a speaker table: portrait and name, named next person
 ### Charades cover exception — explicit user request, 24 October 2026
 
 Charades now uses its own original hand-gesture illustration from club-illustrations.jpg, at viewBox 620 842 170 150. Heads Up retains the forehead-card crop at 430 842 170 150. This narrowly supersedes the earlier instruction to repeat that crop; every other pinned cover and the original JPEG remain unchanged. No new raster was generated. The shared session engine does not determine lobby artwork: charadesMode selects the cover.
+
+## Cohesive gameplay scenes and viewport layouts — 24 October 2026
+
+ADR 0014 replaces the first painted gameplay atlas with six graphic-noir scenes in the established purple/chartreuse/ivory palette. Source resolution is 1536×1024, six 512px square cells; the new JPEG is smaller than the old one. It does not replace the locked lobby sheet or illustrated player portraits. Heads Up uses an outward-facing forehead phone; Charades a silent mime; Mafia a masked council; Spy a question-map; Party a crowned friend chosen by the others. All game text remains DOM, and no player/role data enters decorative artwork.
+
+The final gameplay.css layer gives refined private Peek a stable viewport grid and a role-independent dark reading ground. The sleeve and copy form a centred card composition; the older absolute content offset is reset. Roster portraits explicitly reset inherited span padding and borders so they fill their intended size. Secret text still unmounts immediately on release/cancel/blur/pause, without an exit animation.
+
+Ready screens pair art and actual team members in one panel. A middle scroll region contains optional tilt practice, long rosters and expandable instructions; the start action remains outside that region. Short landscape uses columns. Party artwork belongs inside the prompt card, with a clear lime main action. Safe-area padding protects bottom actions, while enlarged text uses natural scrolling rather than clipped type. Earlier art/design preferences remain reversible.

@@ -14,7 +14,10 @@ import { createTiltGesture, tiltPose } from "../lib/tilt";
 import type { TiltPose } from "../lib/tilt";
 import type { GameProps } from "../lib/types";
 export default function Charades({ session: s }: GameProps) {
-  const { players, patch, finish } = useGame();
+  const { players, patch, finish, preferences } = useGame();
+  const refined =
+    preferences.deckStyle !== false &&
+    !["classic", "club-original"].includes(preferences.design);
   const classic = s.options.charadesMode === "classic";
   const untimed = s.options.seconds === 0;
   const teamPlayers = players.filter((_, i) => i % 2 === s.team);
@@ -196,18 +199,18 @@ export default function Charades({ session: s }: GameProps) {
   if (s.phase === "ready")
     return (
       <Screen
-        className={classic ? "silent-stage" : "heads-up-stage"}
+        className={`${classic ? "silent-stage" : "heads-up-stage"} ${refined ? "branded-ready" : ""}`}
         title={`Team ${s.team + 1}, you’re up!`}
         subtitle={
           classic
-            ? "One actor sees the prompt. Everyone else guesses. No words, no sounds."
-            : "One teammate holds the phone facing the others. No saying the word."
+            ? "One actor. No words or sounds. Your team guesses."
+            : "Hold the screen toward your team. Let them give the clues."
         }
       >
-        <GameWorld session={s} />
         <div className="charades-ready-grid">
           <section className="ready-cast" aria-label="This turn’s team">
-            <h2>Your team. Your moment.</h2>
+            <GameWorld session={s} />
+            <h2>Your team</h2>
             <div className="team-list">
               {players
                 .filter((_, i) => i % 2 === s.team)
@@ -218,8 +221,8 @@ export default function Charades({ session: s }: GameProps) {
                 ))}
             </div>
             <p>
-              <strong>{untimed ? "No timer." : "60 seconds."}</strong> Each
-              correct answer earns one team point.
+              <strong>{untimed ? "No timer." : "60 seconds."}</strong> One point
+              per correct answer.
             </p>
           </section>
           <section className="ready-controls" aria-label="Ways to play">
@@ -227,20 +230,23 @@ export default function Charades({ session: s }: GameProps) {
               <>
                 <h2>{actor?.name}, you’re the actor.</h2>
                 <p>
-                  Privately check your prompt, then hide it. Act it out with
-                  gestures only while your teammates guess.
+                  Check your card privately, hide it, then act. Your team
+                  guesses.
                 </p>
-                <p>
-                  Correct or Skip passes a fresh prompt to the next actor.{" "}
-                  {untimed
-                    ? "Finish the turn when your team is ready."
-                    : "The clock pauses while the next actor checks their card."}
-                </p>
+                <details className="ready-help">
+                  <summary>How turns work</summary>
+                  <p>
+                    Correct or Skip passes a fresh prompt to the next actor.{" "}
+                    {untimed
+                      ? "Finish the turn when your team is ready."
+                      : "The clock pauses while the next actor checks their card."}
+                  </p>
+                </details>
                 <p className="keyboard-guide">→ correct · ← skip · Esc pause</p>
               </>
             ) : (
               <>
-                <h2>Tap, tilt or use your keys.</h2>
+                <h2>Play your way.</h2>
                 <div className="gesture-guide">
                   <div>
                     <ArrowDown size={24} weight="bold" />
@@ -255,10 +261,7 @@ export default function Charades({ session: s }: GameProps) {
                     </span>
                   </div>
                 </div>
-                <p>
-                  Return upright between tilts. Try it here before the clock
-                  starts — practice adds no points.
-                </p>
+                <p>Return upright between tilts. Practice adds no points.</p>
                 <Button
                   className="tilt-enable"
                   disabled={sensor === "requesting"}
@@ -284,8 +287,7 @@ export default function Charades({ session: s }: GameProps) {
                 )}
                 <p className="keyboard-guide">
                   Keyboard: <kbd>→</kbd> correct · <kbd>←</kbd> skip ·{" "}
-                  <kbd>Esc</kbd> pause. Tab between other controls; Enter or
-                  Space selects.
+                  <kbd>Esc</kbd> pause.
                 </p>
               </>
             )}
