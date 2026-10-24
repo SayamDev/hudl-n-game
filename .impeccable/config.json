@@ -39,6 +39,24 @@
         ],
         "createdAt": "2026-10-24T08:43:55.552Z",
         "reason": "Agent: this approved After Hours integration intentionally retains the existing body font documented in DESIGN.md; only the illustrated card faces and safe text area change."
+      },
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "files": [
+          "src/club.css"
+        ],
+        "createdAt": "2026-10-24T09:53:44.296Z",
+        "reason": "Agent: DESIGN.md lines 131, 167 and 169 intentionally retain Space Grotesk for readable body text and controls in the approved illustrated noir direction; this inherited stylesheet is not a new typography choice."
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/remix.css"
+        ],
+        "createdAt": "2026-10-24T09:54:07.231Z",
+        "reason": "Agent: legacy Social Club fallback is intentionally preserved per DESIGN.md line 133; the current approved illustrated acting card explicitly resets border to 0 in src/card-faces.css. Static legacy declaration is not the rendered After Hours design."
       }
     ]
   }
