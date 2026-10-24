@@ -345,12 +345,16 @@ test("landscape controls, reduced motion and large text remain usable", async ({
   expect(scan.violations).toEqual([]);
   await page.getByLabel("Dark party mode").check();
   expect(
-    await page.evaluate(() =>
-      getComputedStyle(document.documentElement)
-        .getPropertyValue("--muted")
-        .trim(),
+    await page.evaluate(
+      () =>
+        getComputedStyle(document.documentElement)
+          .getPropertyValue("--muted")
+          .trim() ===
+        getComputedStyle(document.documentElement)
+          .getPropertyValue("--ink")
+          .trim(),
     ),
-  ).toBe("#f3f4ed");
+  ).toBe(true);
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 

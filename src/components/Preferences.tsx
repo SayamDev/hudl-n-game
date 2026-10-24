@@ -59,8 +59,8 @@ export default function Preferences() {
         </div>
       </fieldset>
       <Toggle
-        label="Refined deck styling"
-        description="New handoff artwork and results. Switch off to compare with the previous Social Club design."
+        label="After Hours art & motion"
+        description="Illustrated decks, character alibis and connected motion. Switch off to restore the previous Social Club look."
         checked={p.deckStyle !== false}
         onChange={(deckStyle) => setPreferences({ deckStyle })}
       />

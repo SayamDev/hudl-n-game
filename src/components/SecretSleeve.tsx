@@ -1,3 +1,5 @@
+import { NoirIllustration } from "./NoirArt";
+import { useGame } from "../store/useGame";
 /** Original geometric deck artwork. No secret or role data enters this graphic. */
 export function SecretSleeve({
   ready,
@@ -6,6 +8,25 @@ export function SecretSleeve({
   ready: boolean;
   seen: boolean;
 }) {
+  const noir = useGame(
+    (s) =>
+      s.preferences.deckStyle !== false &&
+      !["classic", "club-original"].includes(s.preferences.design),
+  );
+  if (noir)
+    return (
+      <div
+        className={`secret-sleeve noir-private-deck ${ready ? "is-ready" : ""}`}
+        aria-hidden="true"
+      >
+        <span className="private-card-back" />
+        <span className="private-card-back second" />
+        <div className="private-card-face">
+          <NoirIllustration hero />
+          <span className="private-n">n</span>
+        </div>
+      </div>
+    );
   return (
     <div
       className={`secret-sleeve ${ready ? "is-ready" : ""}`}

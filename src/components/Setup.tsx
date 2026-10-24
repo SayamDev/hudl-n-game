@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Reorder, useDragControls } from "motion/react";
 import {
   ArrowRight,
+  UsersThree,
   Plus,
   Shuffle,
   SignOut,
@@ -26,7 +27,13 @@ function CrewItem({
 }) {
   const controls = useDragControls();
   return (
-    <Reorder.Item value={player} dragListener={false} dragControls={controls}>
+    <Reorder.Item
+      value={player}
+      dragListener={false}
+      dragControls={controls}
+      layout="position"
+      transition={{ layout: { duration: 0.18, ease: [0.23, 1, 0.32, 1] } }}
+    >
       <button
         className="drag-handle"
         aria-label={`Drag to reorder ${player.name}. Use the adjacent arrow buttons with a keyboard.`}
@@ -87,6 +94,7 @@ export function Players({
   };
   return (
     <Screen
+      className="crew-stage"
       title="Who’s in the huddle?"
       subtitle={`Same crew this round? Add or remove people below. ${classic ? "Charades" : metadata.name} needs ${minimum}-20 players.`}
     >
@@ -121,7 +129,7 @@ export function Players({
       )}
       {players.length === 0 ? (
         <div className="empty">
-          <span>🪩</span>
+          <UsersThree size={64} weight="duotone" aria-hidden="true" />
           <h2>Every party starts with someone.</h2>
           <p>Add your crew above. We’ll remember them for next time.</p>
         </div>
@@ -189,6 +197,7 @@ export function Players({
         className="primary"
         disabled={players.length < minimum}
         onClick={onNext}
+        data-crew-confirm="true"
       >
         {players.length < minimum
           ? `Add ${minimum - players.length} more to play`

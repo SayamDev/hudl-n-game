@@ -1,3 +1,5 @@
+import { NoirIllustration } from "./NoirArt";
+import { useGame } from "../store/useGame";
 import { useRef, useState } from "react";
 import { ArrowUp, Fingerprint } from "@phosphor-icons/react";
 import { Avatar, Button } from "./ui";
@@ -13,6 +15,11 @@ export function Verdict({
   caught: boolean;
   onContinue: () => void;
 }) {
+  const noir = useGame(
+    (s) =>
+      s.preferences.deckStyle !== false &&
+      !["classic", "club-original"].includes(s.preferences.design),
+  );
   const [open, setOpen] = useState(false),
     [lift, setLift] = useState(0);
   const pointer = useRef<{ id: number; y: number } | null>(null);
@@ -58,27 +65,38 @@ export function Verdict({
             setLift(0);
           }}
         >
-          <svg viewBox="0 0 240 190">
-            <rect
-              x="24"
-              y="20"
-              width="192"
-              height="148"
-              rx="14"
-              fill="#d4fa77"
-            />
-            <path
-              d="m24 42 96 65 96-65M24 154l70-60m122 60-70-60"
-              fill="none"
-              stroke="#19211c"
-              strokeWidth="4"
-            />
-            <circle cx="120" cy="106" r="30" fill="#19211c" />
-            <path
-              d="m103 101 13 4-4 10-9-4zm34 0-13 4 4 10 9-4z"
-              fill="#d4fa77"
-            />
-          </svg>
+          {noir ? (
+            <div className="noir-verdict-cover">
+              <NoirIllustration hero />
+              <span>
+                EVERY ALIBI
+                <br />
+                HAS A CRACK.
+              </span>
+            </div>
+          ) : (
+            <svg viewBox="0 0 240 190">
+              <rect
+                x="24"
+                y="20"
+                width="192"
+                height="148"
+                rx="14"
+                fill="#d4fa77"
+              />
+              <path
+                d="m24 42 96 65 96-65M24 154l70-60m122 60-70-60"
+                fill="none"
+                stroke="#19211c"
+                strokeWidth="4"
+              />
+              <circle cx="120" cy="106" r="30" fill="#19211c" />
+              <path
+                d="m103 101 13 4-4 10-9-4zm34 0-13 4 4 10 9-4z"
+                fill="#d4fa77"
+              />
+            </svg>
+          )}
           <Fingerprint size={32} weight="bold" />
         </div>
       </div>
@@ -95,7 +113,9 @@ export function Verdict({
         </div>
       ) : (
         <p className="verdict-instruction">
-          The vote is in. Swipe up on the envelope, or tap below.
+          {noir
+            ? "The vote is in. Swipe up on the card, or tap below."
+            : "The vote is in. Swipe up on the envelope, or tap below."}
         </p>
       )}
       {open ? (

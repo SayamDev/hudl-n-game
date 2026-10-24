@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+import { RoundRail } from "./components/AfterHours";
 import Welcome from "./components/Welcome";
 import { Scoreboard } from "./components/Scoreboard";
 import ClubHome, { ClubLogo } from "./components/ClubHome";
@@ -319,6 +321,11 @@ export default function App() {
           data-phase={session?.phase}
           data-page={page}
         >
+          {session &&
+            session.game === "imposter" &&
+            session.phase !== "results" &&
+            p.design === "club" &&
+            p.deckStyle !== false && <RoundRail phase={session.phase} />}
           <Suspense
             fallback={
               <div className="loading" role="status">
@@ -544,9 +551,31 @@ export default function App() {
                   others to see.
                 </p>
                 <p>
-                  The browser supplies optional narration voices; some voices
-                  use the device provider’s online service. Text instructions
-                  always work without it.
+                  Optional narration uses bundled voice recordings, available
+                  offline after caching. It does not record your microphone.
+                  Text instructions always work without sound.
+                </p>
+                <h2>Artwork &amp; type</h2>
+                <p>
+                  Alibi emblems by Delapouite, Lorc and DarkZaitzev from{" "}
+                  <a
+                    href="https://game-icons.net/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Game-icons.net
+                  </a>
+                  , used under{" "}
+                  <a
+                    href="https://creativecommons.org/licenses/by/3.0/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    CC BY 3.0
+                  </a>
+                  , with original framing. The illustrated deck was generated
+                  for Hudl n game using 12ui. Bebas Neue by Ryoichi Tsunekawa is
+                  licensed under the SIL Open Font License.
                 </p>
                 <p>
                   The hosting provider receives ordinary website requests. Once
@@ -575,6 +604,16 @@ export default function App() {
                 aria-current={page === destination ? "page" : undefined}
                 onClick={() => setPage(destination)}
               >
+                {page === destination &&
+                  p.deckStyle !== false &&
+                  p.design === "club" && (
+                    <motion.span
+                      className="night-nav-indicator"
+                      layoutId="lobby-nav"
+                      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                      aria-hidden="true"
+                    />
+                  )}
                 <Icon
                   size={23}
                   weight={page === destination ? "fill" : "regular"}

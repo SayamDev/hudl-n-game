@@ -52,10 +52,17 @@ export function Screen({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const authored = useGame(
+    (s) => s.preferences.deckStyle !== false && s.preferences.design === "club",
+  );
   return (
     <motion.section
       className={`stage ${className}`}
-      initial={reduce ? false : { opacity: 1, transform: "translateY(8px)" }}
+      initial={
+        reduce || authored
+          ? false
+          : { opacity: 1, transform: "translateY(8px)" }
+      }
       animate={{ opacity: 1, transform: "translateY(0px)" }}
       transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
     >

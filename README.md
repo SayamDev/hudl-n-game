@@ -30,11 +30,11 @@ Add your crew, choose a game and pass the phone. A short interactive welcome let
 
 <table>
 <tr>
-<td width="33%"><img src=".github/assets/crew.png" alt="Colourful crew tickets, individual alibi characters and accessible reorder controls"></td>
-<td width="33%"><img src=".github/assets/welcome.png" alt="A first-visit welcome with the alibi cast and a guided introduction"></td>
-<td width="33%"><img src=".github/assets/scores.png" alt="Party leaderboard with coloured player rows and shared ranks for tied scores"></td>
+<td width="33%"><img src=".github/assets/crew.png" alt="Illustrated alibi crew, saved player names and reorder controls"></td>
+<td width="33%"><img src=".github/assets/private-deck.png" alt="A sealed private deck with a reachable hold control"></td>
+<td width="33%"><img src=".github/assets/verdict.png" alt="An illustrated public verdict card ready to reveal"></td>
 </tr>
-<tr><td><b>Your cast.</b> Twenty alibi identities, saved names and easy lineup changes.</td><td><b>Learn by doing.</b> Try the secret reveal, then bring your crew in.</td><td><b>Keep the rivalry.</b> Local scores with ties that share the spotlight.</td></tr>
+<tr><td><b>Your cast.</b> Twenty alibi identities and a crew check before each new game.</td><td><b>Keep the secret.</b> Hold to reveal; release to conceal immediately.</td><td><b>Reveal together.</b> Talk and accuse out loud, then open the verdict.</td></tr>
 </table>
 
 - **Five visual worlds:** acid-green suspicion, midnight Mafia, a green spy world, coral charades and a yellow-and-purple voting party.
@@ -117,6 +117,8 @@ No accounts, analytics or tracking cookies are built into the app. Browser stora
 
 Created by **[Sayam](https://github.com/SayamDev)**. Source code is [MIT licensed](LICENSE); fonts and icon assets retain their own licences. © 2026 Sayam.
 
-Private handoffs now use an original sealed-deck illustration with a stable hold control, responsive two-column tablet layout and immediate concealment on release. Results feature the real winning alibis and the same readable score rows as the leaderboard. Compare with the previous presentation under **Settings → Refined deck styling**; player data stays intact. Motion and Phosphor Icons are MIT-licensed open-source dependencies, and the deck artwork is authored locally.
+**After Hours** brings an illustrated midnight deck, condensed display type and twenty distinct alibi emblems. Private cards fan into place, public verdicts lift away, and the winning crew lands together. The hold control stays stationary and releasing it removes secret text immediately. Switch back under **Settings → After Hours art & motion** without changing party data.
+
+The illustrated deck was generated for this project; alibi emblems use credited CC BY artwork. All artwork and fonts are served locally. [Art sources and licences](docs/art-after-hours.md) · [Design and verification notes](docs/verification/after-hours-review.md)
 
 Every new game and replay checks who is in the crew, and game setup includes **Edit crew**. For face-to-face accusations, choose **Out loud — tap the accused**, or use **We voted out loud** during Imposter discussion/private voting. One person selects the accused; no individual phone ballots are required. Secret voting remains available.

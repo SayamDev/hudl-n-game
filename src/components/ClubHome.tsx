@@ -1,3 +1,4 @@
+import { AfterHoursHome } from "./AfterHours";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -35,9 +36,12 @@ export default function ClubHome({
 }) {
   const players = useGame((s) => s.players);
   const design = useGame((s) => s.preferences.design);
+  const refined = useGame((s) => s.preferences.deckStyle !== false);
   const reduce = useReducedMotion();
   if (design === "club-original")
     return <OriginalHome choose={choose} rules={rules} crew={crew} />;
+  if (refined)
+    return <AfterHoursHome choose={choose} rules={rules} crew={crew} />;
   return (
     <div className="club-home">
       <section className="club-intro">

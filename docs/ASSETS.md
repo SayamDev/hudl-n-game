@@ -8,7 +8,7 @@
 - Interface icons: Phosphor Icons, MIT license.
 - Emoji: Unicode characters rendered by the visitor's operating system. They are not third-party image downloads.
 
-No generated photographic or stock imagery is shipped. The user specifically requested the SVG mascot, emoji avatars, and sticker-book graphic style.
+The original sticker-book presentation remains available as a prior design. Current generated illustration and third-party emblem provenance are documented below.
 
 ## Social Club redesign
 
@@ -21,3 +21,7 @@ Space Grotesk is self-hosted from @fontsource-variable/space-grotesk; OFL licens
 ## Public README screenshots
 
 `.github/assets/` contains Chrome captures of the real production preview, with demo crew names. Captured through `scripts/review-welcome.mjs` and `scripts/confirm-welcome.mjs`; no generated imagery or external photographs.
+
+## After Hours
+
+The current refined deck uses a generated illustrated sheet, twenty credited Game-icons emblems and self-hosted Bebas Neue. See [full provenance, source links and licences](art-after-hours.md). Earlier geometric identities remain available in the preceding designs.
